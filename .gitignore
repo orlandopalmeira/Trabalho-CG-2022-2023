@@ -1,1 +1,8 @@
 .vs
+.vscode
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+Fase 1/src/Makefile
+*.a
+*.exe
