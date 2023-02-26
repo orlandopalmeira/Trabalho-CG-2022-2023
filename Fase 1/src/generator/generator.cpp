@@ -85,7 +85,7 @@ int main(int argc, char* argv[]){
         if(strcmp(argv[1], "plane") == 0){
             int length = atoi(argv[2]), divisions = atoi(argv[3]);
             const char* file_path = argv[4];
-            Figura plano = generatePlaneXZ(length,divisions,1.0f,0);
+            Figura plano = generatePlaneXZ(length,divisions,0.0f,0);
             figuraToFile(plano, file_path);
             deleteFigura(plano);
             plano = NULL;
