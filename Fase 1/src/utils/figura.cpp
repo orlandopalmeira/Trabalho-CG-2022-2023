@@ -62,9 +62,10 @@ Figura fileToFigura(const char* path){
 
 void deleteFigura(Figura f){
     if(f){
-        for(unsigned long i = 0; i < f->pontos.size(); i++){
-            Ponto p = f->pontos.at(i);
+        while(f->pontos.size() > 0){
+            Ponto p = f->pontos.front();
             deletePonto(p);
+            f->pontos.erase(f->pontos.begin());
         }
         free(f);
     }
