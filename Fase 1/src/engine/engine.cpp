@@ -3,7 +3,10 @@
 #else
 #include <GL/glut.h>
 #endif
-#include <stdio.h>
+#include "../utils/figura.hpp"
+#include "../utils/ponto.hpp"
+
+using namespace std;
 
 void changeSize(int w, int h) {
 
@@ -30,6 +33,8 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+Figura f = NULL; 
+
 void renderScene(void) {
 
 	// clear buffers
@@ -37,7 +42,7 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(5.0f,5.0f,5.0f,
+	gluLookAt(3.0f,5.0f,3.0f,
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
@@ -57,42 +62,19 @@ void renderScene(void) {
 		glVertex3f(0.0f, 0.0f,-100.0f);
 		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
-
+	glColor3f(1.0f, 1.0f, 1.0f);
 	// put the geometric transformations here
-    
-    
+	// ...
+	//
 
-	
-	// piramide
+	vector<Ponto> points = getPontos(f);
+	// figura
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 1.0f);
-    glVertex3f(1.0f, 0.0f, -1.0f);
-    glVertex3f(0.0f, 2.0f, 0.0f);
-
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 2.0f, 0.0f);
-    glVertex3f(-1.0f, 0.0f, 1.0f);
-
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(1.0f, 0.0f, -1.0f);
-    glVertex3f(-1.0f, 0.0f, -1.0f);
-    glVertex3f(0.0f, 2.0f, 0.0f);
-
-    glColor3f(1.0f, 1.0f, 0.0f);
-    glVertex3f(-1.0f, 0.0f, -1.0f);
-    glVertex3f(-1.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 2.0f, 0.0f);
-    glEnd();
-
-    // Quadrado de base
-    glBegin(GL_POLYGON);
-		glColor3f(0.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 0.0f, 1.0f);
-		glVertex3f(-1.0f, 0.0f, 1.0f);
-		glVertex3f(-1.0f, 0.0f, -1.0f);
-		glVertex3f(1.0f, 0.0f, -1.0f);
+	for(unsigned long i = 0; i < points.size(); i++){
+		Ponto p = points.at(i);
+		glVertex3f(getX(p), getY(p), getZ(p));
+	}
     glEnd();
 	
 	// End of frame
@@ -101,7 +83,7 @@ void renderScene(void) {
 
 
 int main(int argc, char *argv[]) {
-    printf("%s\n", argv[1]);
+	f = fileToFigura("../Fase 1/outputs/plane.3d");
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

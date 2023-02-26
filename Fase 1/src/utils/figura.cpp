@@ -60,6 +60,13 @@ Figura fileToFigura(const char* path){
     return f;
 }
 
+vector<Ponto> getPontos(Figura f){
+    if(f){
+        return f->pontos;
+    }
+    return {};
+}
+
 void deleteFigura(Figura f){
     if(f){
         while(f->pontos.size() > 0){
@@ -67,6 +74,7 @@ void deleteFigura(Figura f){
             deletePonto(p);
             f->pontos.erase(f->pontos.begin());
         }
+        f->pontos.clear();
         free(f);
     }
 }

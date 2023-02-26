@@ -19,6 +19,8 @@ void figuraToFile(Figura, const char*);
 
 Figura fileToFigura(const char*);
 
+vector<Ponto> getPontos(Figura f);
+
 void deleteFigura(Figura);
 
 #endif // FIGURA
