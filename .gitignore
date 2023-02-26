@@ -6,3 +6,4 @@ cmake_install.cmake
 Fase 1/src/Makefile
 *.a
 *.exe
+build
