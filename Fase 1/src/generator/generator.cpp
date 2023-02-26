@@ -31,7 +31,7 @@ Figura generatePlaneXZ(int length, int divisions){
     return plano;
 }*/
 
-Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int flag = 0){
+Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0){
     Figura plano = newEmptyFigura();
     if(plano){ // se deu NULL, é porque houve erros
         float dimension2 = (float)length / 2, div_side = (float)length/divisions, 
@@ -44,7 +44,7 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int flag = 0){
 
         // float arrx[4] = {x1,x3,x2,x4};
         // float arrz[4] = {z1,z3,z2,z4};
-        if (flag == 1){
+        if (baixo == 1){
             arrx[1] = x3;
             arrx[2] = x2;
             arrz[1] = z3;
@@ -97,12 +97,12 @@ int main(int argc, char* argv[]){
         }else if(strcmp(argv[1], "cone") == 0){
             /* code */
         }else{
-            printf("Forma inválida");
+            printf("Forma inválida\n");
             return 1;
         }
         
     } else {
-        printf("Número de argumentos inválido.");
+        printf("Número de argumentos inválido.\n");
         return 1;
     }
     return 0;
