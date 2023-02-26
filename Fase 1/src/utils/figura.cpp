@@ -1,18 +1,20 @@
 #include "figura.hpp"
 
+using namespace std;
+
 struct figura{
-    std::vector<Ponto> pontos;
+    vector<Ponto> pontos;
 };
 
 Figura newEmptyFigura(){
     Figura r = (Figura)malloc(sizeof(struct figura));
     if(r != NULL){
-        r->pontos = std::vector<Ponto>();
+        r->pontos = vector<Ponto>();
     }
     return r;
 }
 
-Figura newFigura(std::vector<Ponto> pontos){
+Figura newFigura(vector<Ponto> pontos){
     Figura r = newEmptyFigura();
     if(r != NULL){
         for(unsigned long i = 0; i < pontos.size(); i++){

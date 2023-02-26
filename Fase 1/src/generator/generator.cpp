@@ -1,5 +1,8 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
+#include <iostream>
+
+using namespace std;
 
 void generatePlane(/*int length, int divisions*/){
     Figura plano = newEmptyFigura();
@@ -21,7 +24,8 @@ void generateCone(){
 
 }
 
-int main(/*int argc, char* argv[]*/){
+int main(int argc, char* argv[]){
     // [Linux] Para obter o executável do generator, executar "make generator.exe"
+    if (argc<=1) cout << "Missing Arguments";
     return 0;
 }
