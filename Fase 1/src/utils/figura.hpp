@@ -15,6 +15,8 @@ Figura newFigura(std::vector<Ponto>);
 
 void addPonto(Figura, Ponto);
 
+void addPontos(Figura, Figura toAdd);
+
 void figuraToFile(Figura, const char*);
 
 Figura fileToFigura(const char*);

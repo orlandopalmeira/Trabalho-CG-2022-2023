@@ -8,6 +8,14 @@
 
 using namespace std;
 
+// Códigos de cores
+#define RED 1.0f,0.0f,0.0f
+#define GREEN 0.0f,1.0f,0.0f
+#define BLUE 0.0f,0.0f,1.0f
+#define YELLOW 1.0f, 1.0f, 0.0f
+#define CYAN 0.0f, 1.0f, 1.0f
+#define WHITE 1.0f, 1.0f, 1.0f
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -62,6 +70,7 @@ void renderScene(void) {
 		glVertex3f(0.0f, 0.0f,-100.0f);
 		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
+
 	glColor3f(1.0f, 1.0f, 1.0f);
 	// put the geometric transformations here
 	// ...
@@ -69,6 +78,7 @@ void renderScene(void) {
 
 	vector<Ponto> points = getPontos(f);
 	// figura
+	//(TODO talvez colocar modo de debugs aqui para ver as linhas e os pontos.)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glBegin(GL_TRIANGLES);
 	for(unsigned long i = 0; i < points.size(); i++){

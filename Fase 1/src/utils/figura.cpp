@@ -30,16 +30,33 @@ void addPonto(Figura f, Ponto p){
     }
 }
 
-void figuraToFile(Figura f, const char* path){
-    if(f){
-        FILE* file = fopen(path, "w");
-        fprintf(file, "%lu\n", f->pontos.size());
-        for(unsigned long i = 0; i < f->pontos.size(); i++){
-            Ponto p = f->pontos.at(i);
-            fprintf(file, "%f,%f,%f\n", getX(p), getY(p), getZ(p));
-        }
-        fclose(file);
+// TODO FUNCAO DO PEDRO QUE N SABE BEM O QUE FEZ, VERIFICAR SE ESTÁ BEM.
+void addPontos(Figura f, Figura toAdd){
+    if(!f){
+        return;
     }
+    vector<Ponto> pontos = toAdd->pontos;
+    for (Ponto p: pontos){
+        f->pontos.push_back(p);
+    }
+}
+
+void figuraToFile(Figura f, const char* path){
+    if(!f){
+        printf("A figura está vazia na chamada a FiguraToFile.\n");
+        return;
+    }
+    FILE* file = fopen(path, "w");
+    if (!file){
+        printf("Ocorreu um erro na abertura do ficheiro '%s'\n", path);
+        return;
+    }
+    fprintf(file, "%lu\n", f->pontos.size());
+    for(unsigned long i = 0; i < f->pontos.size(); i++){
+        Ponto p = f->pontos.at(i);
+        fprintf(file, "%f,%f,%f\n", getX(p), getY(p), getZ(p));
+    }
+    fclose(file);
 }
 
 Figura fileToFigura(const char* path){
