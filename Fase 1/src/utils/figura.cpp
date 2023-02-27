@@ -32,12 +32,11 @@ void addPonto(Figura f, Ponto p){
 
 // TODO FUNCAO DO PEDRO QUE N SABE BEM O QUE FEZ, VERIFICAR SE ESTÁ BEM.
 void addPontos(Figura f, Figura toAdd){
-    if(!f){
-        return;
-    }
-    vector<Ponto> pontos = toAdd->pontos;
-    for (Ponto p: pontos){
-        f->pontos.push_back(p);
+    if(f){
+        vector<Ponto> pontos = toAdd->pontos;
+        for (Ponto p: pontos){
+            f->pontos.push_back(p);
+        }
     }
 }
 
@@ -91,6 +90,13 @@ void deleteFigura(Figura f){
             deletePonto(p);
             f->pontos.erase(f->pontos.begin());
         }
+        f->pontos.clear();
+        free(f);
+    }
+}
+
+void deleteFigura2(Figura f){
+    if(f){
         f->pontos.clear();
         free(f);
     }

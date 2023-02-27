@@ -25,4 +25,6 @@ vector<Ponto> getPontos(Figura f);
 
 void deleteFigura(Figura);
 
+void deleteFigura2(Figura);
+
 #endif // FIGURA

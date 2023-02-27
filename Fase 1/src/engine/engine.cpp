@@ -160,7 +160,7 @@ void keyProc(unsigned char key, int x, int y) {
 
 
 int main(int argc, char *argv[]) {
-	f = fileToFigura("../Fase 1/outputs/plane.3d");
+	f = fileToFigura("../Fase 1/outputs/box.3d");
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
