@@ -5,6 +5,7 @@
 #endif
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
+#include "../utils/list.hpp"
 
 using namespace std;
 
@@ -83,13 +84,13 @@ void renderScene(void) {
 	// ...
 	//
 
-	vector<Ponto> points = getPontos(f);
+	List points = getPontos(f);
 	// figura
 	//(TODO talvez colocar modo de debugs aqui para ver as linhas e os pontos.)
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	glBegin(GL_TRIANGLES);
-	for(unsigned long i = 0; i < points.size(); i++){
-		Ponto p = points.at(i);
+	for(unsigned long i = 0; i < getListLength(points); i++){
+		Ponto p = (Ponto)getListElemAt(points,i);
 		glVertex3f(getX(p), getY(p), getZ(p));
 	}
     glEnd();
@@ -160,7 +161,7 @@ void keyProc(unsigned char key, int x, int y) {
 
 
 int main(int argc, char *argv[]) {
-	f = fileToFigura("./Fase_1/outputs/box.3d");
+	f = fileToFigura("../Fase_1/outputs/box.3d");
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

@@ -16,6 +16,8 @@ add_library(
 	./utils/ponto.hpp
 	./utils/figura.cpp
 	./utils/figura.hpp
+	./utils/list.cpp
+	./utils/list.hpp
 )
 
 # Associa a biblioteca das figuras e dos pontos aos executáveis

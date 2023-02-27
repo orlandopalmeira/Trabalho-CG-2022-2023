@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ponto.hpp"
+#include "list.hpp"
 
 using namespace std;
 
@@ -11,17 +12,17 @@ typedef struct figura* Figura;
 
 Figura newEmptyFigura();
 
-Figura newFigura(std::vector<Ponto>);
+Figura newFigura(List);
 
 void addPonto(Figura, Ponto);
 
-void addPontos(Figura, Figura toAdd);
+void addPontos(Figura, Figura);
 
 void figuraToFile(Figura, const char*);
 
 Figura fileToFigura(const char*);
 
-vector<Ponto> getPontos(Figura f);
+List getPontos(Figura);
 
 void deleteFigura(Figura);
 
