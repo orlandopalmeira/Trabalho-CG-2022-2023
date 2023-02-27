@@ -50,7 +50,7 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(3.0f,5.0f,3.0f,
+	gluLookAt(10.0f,10.0f,10.0f,
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
@@ -93,7 +93,7 @@ void renderScene(void) {
 
 
 int main(int argc, char *argv[]) {
-	f = fileToFigura("../Fase 1/outputs/plane.3d");
+	f = fileToFigura("../Fase 1/outputs/box.3d");
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

@@ -123,17 +123,28 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
 
 Figura generateBox(int length, int divisions){
     Figura box = newEmptyFigura();
-    if(!box){ // se deu NULL, é porque houve erros
-        return NULL;
+    if(box){ // se deu NULL, é porque houve erros
+        float dimension2 = (float)length / 2; //, div_side = (float)length/divisions;
+        Figura faceCima, faceBaixo, faceLateral1, faceLateral2, faceLateral3, faceLateral4;
+        faceCima = generatePlaneXZ(length, divisions, dimension2, 0);
+        faceBaixo = generatePlaneXZ(length, divisions, -dimension2, 1);
+        faceLateral1 = generatePlaneXY(length, divisions, -dimension2, 0);
+        faceLateral2 = generatePlaneXY(length, divisions, dimension2, 1);
+        faceLateral3 = generatePlaneYZ(length, divisions, -dimension2, 0);
+        faceLateral4 = generatePlaneYZ(length, divisions, dimension2, 1);
+        addPontos(box, faceCima); // face de baixo do cubo
+        addPontos(box, faceBaixo); // face de cima do cubo
+        addPontos(box, faceLateral1);
+        addPontos(box, faceLateral2);
+        addPontos(box, faceLateral3);
+        addPontos(box, faceLateral4);
+        deleteFigura2(faceCima);
+        deleteFigura2(faceBaixo);
+        deleteFigura2(faceLateral1);
+        deleteFigura2(faceLateral2);
+        deleteFigura2(faceLateral3);
+        deleteFigura2(faceLateral4);
     }
-    float dimension2 = (float)length / 2; //, div_side = (float)length/divisions;
-    addPontos(box, generatePlaneXZ(length, divisions, -dimension2, 0)); // face de baixo do cubo
-    addPontos(box, generatePlaneXZ(length, divisions, dimension2, 1)); // face de cima do cubo
-    addPontos(box, generatePlaneXY(length, divisions, -dimension2, 0));
-    addPontos(box, generatePlaneXY(length, divisions, dimension2, 1));
-    addPontos(box, generatePlaneYZ(length, divisions, -dimension2, 0));
-    addPontos(box, generatePlaneYZ(length, divisions, dimension2, 1));
-
     return box;
 }
 
@@ -163,12 +174,7 @@ int main(int argc, char* argv[]){
             int length = atoi(argv[2]), divisions = atoi(argv[3]); // TODO talvez passar logo para float com ATOF
             const char* file_path = argv[4];
 
-            // Figura plano = generatePlaneXZ(length,divisions); // TODO uncomment
-            // Testes
-            // Figura plano = generatePlaneYZ(length,divisions,0.0f,1);
-            Figura plano = generatePlaneXY(length,divisions,-1.0f,1);
-
-
+            Figura plano = generatePlaneXZ(length,divisions); 
             figuraToFile(plano, file_path);
             deleteFigura(plano);
             plano = NULL; // TODO talvez meter esta atribuição a NULL dentro da deleteFigura.
