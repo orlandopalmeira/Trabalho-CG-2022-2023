@@ -85,19 +85,19 @@ vector<Ponto> getPontos(Figura f){
 
 void deleteFigura(Figura f){
     if(f){
-        while(f->pontos.size() > 0){
-            Ponto p = f->pontos.front();
+        for(Ponto p: f->pontos){
             deletePonto(p);
-            f->pontos.erase(f->pontos.begin());
         }
-        f->pontos.clear();
+        f->pontos.resize(0);
+        f->pontos.shrink_to_fit();
         free(f);
     }
 }
 
 void deleteFigura2(Figura f){
     if(f){
-        f->pontos.clear();
+        f->pontos.resize(0);
+        f->pontos.shrink_to_fit();
         free(f);
     }
 }
