@@ -7,3 +7,4 @@ Fase 1/src/Makefile
 *.a
 *.exe
 build
+*.3d
