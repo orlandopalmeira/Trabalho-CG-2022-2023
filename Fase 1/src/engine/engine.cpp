@@ -16,6 +16,12 @@ using namespace std;
 #define CYAN 0.0f, 1.0f, 1.0f
 #define WHITE 1.0f, 1.0f, 1.0f
 
+float camx = 3.0f;
+float camy = 5.0f;
+float camz = 3.0f;
+
+int mode = GL_LINE;
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -43,6 +49,7 @@ void changeSize(int w, int h) {
 
 Figura f = NULL; 
 
+
 void renderScene(void) {
 
 	// clear buffers
@@ -50,7 +57,7 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(3.0f,5.0f,3.0f,
+	gluLookAt(camx,camy,camz,
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
@@ -79,7 +86,7 @@ void renderScene(void) {
 	vector<Ponto> points = getPontos(f);
 	// figura
 	//(TODO talvez colocar modo de debugs aqui para ver as linhas e os pontos.)
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	glBegin(GL_TRIANGLES);
 	for(unsigned long i = 0; i < points.size(); i++){
 		Ponto p = points.at(i);
@@ -89,6 +96,66 @@ void renderScene(void) {
 	
 	// End of frame
 	glutSwapBuffers();
+}
+
+// write function to process keyboard events
+
+// Só altera a posição da camera, para debug.
+void specKeyProc(int key_code, int x, int y) {
+	x = y; y=x; // Para não aparecerem os warnings.
+	switch (key_code)
+	{
+	case(GLUT_KEY_UP):
+		camy += 0.1f;
+		break;
+
+	case(GLUT_KEY_DOWN):
+		camy -= 0.1f;
+		break;
+
+	case(GLUT_KEY_RIGHT):
+		camz -= 0.1f;
+		break;
+
+	case(GLUT_KEY_LEFT):
+		camz += 0.1f;
+		break;
+
+	default:
+		break;
+	}
+	glutPostRedisplay();
+}
+
+// Só altera a posição da camera, para debug, e altera os modes para GL_FILL, GL_LINES, GL_POINT
+void keyProc(unsigned char key, int x, int y) {
+	x = y; y=x; // Para não aparecerem os warnings.
+	switch (key)
+	{
+	case('d'):
+		camx += 0.1f;
+		break;
+
+	case('a'):
+		camx -= 0.1f;
+		break;
+
+	case('f'):
+		mode = GL_FILL;
+		break;
+
+	case('l'):
+		mode = GL_LINE;
+		break;
+
+	case('p'):
+		mode = GL_POINT;
+		break;
+
+	default:
+		break;
+	}
+	glutPostRedisplay();
 }
 
 
@@ -104,15 +171,14 @@ int main(int argc, char *argv[]) {
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
-	//glutPostRedisplay();
 
 	
-	// put here the registration of the keyboard callbacks
-	//glutKeyboardFunc(keyProc);
-	//glutSpecialFunc(specKeyProc);
+	// put here the registration of the keyboard callbacks (por enquanto só mexem na camara como forma de debug)
+	glutKeyboardFunc(keyProc);
+	glutSpecialFunc(specKeyProc);
 
 
-	//  OpenGL settings
+	// OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	
