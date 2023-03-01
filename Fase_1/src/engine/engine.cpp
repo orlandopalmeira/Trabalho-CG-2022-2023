@@ -6,6 +6,7 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
 #include "../utils/list.hpp"
+#include "../tinyXML/tinyxml.h"
 
 using namespace std;
 

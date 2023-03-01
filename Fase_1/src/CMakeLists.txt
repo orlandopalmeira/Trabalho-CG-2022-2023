@@ -20,9 +20,20 @@ add_library(
 	./utils/list.hpp
 )
 
+# Biblioteca de parsing de XML
+add_library(
+	tinyXML
+	./tinyXML/tinyxml.cpp
+	./tinyXML/tinyxml.h
+	./tinyXML/tinystr.cpp
+	./tinyXML/tinystr.h
+	./tinyXML/tinyxmlerror.cpp
+	./tinyXML/tinyxmlparser.cpp
+)
+
 # Associa a biblioteca das figuras e dos pontos aos executáveis
 target_link_libraries(generator.exe utils_lib)
-target_link_libraries(engine.exe utils_lib)
+target_link_libraries(engine.exe utils_lib tinyXML)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
