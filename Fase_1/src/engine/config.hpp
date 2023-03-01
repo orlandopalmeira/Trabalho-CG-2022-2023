@@ -5,4 +5,10 @@
 
 typedef struct config* Config;
 
+Config newConfig();
+
+Config xmlToConfig(const char*);
+
+void deleteConfig(Config);
+
 #endif // CONFIG

@@ -67,3 +67,13 @@ void deleteList(List list){
         free(list);
     }
 }
+
+void deepDeleteList(List list, void (*free_function)(void *)){
+    if(list){
+        for(unsigned long i = 0; i < list->length; i++){
+            free_function(list->arr[i]);
+        }
+        free(list->arr);
+        free(list);
+    }
+}

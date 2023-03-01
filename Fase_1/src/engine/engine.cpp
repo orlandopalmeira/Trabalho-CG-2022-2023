@@ -7,6 +7,7 @@
 #include "../utils/ponto.hpp"
 #include "../utils/list.hpp"
 #include "../tinyXML/tinyxml.h"
+#include "config.hpp"
 
 using namespace std;
 
@@ -23,6 +24,8 @@ float camy = 5.0f;
 float camz = 3.0f;
 
 int mode = GL_LINE;
+
+Config configuration = NULL;
 
 void changeSize(int w, int h) {
 
@@ -162,7 +165,8 @@ void keyProc(unsigned char key, int x, int y) {
 
 
 int main(int argc, char *argv[]) {
-	f = fileToFigura("../Fase_1/outputs/box.3d");
+	//f = fileToFigura("../Fase_1/outputs/box.3d");
+	configuration = xmlToConfig(argv[1]);
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

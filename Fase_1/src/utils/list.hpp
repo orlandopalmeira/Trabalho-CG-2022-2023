@@ -8,16 +8,18 @@ typedef struct list* List;
 
 List newEmptyList();
 
-int listIsFull(List list);
+int listIsFull(List);
 
-void addValueList(List list, void* value);
+void addValueList(List, void*);
 
-void** getListValues(List list);
+void** getListValues(List);
 
-unsigned long getListLength(List list);
+unsigned long getListLength(List);
 
-void* getListElemAt(List list, unsigned long index);
+void* getListElemAt(List, unsigned long);
 
-void deleteList(List list);
+void deleteList(List);
+
+void deepDeleteList(List, void (*)(void *));
 
 #endif // LIST
