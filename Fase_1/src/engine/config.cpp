@@ -60,5 +60,8 @@ Config xmlToConfig(const char* filePath){
 }
 
 void deleteConfig(Config conf){
-    free(conf);
+    if(conf){
+        deepDeleteList(conf->models, free);
+        free(conf);
+    }
 }
