@@ -37,6 +37,21 @@ float getZ(Ponto p){
     return 0.0f;
 }
 
+float distanceToOrigin(Ponto p){
+    float dx = getX(p);
+    float dy = getY(p);
+    float dz = getZ(p);
+    return std::sqrt(dx*dx + dy*dy + dz*dz);
+}
+
+float distance(Ponto p1, Ponto p2){
+    float dx = getX(p2) - getX(p1);
+    float dy = getY(p2) - getY(p1);
+    float dz = getZ(p2) - getZ(p1);
+    return std::sqrt(dx*dx + dy*dy + dz*dz);
+}
+
+
 void deletePonto(Ponto p){
     free(p);
 }
