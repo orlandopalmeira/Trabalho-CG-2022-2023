@@ -1,5 +1,4 @@
 #include "config.hpp"
-#include "../utils/list.hpp"
 
 struct config{
     // Câmara
@@ -7,7 +6,6 @@ struct config{
     float lookAt[3];
     float up[3];
     float projection[3]; // fov, near, far
-    // ????projection????
     List models; // lista com as paths dos ficheiros dos modelos
 };
 
@@ -57,6 +55,57 @@ Config xmlToConfig(const char* filePath){
         }
     }
     return result;
+}
+
+List getModels(Config conf){
+    if(conf){
+        return conf->models;
+    }
+    return NULL;
+}
+
+void setCamPosition(Config conf, float x, float y, float z){
+    if(conf){
+        conf->poscam[0] = x;
+        conf->poscam[1] = y;
+        conf->poscam[2] = z;
+    }
+}
+
+float getXPosCam(Config conf){
+    return conf->poscam[0];
+}
+
+float getYPosCam(Config conf){
+    return conf->poscam[1];
+}
+
+float getZPosCam(Config conf){
+    return conf->poscam[2];
+}
+
+float getXLookAt(Config conf){
+    return conf->lookAt[0];
+}
+
+float getYLookAt(Config conf){
+    return conf->lookAt[1];
+}
+
+float getZLookAt(Config conf){
+    return conf->lookAt[2];
+}
+
+float getXUp(Config conf){
+    return conf->up[0];
+}
+
+float getYUp(Config conf){
+    return conf->up[1];
+}
+
+float getZUp(Config conf){
+    return conf->up[2];
 }
 
 void deleteConfig(Config conf){

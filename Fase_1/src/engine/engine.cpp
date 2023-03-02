@@ -19,13 +19,21 @@ using namespace std;
 #define CYAN 0.0f, 1.0f, 1.0f
 #define WHITE 1.0f, 1.0f, 1.0f
 
+// Variáveis da câmara
 float camx = 3.0f;
 float camy = 5.0f;
 float camz = 3.0f;
+float lookAtx = 0.0f;
+float lookAty = 0.0f;
+float lookAtz = 0.0f;
+float upx = 0.0f;
+float upy = 0.0f;
+float upz = 0.0f;
 
 int mode = GL_LINE;
 
 Config configuration = NULL;
+List figuras = NULL;
 
 void changeSize(int w, int h) {
 
@@ -52,8 +60,16 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-Figura f = NULL; 
-
+void drawFiguras(List figs){
+	for(unsigned long i = 0; i < getListLength(figs); i++){
+		Figura fig = (Figura)getListElemAt(figs,i);
+		List figPontos = getPontos(fig);
+		for(unsigned long j = 0; j < getListLength(figPontos); j++){
+			Ponto point = (Ponto)getListElemAt(figPontos,j);
+			glVertex3f(getX(point), getY(point), getZ(point));
+		}
+	}
+}
 
 void renderScene(void) {
 
@@ -63,8 +79,8 @@ void renderScene(void) {
 	// set the camera
 	glLoadIdentity();
 	gluLookAt(camx,camy,camz,
-		      0.0,0.0,0.0,
-			  0.0f,1.0f,0.0f);
+		      lookAtx,lookAty,lookAtz,
+			  upx,upy,upz);
 
 	// put drawing instructions here
 	// linhas dos eixos
@@ -88,15 +104,10 @@ void renderScene(void) {
 	// ...
 	//
 
-	List points = getPontos(f);
-	// figura
-	//(TODO talvez colocar modo de debugs aqui para ver as linhas e os pontos.)
+	// figuras
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	glBegin(GL_TRIANGLES);
-	for(unsigned long i = 0; i < getListLength(points); i++){
-		Ponto p = (Ponto)getListElemAt(points,i);
-		glVertex3f(getX(p), getY(p), getZ(p));
-	}
+	drawFiguras(figuras);
     glEnd();
 	
 	// End of frame
@@ -165,8 +176,24 @@ void keyProc(unsigned char key, int x, int y) {
 
 
 int main(int argc, char *argv[]) {
-	//f = fileToFigura("../Fase_1/outputs/box.3d");
-	configuration = xmlToConfig(argv[1]);
+	// Carregamento dos dados das figuras
+	configuration = xmlToConfig(argv[1]); 
+	List models   = getModels(configuration); // !NÃO FAZER DELETE DESTA LISTA! contém as paths dos modelos presentes no ficheiro de configuração
+	figuras 	  = newEmptyList(); // figuras no ficheiro de configuração
+	for(unsigned int i = 0; i < getListLength(models); i++){
+		addValueList(figuras, fileToFigura((char*)getListElemAt(models,i)));
+	}
+	// Carregamento dos dados da câmara
+	camx    = getXPosCam(configuration);
+	camy    = getYPosCam(configuration);
+	camz    = getZPosCam(configuration);
+	lookAtx = getXLookAt(configuration);
+	lookAty = getYLookAt(configuration);
+	lookAtz = getZLookAt(configuration);
+	upx 	= getXUp(configuration);
+	upy 	= getYUp(configuration);
+	upz 	= getZUp(configuration);
+
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -191,5 +218,7 @@ int main(int argc, char *argv[]) {
 	// enter GLUT's main cycle
 	glutMainLoop();
 	
+	deepDeleteList(figuras,deleteFigura);
+	deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
 	return 1;
 }

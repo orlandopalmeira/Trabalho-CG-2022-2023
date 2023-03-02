@@ -83,19 +83,19 @@ List getPontos(Figura f){
     return NULL;
 }
 
-void deleteFigura(Figura f){
-    if(f){
-        for(unsigned long i = 0; i < getListLength(f->pontos); i++){
-            deletePonto((Ponto)getListElemAt(f->pontos,i));
+void deleteFigura(void* figura){
+    if(figura){
+        for(unsigned long i = 0; i < getListLength(((Figura)figura)->pontos); i++){
+            deletePonto((Ponto)getListElemAt(((Figura)figura)->pontos,i));
         }
-        deleteList(f->pontos);
-        free(f);
+        deleteList(((Figura)figura)->pontos);
+        free(figura);
     }
 }
 
-void deleteFigura2(Figura f){
-    if(f){
-        deleteList(f->pontos);
-        free(f);
+void deleteFigura2(void* figura){
+    if(figura){
+        deleteList(((Figura)figura)->pontos);
+        free(figura);
     }
 }

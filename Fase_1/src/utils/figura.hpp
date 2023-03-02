@@ -24,8 +24,8 @@ Figura fileToFigura(const char*);
 
 List getPontos(Figura);
 
-void deleteFigura(Figura);
+void deleteFigura(void*);
 
-void deleteFigura2(Figura);
+void deleteFigura2(void*);
 
 #endif // FIGURA
