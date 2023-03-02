@@ -51,6 +51,9 @@ float distance(Ponto p1, Ponto p2){
     return std::sqrt(dx*dx + dy*dy + dz*dz);
 }
 
+Ponto dupPonto(Ponto ponto){
+    return newPonto(ponto->x, ponto->y, ponto->z);
+}
 
 void deletePonto(Ponto p){
     free(p);

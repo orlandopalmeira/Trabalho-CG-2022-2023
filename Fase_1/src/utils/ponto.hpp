@@ -19,6 +19,8 @@ float distanceToOrigin(Ponto p);
 
 float distance(Ponto p1, Ponto p2);
 
+Ponto dupPonto(Ponto);
+
 void deletePonto(Ponto p);
 
 #endif // PONTO
