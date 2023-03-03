@@ -177,9 +177,78 @@ Figura generateBox(int length, int divisions){
     return box;
 }
 
-Figura generateSphere(){
+Figura generateSphere(int radius, int slices, int stacks){
     Figura sphere = newEmptyFigura();
+    if (!sphere){
+        return NULL;
+    }
 
+    // Cálculo dos pontos base da esfera.
+    float alpha_diff = 2.0f * M_PI / slices;
+    float beta_diff = (M_PI/2) / stacks;
+    
+    Ponto basePoints[slices] = {};
+    float a = 0.0f;
+    
+    for (int i = 0; i < slices; i++){
+        Ponto p = newPontoSph(a, 0.0f, radius);
+        basePoints[i] = p;
+        // addPonto(sphere, p);
+        a += alpha_diff;
+    }
+
+    // Construção das faces laterais
+    for (int i = 0; i < slices; i++){
+
+        // TODO - PROBLEMA DE DOUBLE FREE PROVAVELMENTE AQUI.
+        Ponto p1Up = basePoints[i];
+        Ponto p2Up = basePoints[i+1];
+        Ponto p1Down = basePoints[i];
+        Ponto p2Down = basePoints[i+1];
+        float a1    = i*alpha_diff;
+        float a2    = (i+1)*alpha_diff;
+        float bUp   = 0;
+        float bDown = 0;
+
+        for (int j = 0; j < stacks - 1; j++){
+            // Construção da stack de cima
+            // -- Triângulo da esquerda
+            addPonto(sphere, p1Up);
+            addPonto(sphere, p2Up);
+            bUp += beta_diff;
+            p1Up = newPontoSph(a1, bUp, radius);
+            addPonto(sphere, p1Up);
+            // -- Triângulo da direita
+            addPonto(sphere, p1Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
+            addPonto(sphere, p2Up);
+            p2Up = newPontoSph(a2, bUp, radius);
+            addPonto(sphere, p2Up);
+
+            // Construção da stack de baixo
+            // -- Triângulo da direita
+            addPonto(sphere, p2Down);
+            addPonto(sphere, p1Down);
+            bDown -= beta_diff;
+            p2Down = newPontoSph(a2, bDown, radius);
+            addPonto(sphere, p2Down);
+
+            // -- Triângulo da esquerda
+            addPonto(sphere, p1Down);
+            addPonto(sphere, p2Down);
+            p1Down = newPontoSph(a1, bDown, radius);
+            addPonto(sphere, p1Down);
+        }
+
+        // Construção do triângulo final de cima
+        addPonto(sphere, p1Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
+        addPonto(sphere, p2Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
+        addPonto(sphere, newPonto(0.0f, radius, 0.0f));
+        
+        // Construção do triângulo final de baixo
+        addPonto(sphere, p1Down);
+        addPonto(sphere, p2Down);
+        addPonto(sphere, newPonto(0.0f, radius, 0.0f));
+    }
     return sphere;
 }
 
@@ -260,6 +329,12 @@ int main(int argc, char *argv[]){
             deleteFigura(box);
         }
         else if (strcmp(argv[1], "sphere") == 0){
+            int radius = atoi(argv[2]), slices = atoi(argv[3]), stacks = atoi(argv[4]);
+            const char *file_path = argv[5];
+
+            Figura sphere = generateSphere(radius, slices, stacks);
+            figuraToFile(sphere, file_path);
+            // deleteFigura(sphere);
 
         }
         else if (strcmp(argv[1], "cone") == 0){
