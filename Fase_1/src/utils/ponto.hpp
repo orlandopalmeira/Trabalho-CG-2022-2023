@@ -9,6 +9,8 @@ Ponto newEmptyPonto();
 
 Ponto newPonto(float x, float y, float z);
 
+Ponto newPontoSph(float a, float b, float radius);
+
 float getX(Ponto p);
 
 float getY(Ponto p);
