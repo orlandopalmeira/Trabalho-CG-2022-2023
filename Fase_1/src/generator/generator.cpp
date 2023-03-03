@@ -182,7 +182,8 @@ Figura generateSphere(int radius, int slices, int stacks){
     if (!sphere){
         return NULL;
     }
-
+    stacks /= 2;
+    
     // Cálculo dos pontos base da esfera.
     float alpha_diff = (2.0f * M_PI) / slices;
     float beta_diff = (M_PI/2) / stacks;
@@ -201,7 +202,7 @@ Figura generateSphere(int radius, int slices, int stacks){
     for (int i = 0; i < slices; i++){
 
         // TODO - PROBLEMA DE DOUBLE FREE PROVAVELMENTE AQUI.
-        int ni = i;
+        int ni = i+1;
         if (i == slices-1){
             ni = 0;
         }
