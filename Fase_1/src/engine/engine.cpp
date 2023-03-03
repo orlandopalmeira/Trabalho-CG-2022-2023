@@ -8,6 +8,7 @@
 #include "../utils/list.hpp"
 #include "../tinyXML/tinyxml.h"
 #include "config.hpp"
+#include "math.h"
 
 using namespace std;
 
@@ -20,9 +21,12 @@ using namespace std;
 #define WHITE 1.0f, 1.0f, 1.0f
 
 // Variáveis da câmara
-float camx = 3.0f;
+float alpha = M_PI / 4;
+float beta_ = M_PI / 4;
+float radius = 5.0f;
+float camx = 5.0f;
 float camy = 5.0f;
-float camz = 3.0f;
+float camz = 5.0f;
 float lookAtx = 0.0f;
 float lookAty = 0.0f;
 float lookAtz = 0.0f;
@@ -78,7 +82,7 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(camx,camy,camz,
+	gluLookAt(radius*cos(beta_)*sin(alpha), radius*sin(beta_), radius*cos(beta_)*cos(alpha),
 		      lookAtx,lookAty,lookAtz,
 			  upx,upy,upz);
 
@@ -119,26 +123,19 @@ void renderScene(void) {
 // Só altera a posição da camera, para debug.
 void specKeyProc(int key_code, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
-	switch (key_code)
-	{
-	case(GLUT_KEY_UP):
-		camy += 0.1f;
-		break;
+	switch (key_code){
+		case GLUT_KEY_UP:{
+			radius -= 0.1f;
+			break;
+		}
+		
+		case GLUT_KEY_DOWN:{
+			radius += 0.1f;
+			break;
+		}
 
-	case(GLUT_KEY_DOWN):
-		camy -= 0.1f;
-		break;
-
-	case(GLUT_KEY_RIGHT):
-		camz -= 0.1f;
-		break;
-
-	case(GLUT_KEY_LEFT):
-		camz += 0.1f;
-		break;
-
-	default:
-		break;
+		default:
+			break;
 	}
 	glutPostRedisplay();
 }
@@ -148,28 +145,40 @@ void keyProc(unsigned char key, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
 	switch (key)
 	{
-	case('d'):
-		camx += 0.1f;
-		break;
+		case 'a': { // left
+			alpha -= 0.1f;
+			break;
+		}
 
-	case('a'):
-		camx -= 0.1f;
-		break;
+		case 'd': { // right
+			alpha += 0.1f;
+			break;
+		}
 
-	case('f'):
-		mode = GL_FILL;
-		break;
+		case 'w': { // up 
+			beta_ += beta_ <= 1.55f ? 0.1f : 0.0f;
+			break;
+		}
 
-	case('l'):
-		mode = GL_LINE;
-		break;
+		case 's': { // down
+			beta_ -= beta_ >= -1.55f ? 0.1f : 0.0f;
+			break;
+		}
 
-	case('p'):
-		mode = GL_POINT;
-		break;
+		case('f'):
+			mode = GL_FILL;
+			break;
 
-	default:
-		break;
+		case('l'):
+			mode = GL_LINE;
+			break;
+
+		case('p'):
+			mode = GL_POINT;
+			break;
+
+		default:
+			break;
 	}
 	glutPostRedisplay();
 }
@@ -187,6 +196,7 @@ int main(int argc, char *argv[]) {
 	camx    = getXPosCam(configuration);
 	camy    = getYPosCam(configuration);
 	camz    = getZPosCam(configuration);
+	radius  = sqrt(camx*camx + camy*camy + camz*camz);
 	lookAtx = getXLookAt(configuration);
 	lookAty = getYLookAt(configuration);
 	lookAtz = getZLookAt(configuration);
