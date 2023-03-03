@@ -184,7 +184,7 @@ Figura generateSphere(int radius, int slices, int stacks){
     }
 
     // Cálculo dos pontos base da esfera.
-    float alpha_diff = 2.0f * M_PI / slices;
+    float alpha_diff = (2.0f * M_PI) / slices;
     float beta_diff = (M_PI/2) / stacks;
     
     Ponto basePoints[slices] = {};
@@ -201,10 +201,14 @@ Figura generateSphere(int radius, int slices, int stacks){
     for (int i = 0; i < slices; i++){
 
         // TODO - PROBLEMA DE DOUBLE FREE PROVAVELMENTE AQUI.
+        int ni = i;
+        if (i == slices-1){
+            ni = 0;
+        }
         Ponto p1Up = basePoints[i];
-        Ponto p2Up = basePoints[i+1];
+        Ponto p2Up = basePoints[ni];
         Ponto p1Down = basePoints[i];
-        Ponto p2Down = basePoints[i+1];
+        Ponto p2Down = basePoints[ni];
         float a1    = i*alpha_diff;
         float a2    = (i+1)*alpha_diff;
         float bUp   = 0;
@@ -233,8 +237,8 @@ Figura generateSphere(int radius, int slices, int stacks){
             addPonto(sphere, p2Down);
 
             // -- Triângulo da esquerda
-            addPonto(sphere, p1Down);
             addPonto(sphere, p2Down);
+            addPonto(sphere, p1Down);
             p1Down = newPontoSph(a1, bDown, radius);
             addPonto(sphere, p1Down);
         }
@@ -245,9 +249,9 @@ Figura generateSphere(int radius, int slices, int stacks){
         addPonto(sphere, newPonto(0.0f, radius, 0.0f));
         
         // Construção do triângulo final de baixo
-        addPonto(sphere, p1Down);
         addPonto(sphere, p2Down);
-        addPonto(sphere, newPonto(0.0f, radius, 0.0f));
+        addPonto(sphere, p1Down);
+        addPonto(sphere, newPonto(0.0f, -radius, 0.0f));
     }
     return sphere;
 }
