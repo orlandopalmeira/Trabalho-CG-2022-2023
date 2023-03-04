@@ -325,43 +325,38 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 
 int main(int argc, char *argv[]){
     if (argc >= 5){ // Nice
+        Figura figura;
+        const char *file_path;
         if (strcmp(argv[1], "plane") == 0){
             int length = atoi(argv[2]), divisions = atoi(argv[3]); 
-            const char *file_path = argv[4];
+            file_path = argv[4];
 
-            Figura plano = generatePlaneXZ(length, divisions);
-            figuraToFile(plano, file_path);
-            deleteFigura(plano);
+            figura = generatePlaneXZ(length, divisions);
         }
         else if (strcmp(argv[1], "box") == 0){
             int length = atoi(argv[2]), divisions = atoi(argv[3]);
-            const char *file_path = argv[4];
+            file_path = argv[4];
 
-            Figura box = generateBox(length, divisions);
-            figuraToFile(box, file_path); // TODO tbm daria para modular estas figuraTofiles
-            deleteFigura(box);
+            figura = generateBox(length, divisions);
         }
         else if (strcmp(argv[1], "sphere") == 0){
             int radius = atoi(argv[2]), slices = atoi(argv[3]), stacks = atoi(argv[4]);
-            const char *file_path = argv[5];
+            file_path = argv[5];
 
-            Figura sphere = generateSphere(radius, slices, stacks);
-            figuraToFile(sphere, file_path);
-            // deleteFigura(sphere);
-
+            figura = generateSphere(radius, slices, stacks);
         }
         else if (strcmp(argv[1], "cone") == 0){
             int radius = atoi(argv[2]), height = atoi(argv[3]), slices = atoi(argv[4]), stacks = atoi(argv[5]);
-            const char *file_path = argv[6];
+            file_path = argv[6];
 
-            Figura cone = generateCone(radius, height, slices, stacks);
-            figuraToFile(cone, file_path);
-            deleteFigura(cone);
+            figura = generateCone(radius, height, slices, stacks);
         }
         else{
             printf("Forma inválida\n");
             return 1;
         }
+        figuraToFile(figura, file_path);
+        // deleteFigura(figura); // #TODO retirar comentário. 
     }
     else{
         printf("Número de argumentos inválido.\n");
