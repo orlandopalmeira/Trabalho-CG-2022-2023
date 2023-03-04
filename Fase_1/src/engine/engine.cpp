@@ -156,12 +156,12 @@ void keyProc(unsigned char key, int x, int y) {
 		}
 
 		case 'w': { // up 
-			beta_ += beta_ <= 1.55f ? 0.1f : 0.0f;
+			beta_ += beta_ <= 1.48f ? 0.1f : 0.0f;
 			break;
 		}
 
 		case 's': { // down
-			beta_ -= beta_ >= -1.55f ? 0.1f : 0.0f;
+			beta_ -= beta_ >= -1.48f ? 0.1f : 0.0f;
 			break;
 		}
 

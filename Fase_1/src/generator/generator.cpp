@@ -182,38 +182,46 @@ Figura generateSphere(int radius, int slices, int stacks){
     if (!sphere){
         return NULL;
     }
-    stacks /= 2;
     
-    // Cálculo dos pontos base da esfera.
     float alpha_diff = (2.0f * M_PI) / slices;
-    float beta_diff = (M_PI/2) / stacks;
+    float beta_diff = M_PI / stacks;
     
-    Ponto basePoints[slices] = {};
-    float a = 0.0f;
-    
-    for (int i = 0; i < slices; i++){
-        Ponto p = newPontoSph(a, 0.0f, radius);
-        basePoints[i] = p;
-        // addPonto(sphere, p);
-        a += alpha_diff;
-    }
+    // flag que indica se o número de stacks é par ou ímpar.
+    int n_stacks_is_even = (stacks % 2) == 0;
+
+    stacks /= 2;
 
     // Construção das faces laterais
     for (int i = 0; i < slices; i++){
 
-        // TODO - PROBLEMA DE DOUBLE FREE PROVAVELMENTE AQUI.
-        int ni = i+1;
-        if (i == slices-1){
-            ni = 0;
+        float a1 = i * alpha_diff;
+        float a2 = (i+1) * alpha_diff;
+
+        float bUp;
+        float bDown;
+
+        if (n_stacks_is_even){ // Se o número de stacks for par, começa-se a construir as faces a partir do plano XZ.
+            bUp = 0;
+            bDown = 0;
         }
-        Ponto p1Up = basePoints[i];
-        Ponto p2Up = basePoints[ni];
-        Ponto p1Down = basePoints[i];
-        Ponto p2Down = basePoints[ni];
-        float a1    = i*alpha_diff;
-        float a2    = (i+1)*alpha_diff;
-        float bUp   = 0;
-        float bDown = 0;
+        else{ // Caso contrário, cria-se uma base especial.
+            bUp = beta_diff / 2;
+            bDown = -(beta_diff / 2);
+
+            // Criação da base
+            addPonto(sphere, newPontoSph(a1, bDown, radius ));
+            addPonto(sphere, newPontoSph(a2, bDown, radius ));
+            addPonto(sphere, newPontoSph(a1, bUp, radius ));
+
+            addPonto(sphere, newPontoSph(a1, bUp, radius ));
+            addPonto(sphere, newPontoSph(a2, bDown, radius ));
+            addPonto(sphere, newPontoSph(a2, bUp, radius ));
+        }
+
+        Ponto p1Up = newPontoSph(a1, bUp, radius);
+        Ponto p2Up = newPontoSph(a2, bUp, radius);
+        Ponto p1Down = newPontoSph(a1, bDown, radius);
+        Ponto p2Down = newPontoSph(a2, bDown, radius);
 
         for (int j = 0; j < stacks - 1; j++){
             // Construção da stack de cima
@@ -224,7 +232,7 @@ Figura generateSphere(int radius, int slices, int stacks){
             p1Up = newPontoSph(a1, bUp, radius);
             addPonto(sphere, p1Up);
             // -- Triângulo da direita
-            addPonto(sphere, p1Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
+            addPonto(sphere, p1Up); // DOUBLE FREE
             addPonto(sphere, p2Up);
             p2Up = newPontoSph(a2, bUp, radius);
             addPonto(sphere, p2Up);
@@ -245,13 +253,13 @@ Figura generateSphere(int radius, int slices, int stacks){
         }
 
         // Construção do triângulo final de cima
-        addPonto(sphere, p1Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
-        addPonto(sphere, p2Up); // AQUI TBM TEM CENAS DE DOUBLE FREE
+        addPonto(sphere, p1Up); // DOUBLE FREE
+        addPonto(sphere, p2Up); // DOUBLE FREE
         addPonto(sphere, newPonto(0.0f, radius, 0.0f));
         
         // Construção do triângulo final de baixo
-        addPonto(sphere, p2Down);
-        addPonto(sphere, p1Down);
+        addPonto(sphere, p2Down); // DOUBLE FREE
+        addPonto(sphere, p1Down); // DOUBLE FREE
         addPonto(sphere, newPonto(0.0f, -radius, 0.0f));
     }
     return sphere;
@@ -318,7 +326,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 int main(int argc, char *argv[]){
     if (argc >= 5){ // Nice
         if (strcmp(argv[1], "plane") == 0){
-            int length = atoi(argv[2]), divisions = atoi(argv[3]); // TODO talvez passar logo para float com ATOF
+            int length = atoi(argv[2]), divisions = atoi(argv[3]); 
             const char *file_path = argv[4];
 
             Figura plano = generatePlaneXZ(length, divisions);
