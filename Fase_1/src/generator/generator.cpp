@@ -115,8 +115,7 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
 
         // float arrx[4] = {x1,x3,x2,x4};
         // float arrz[4] = {z1,z3,z2,z4};
-        if (reverse == 1)
-        {
+        if (reverse == 1){
             arrx[1] = x3;
             arrx[2] = x2;
             arrz[1] = z3;
@@ -209,58 +208,60 @@ Figura generateSphere(int radius, int slices, int stacks){
             bDown = -(beta_diff / 2);
 
             // Criação da base
-            addPonto(sphere, newPontoSph(a1, bDown, radius ));
-            addPonto(sphere, newPontoSph(a2, bDown, radius ));
-            addPonto(sphere, newPontoSph(a1, bUp, radius ));
+            addPonto(sphere, newPontoSph(a1, bDown, radius)); 
+            addPonto(sphere, newPontoSph(a2, bDown, radius));
+            addPonto(sphere, newPontoSph(a1, bUp, radius));
 
-            addPonto(sphere, newPontoSph(a1, bUp, radius ));
-            addPonto(sphere, newPontoSph(a2, bDown, radius ));
-            addPonto(sphere, newPontoSph(a2, bUp, radius ));
+            addPonto(sphere, newPontoSph(a1, bUp, radius));
+            addPonto(sphere, newPontoSph(a2, bDown, radius));
+            addPonto(sphere, newPontoSph(a2, bUp, radius));
         }
 
-        Ponto p1Up = newPontoSph(a1, bUp, radius);
-        Ponto p2Up = newPontoSph(a2, bUp, radius);
-        Ponto p1Down = newPontoSph(a1, bDown, radius);
-        Ponto p2Down = newPontoSph(a2, bDown, radius);
+        Ponto p1Up = newPontoSph(a1, bUp, radius), p1Up_ = p1Up;
+        Ponto p2Up = newPontoSph(a2, bUp, radius), p2Up_ = p2Up;
+        Ponto p1Down = newPontoSph(a1, bDown, radius), p1Down_ = p1Down;
+        Ponto p2Down = newPontoSph(a2, bDown, radius), p2Down_ = p2Down;
 
         for (int j = 0; j < stacks - 1; j++){
             // Construção da stack de cima
             // -- Triângulo da esquerda
-            addPonto(sphere, p1Up);
-            addPonto(sphere, p2Up);
+            addPonto(sphere, dupPonto(p1Up));
+            addPonto(sphere, dupPonto(p2Up));
             bUp += beta_diff;
             p1Up = newPontoSph(a1, bUp, radius);
             addPonto(sphere, p1Up);
             // -- Triângulo da direita
-            addPonto(sphere, p1Up); // DOUBLE FREE
-            addPonto(sphere, p2Up);
+            addPonto(sphere, dupPonto(p1Up));
+            addPonto(sphere, dupPonto(p2Up));
             p2Up = newPontoSph(a2, bUp, radius);
             addPonto(sphere, p2Up);
 
             // Construção da stack de baixo
             // -- Triângulo da direita
-            addPonto(sphere, p2Down);
-            addPonto(sphere, p1Down);
+            addPonto(sphere, dupPonto(p2Down));
+            addPonto(sphere, dupPonto(p1Down));
             bDown -= beta_diff;
             p2Down = newPontoSph(a2, bDown, radius);
             addPonto(sphere, p2Down);
 
             // -- Triângulo da esquerda
-            addPonto(sphere, p2Down);
-            addPonto(sphere, p1Down);
+            addPonto(sphere, dupPonto(p2Down));
+            addPonto(sphere, dupPonto(p1Down));
             p1Down = newPontoSph(a1, bDown, radius);
             addPonto(sphere, p1Down);
         }
 
         // Construção do triângulo final de cima
-        addPonto(sphere, p1Up); // DOUBLE FREE
-        addPonto(sphere, p2Up); // DOUBLE FREE
+        addPonto(sphere, dupPonto(p1Up));
+        addPonto(sphere, dupPonto(p2Up));
         addPonto(sphere, newPonto(0.0f, radius, 0.0f));
         
         // Construção do triângulo final de baixo
-        addPonto(sphere, p2Down); // DOUBLE FREE
-        addPonto(sphere, p1Down); // DOUBLE FREE
+        addPonto(sphere, dupPonto(p2Down));
+        addPonto(sphere, dupPonto(p1Down));
         addPonto(sphere, newPonto(0.0f, -radius, 0.0f));
+        deletePonto(p1Up_); deletePonto(p1Down_); // para efeitos de gestão de memória
+        deletePonto(p2Up_); deletePonto(p2Down_); // para efeitos de gestão de memória
     }
     return sphere;
 }
@@ -324,7 +325,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 }
 
 int main(int argc, char *argv[]){
-    if (argc >= 5){ // Nice
+    if (argc >= 5){
         Figura figura;
         const char *file_path;
         if (strcmp(argv[1], "plane") == 0){
@@ -356,7 +357,7 @@ int main(int argc, char *argv[]){
             return 1;
         }
         figuraToFile(figura, file_path);
-        // deleteFigura(figura); // #TODO retirar comentário. 
+        deleteFigura(figura); // #TODO retirar comentário. 
     }
     else{
         printf("Número de argumentos inválido.\n");
