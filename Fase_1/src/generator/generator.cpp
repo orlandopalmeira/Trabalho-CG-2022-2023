@@ -35,13 +35,7 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
                 addPonto(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]));
                 addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
                 addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
-                addPonto(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]));
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
-                addPonto(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
                 addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
                 addPonto(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]));
                 addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
@@ -81,13 +75,7 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f, int reverse = 
                 addPonto(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h));
                 addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
                 addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
-                addPonto(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h));
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
-                addPonto(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
                 addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
                 addPonto(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h));
                 addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
@@ -129,13 +117,7 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
                 addPonto(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]));
                 addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
                 addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
-                addPonto(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]));
-                addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
-                addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
-                addPonto(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]));
-                addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
                 addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
                 addPonto(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]));
                 addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
