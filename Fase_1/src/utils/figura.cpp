@@ -53,7 +53,7 @@ void figuraToFile(Figura f, const char* path){
     fprintf(file,"%lu\n",getListLength(f->pontos));
     for(unsigned long i = 0; i < getListLength(f->pontos); i++){
         Ponto p = (Ponto)getListElemAt(f->pontos, i);
-        fprintf(file, "%f,%f,%f\n", getX(p), getY(p), getZ(p));
+        fprintf(file, "%g,%g,%g\n", getX(p), getY(p), getZ(p));
     }
     fclose(file);
 }
