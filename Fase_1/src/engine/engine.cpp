@@ -203,7 +203,8 @@ int main(int argc, char *argv[]) {
 	upx 	= getXUp(configuration);
 	upy 	= getYUp(configuration);
 	upz 	= getZUp(configuration);
-
+	alpha = acos(camz/sqrt(camx*camx + camz*camz));
+	beta_ = asin(camy/radius);
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
