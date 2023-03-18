@@ -38,6 +38,13 @@ void* getRootValue(Tree tree){
     return NULL;
 }
 
+List getChildren(Tree tree){
+    if(tree){
+        return tree->filhos;
+    }
+    return NULL;
+}
+
 void addChild(Tree tree, void* valor){
     if(tree && valor){ // tem as condições para executar?
         Tree newChild = newTree(valor); // novo filho da tree

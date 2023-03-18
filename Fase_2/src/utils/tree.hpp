@@ -14,6 +14,8 @@ void setRootValue(Tree, void*);
 
 void* getRootValue(Tree);
 
+List getChildren(Tree tree);
+
 void addChild(Tree, void*);
 
 void deleteTree(Tree);
