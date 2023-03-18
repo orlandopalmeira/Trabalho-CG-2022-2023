@@ -18,6 +18,8 @@ add_library(
 	./utils/figura.hpp
 	./utils/list.cpp
 	./utils/list.hpp
+	./utils/tree.cpp
+	./utils/tree.hpp
 )
 
 # Biblioteca de parsing de XML
@@ -38,6 +40,7 @@ add_library(
 	./engine/config.hpp
 )
 
+# Associa a biblioteca de parsing XML à biblioteca de configuração do engine.
 target_link_libraries(config_lib tinyXML)
 
 # Associa a biblioteca das figuras e dos pontos aos executáveis

@@ -2,9 +2,14 @@
 #define CONFIG
 #include "../tinyXML/tinyxml.h"
 #include "../utils/list.hpp"
+#include "../utils/tree.hpp"
 #include <stdlib.h>
 
 typedef struct config* Config;
+
+typedef struct group* Group;
+
+typedef struct transform* Transform;
 
 Config newConfig();
 

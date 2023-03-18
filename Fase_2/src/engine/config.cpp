@@ -1,14 +1,25 @@
 #include "config.hpp"
 
 struct config{
+    // TODO: Acrescentar a window
     // Câmara
     float poscam[3];
     float lookAt[3];
     float up[3];
     float projection[3]; // fov, near, far
-    List models; // lista com as paths dos ficheiros dos modelos
+    List models; // TODO: Apagar isto -> substituir por Tree groups;
 };
 
+struct group{
+    List transforms;
+    List models;
+};
+
+struct transform{
+    char type; // 't': translate, 's': scale, 'r': rotate
+    float angle; // para rotações
+    float x,y,z; // para todas
+};
 
 Config newConfig(){
     Config newConf = (Config)malloc(sizeof(struct config));
@@ -20,6 +31,33 @@ Config newConfig(){
         }
     }
     return newConf;
+}
+
+Group newGroup(){
+    Group new_group = (Group)malloc(sizeof(struct group));
+    if(new_group){
+        new_group->models = newEmptyList();
+        new_group->transforms = newEmptyList();
+        if(!(new_group->transforms && new_group->models)){
+            free(new_group->models);
+            free(new_group->transforms);
+            free(new_group);
+            new_group = NULL;
+        }
+    }
+    return new_group;
+}
+
+Transform newTransform(char type, float x, float y, float z, float angle = 0.0f){
+    Transform transform = (Transform)malloc(sizeof(struct transform));
+    if(transform){
+        transform->type = type;
+        transform->x = x;
+        transform->y = y;
+        transform->z = z;
+        transform->angle = angle;
+    }
+    return transform;
 }
 
 Config xmlToConfig(const char* filePath){

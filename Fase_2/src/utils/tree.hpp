@@ -1,0 +1,23 @@
+#ifndef TREE
+#define TREE
+#include "list.hpp"
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct tree* Tree;
+
+Tree newEmptyTree();
+
+Tree newTree(void*);
+
+void setRootValue(Tree, void*);
+
+void* getRootValue(Tree);
+
+void addChild(Tree, void*);
+
+void deleteTree(Tree);
+
+void deepDeleteTree(Tree, void (*)(void *));
+
+#endif // TREE
