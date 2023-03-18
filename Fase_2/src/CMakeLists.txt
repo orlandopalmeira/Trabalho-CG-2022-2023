@@ -9,7 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_executable(engine.exe ./engine/engine.cpp)
 add_executable(generator.exe ./generator/generator.cpp)
 
-# Biblioteca das figuras e dos pontos
+# Biblioteca das figuras, pontos e estruturas de dados.
 add_library(
 	utils_lib
 	./utils/ponto.cpp
