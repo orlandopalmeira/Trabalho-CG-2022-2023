@@ -178,6 +178,14 @@ void setCamPosition(Config conf, float x, float y, float z){
     }
 }
 
+float getWindowWidth(Config conf){
+    return conf->window[0];
+}
+
+float getWindowHeight(Config conf){
+    return conf->window[1];
+}
+
 float getXPosCam(Config conf){
     return conf->poscam[0];
 }

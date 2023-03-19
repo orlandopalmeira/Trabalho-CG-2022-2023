@@ -18,6 +18,10 @@ Config xmlToConfig(const char*);
 
 void setCamPosition(Config, float, float, float);
 
+float getWindowWidth(Config conf);
+
+float getWindowHeight(Config conf);
+
 float getXPosCam(Config);
 
 float getYPosCam(Config);
