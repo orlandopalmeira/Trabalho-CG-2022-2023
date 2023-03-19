@@ -183,10 +183,10 @@ void keyProc(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
-
 int main(int argc, char *argv[]) {
 	// Carregamento dos dados das figuras
 	configuration = xmlToConfig(argv[1]); 
+	drawTree(configuration);
 	// List models   = getModels(configuration); // !NÃO FAZER DELETE DESTA LISTA! contém as paths dos modelos presentes no ficheiro de configuração
 	// figuras 	  = newEmptyList(); // figuras no ficheiro de configuração
 	// for(unsigned int i = 0; i < getListLength(models); i++){
@@ -231,5 +231,5 @@ int main(int argc, char *argv[]) {
 	
 	// deepDeleteList(figuras,deleteFigura);
 	// deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
-	// return 1;
+	return 1;
 }

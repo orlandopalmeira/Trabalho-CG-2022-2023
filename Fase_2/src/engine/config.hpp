@@ -37,4 +37,8 @@ float getZUp(Config conf);
 
 void deleteConfig(Config);
 
+/** WARNING: TEMPORARIA*/
+void drawGroups(Tree groups, unsigned int indent);
+/** WARNING: TEMPORARIA*/
+void drawTree(Config c);
 #endif // CONFIG

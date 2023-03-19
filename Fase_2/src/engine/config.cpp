@@ -32,11 +32,12 @@ struct transform{
 Config newConfig(){
     Config newConf = (Config)malloc(sizeof(struct config));
     if(newConf){
-        newConf->groups = newEmptyTree();
+        /*newConf->groups = newEmptyTree();
         if(!newConf->groups){ // não foi possível criar a lista
             free(newConf);
             newConf = NULL;
-        }
+        }*/
+        newConf->groups = NULL;
     }
     return newConf;
 }
@@ -178,6 +179,7 @@ Tree checkGroups(TiXmlElement* group){
         float x = atof(t->Attribute("x"));
         float y = atof(t->Attribute("y"));
         float z = atof(t->Attribute("z"));
+        printf("Transf: %c %f %f %f %f\n", name_of_transform[0], x, y, z, angle);
         transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
         addTransform(res,transform_obj);
     }
@@ -186,6 +188,7 @@ Tree checkGroups(TiXmlElement* group){
     TiXmlElement* models = group->FirstChildElement("models");
     for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
         const char* file_name = m->Attribute("file");
+        printf("model: %s\n",file_name);
         addModel(res,file_name);
     }
 
@@ -255,6 +258,48 @@ float getYUp(Config conf){
 
 float getZUp(Config conf){
     return conf->up[2];
+}
+
+/** WARNING: TEMPORARIA*/
+void printSpaces(unsigned int how_many){
+	for(unsigned int i = 0; i < how_many; i++){
+		putchar(' ');
+	}
+}
+
+/** WARNING: TEMPORARIA*/
+void drawGroups(Tree groups, unsigned int indent = 0){
+	if(groups){
+		Group group = (Group)getRootValue(groups);
+		List transforms = group->transforms, models = group->models;
+		for(unsigned long i = 0; i < getListLength(transforms); i++){
+			printSpaces(indent);
+			Transform t = (Transform)getListElemAt(transforms,i);
+			if(t->type == 'r'){
+                printf("ROTATE(%f,%f,%f,%f)\n", t->angle,t->x,t->y,t->z);
+            } else if(t->type == 't'){
+                printf("TRANSLATE(%f,%f,%f)\n", t->x,t->y,t->z);
+            } else if(t->type == 's'){
+                printf("SCALE(%f,%f,%f)\n", t->x,t->y,t->z);
+            } 
+		}
+        for(unsigned long i = 0; i < getListLength(models); i++){
+			printSpaces(indent);
+			char* model = (char*)getListElemAt(models, i);
+            printf("Model: %s\n", model);
+		}
+        List filhos = getChildren(groups);
+        for(unsigned long i = 0; i < getListLength(filhos); i++){
+            drawGroups((Tree)getListElemAt(filhos, i),indent+4);
+        }
+	}
+}
+
+/** WARNING: TEMPORARIA*/
+void drawTree(Config c){
+    if(c){
+        drawGroups(c->groups);
+    }
 }
 
 /*
