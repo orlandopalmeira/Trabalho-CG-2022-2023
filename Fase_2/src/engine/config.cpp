@@ -131,25 +131,63 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
         conf->projection[2] = atof(projectionCamera->Attribute("far")); // parâmetro far do xml de configuração
 }
 
+/** WARNING: Função privada, não incluir no config.hpp */
+void addModel(Tree tree, const char* model){
+    if(tree && model){// temos as condições para executar
+        Group group = (Group)getRootValue(tree);
+        if(!group){// a árvore ainda não tem o group?
+            group = newGroup(); // novo group para inserir na árvore
+            if(!group){ // o novo grupo não foi criado?
+                return; // termina
+            }
+            setRootValue(tree,group); // a árvore já tem group
+        }
+        addValueList(group->models, strdup(model)); // !!!!STRDUP ALOCA MEMÓRIA!!!!
+    }
+}
+
+/** WARNING: Função privada, não incluir no config.hpp */
+void addTransform(Tree tree, Transform transform){
+    if(tree && transform){// temos as condições para executar?
+        Group group = (Group)getRootValue(tree);
+        if(!group){
+            group = newGroup(); // novo group para inserir na árvore
+            if(!group){ // o novo grupo não foi criado?
+                return; // termina
+            }
+            setRootValue(tree,group); // a árvore já tem group
+        }
+        addValueList(group->transforms,transform);
+    }
+}
+
+/** WARNING: Função privada, não incluir no config.hpp */
 // TEST FUNCTION
 Tree checkGroups(TiXmlElement* group){
     Tree res = newEmptyTree();
 
     // METER AS TRANSFORMS NA ARVORE
+    Transform transform_obj = NULL;
     TiXmlElement* transform = group->FirstChildElement("transform");
     for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
         const char* name_of_transform = t->Value();
-        float angle;
+        float angle = 0.0f;
         if (strcmp(name_of_transform, "rotate") == 0) {
             angle = atof(t->Attribute("angle"));
         }
         float x = atof(t->Attribute("x"));
         float y = atof(t->Attribute("y"));
         float z = atof(t->Attribute("z"));
-        printf("%g %g %g ", x, y, z);
+        transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
+        addTransform(res,transform_obj);
     }
 
     // METER OS MODELS NA ARVORE
+    TiXmlElement* models = group->FirstChildElement("models");
+    for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
+        const char* file_name = m->Attribute("file");
+        addModel(res,file_name);
+    }
 
     for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
         Tree child = checkGroups(chGroup);
@@ -169,7 +207,7 @@ Config xmlToConfig(const char* filePath){
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
             TiXmlElement* group = root->FirstChildElement("group");
-            checkGroups(group);
+            result->groups = checkGroups(group);
         }
     }
     return result;
