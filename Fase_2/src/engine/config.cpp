@@ -136,14 +136,7 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
 void addModel(Tree tree, const char* model){
     if(tree && model){// temos as condições para executar
         Group group = (Group)getRootValue(tree);
-        if(!group){// a árvore ainda não tem o group?
-            group = newGroup(); // novo group para inserir na árvore
-            if(!group){ // o novo grupo não foi criado?
-                return; // termina
-            }
-            setRootValue(tree,group); // a árvore já tem group
-        }
-        addValueList(group->models, strdup(model)); // !!!!STRDUP ALOCA MEMÓRIA!!!!
+        addValueList(group->models, strdup(model)); // STRDUP ALOCA MEMÓRIA
     }
 }
 
@@ -151,53 +144,48 @@ void addModel(Tree tree, const char* model){
 void addTransform(Tree tree, Transform transform){
     if(tree && transform){// temos as condições para executar?
         Group group = (Group)getRootValue(tree);
-        if(!group){
-            group = newGroup(); // novo group para inserir na árvore
-            if(!group){ // o novo grupo não foi criado?
-                return; // termina
-            }
-            setRootValue(tree,group); // a árvore já tem group
-        }
-        addValueList(group->transforms,transform);
+        addValueList(group->transforms, transform); // STRDUP ALOCA MEMÓRIA
     }
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
 // TEST FUNCTION
 Tree checkGroups(TiXmlElement* group){
-    Tree res = newEmptyTree();
+    if(group){
+        Tree res = newEmptyTree();
+        setRootValue(res,newGroup());
 
-    // METER AS TRANSFORMS NA ARVORE
-    Transform transform_obj = NULL;
-    TiXmlElement* transform = group->FirstChildElement("transform");
-    for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
-        const char* name_of_transform = t->Value();
-        float angle = 0.0f;
-        if (strcmp(name_of_transform, "rotate") == 0) {
-            angle = atof(t->Attribute("angle"));
+        // METER AS TRANSFORMS NA ARVORE
+        Transform transform_obj = NULL;
+        TiXmlElement* transform = group->FirstChildElement("transform");
+        for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
+            const char* name_of_transform = t->Value();
+            float angle = 0.0f;
+            if (strcmp(name_of_transform, "rotate") == 0) {
+                angle = atof(t->Attribute("angle"));
+            }
+            float x = atof(t->Attribute("x"));
+            float y = atof(t->Attribute("y"));
+            float z = atof(t->Attribute("z"));
+            transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
+            addTransform(res,transform_obj);
         }
-        float x = atof(t->Attribute("x"));
-        float y = atof(t->Attribute("y"));
-        float z = atof(t->Attribute("z"));
-        printf("Transf: %c %f %f %f %f\n", name_of_transform[0], x, y, z, angle);
-        transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
-        addTransform(res,transform_obj);
-    }
 
-    // METER OS MODELS NA ARVORE
-    TiXmlElement* models = group->FirstChildElement("models");
-    for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
-        const char* file_name = m->Attribute("file");
-        printf("model: %s\n",file_name);
-        addModel(res,file_name);
-    }
+        // METER OS MODELS NA ARVORE
+        TiXmlElement* models = group->FirstChildElement("models");
+        for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
+            const char* file_name = m->Attribute("file");
+            addModel(res,file_name);
+        }
 
-    for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
-        Tree child = checkGroups(chGroup);
-        // Tratar de appends do filho para a árvore
-        addChild(res, child);
+        for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
+            Tree child = checkGroups(chGroup);
+            // Tratar de appends do filho para a árvore
+            addTreeChild(res, child);
+        }
+        return res;
     }
-    return res;
+    return NULL;
 }
 // TEST END
 
@@ -290,7 +278,8 @@ void drawGroups(Tree groups, unsigned int indent = 0){
 		}
         List filhos = getChildren(groups);
         for(unsigned long i = 0; i < getListLength(filhos); i++){
-            drawGroups((Tree)getListElemAt(filhos, i),indent+4);
+            Tree next = (Tree)getListElemAt(filhos, i);
+            drawGroups(next,indent+4);
         }
 	}
 }

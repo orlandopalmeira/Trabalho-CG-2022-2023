@@ -62,6 +62,18 @@ void addChild(Tree tree, void* valor){
     }
 }
 
+void addTreeChild(Tree tree, Tree child){
+    if(tree && child){
+        if(!tree->filhos){
+            tree->filhos = newEmptyList();
+            if(!tree->filhos){ // não foi possível criar a lista dos filhos da tree -> termina
+                return; // termina a função
+            }
+        }
+        addValueList(tree->filhos, child);
+    }
+}
+
 void deleteTree(Tree tree){
     if(tree){
         if(tree->filhos){

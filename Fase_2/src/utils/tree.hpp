@@ -18,6 +18,8 @@ List getChildren(Tree tree);
 
 void addChild(Tree, void*);
 
+void addTreeChild(Tree tree, Tree child);
+
 void deleteTree(Tree);
 
 void deepDeleteTree(Tree, void (*)(void *));
