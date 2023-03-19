@@ -3,6 +3,7 @@
 #include "../tinyXML/tinyxml.h"
 #include "../utils/list.hpp"
 #include "../utils/tree.hpp"
+#include "../utils/figura.hpp"
 #include <stdlib.h>
 
 typedef struct config* Config;

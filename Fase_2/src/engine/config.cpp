@@ -1,14 +1,5 @@
 #include "config.hpp"
-/*
-struct config{
-    // TODO: Acrescentar a window
-    // Câmara
-    float poscam[3];
-    float lookAt[3];
-    float up[3];
-    float projection[3]; // fov, near, far
-    List models; // TODO: Apagar isto -> substituir por Tree groups;
-};*/
+
 struct config{
     float window[2];
     float poscam[3];
@@ -21,6 +12,7 @@ struct config{
 struct group{
     List transforms;
     List models;
+    
 };
 
 struct transform{
@@ -68,41 +60,6 @@ Transform newTransform(char type, float x, float y, float z, float angle = 0.0f)
     }
     return transform;
 }
-/*
-Config xmlToConfig(const char* filePath){
-    Config result = newConfig();
-    if(result){
-        TiXmlDocument doc;
-        if(doc.LoadFile(filePath)){
-            TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
-            // Obtenção dos dados da câmara
-            TiXmlElement* camera = root->FirstChildElement("camera"); // parâmetros da cầmara
-                TiXmlElement* posCamera = camera->FirstChildElement("position"); // posição da câmara
-                TiXmlElement* lookAtCamera = camera->FirstChildElement("lookAt"); // lookAt da câmara
-                TiXmlElement* upCamera = camera->FirstChildElement("up"); // vetor "up" da câmara
-                TiXmlElement* projectionCamera = camera->FirstChildElement("projection"); // projections
-                result->poscam[0] = atof(posCamera->Attribute("x")); // coordenada x da posição da câmara
-                result->poscam[1] = atof(posCamera->Attribute("y")); // coordenada y da posição da câmara
-                result->poscam[2] = atof(posCamera->Attribute("z")); // coordenada z da posição da câmara
-                result->lookAt[0] = atof(lookAtCamera->Attribute("x")); // coordenada x da posição lookAt da câmara
-                result->lookAt[1] = atof(lookAtCamera->Attribute("y")); // coordenada y da posição lookAt da câmara
-                result->lookAt[2] = atof(lookAtCamera->Attribute("z")); // coordenada z da posição lookAt da câmara
-                result->up[0] = atof(upCamera->Attribute("x")); // coordenada x do vetor "up" da câmara
-                result->up[1] = atof(upCamera->Attribute("y")); // coordenada y do vetor "up" da câmara
-                result->up[2] = atof(upCamera->Attribute("z")); // coordenada z do vetor "up" da câmara
-                result->projection[0] = atof(projectionCamera->Attribute("fov")); // parâmetro fov do xml de configuração
-                result->projection[1] = atof(projectionCamera->Attribute("near")); // parâmetro near do xml de configuração
-                result->projection[2] = atof(projectionCamera->Attribute("far")); // parâmetro far do xml de configuração
-                
-            TiXmlElement* group = root->FirstChildElement("group"); // obtenção do group do ficheiro de configuração
-                TiXmlElement* models = group->FirstChildElement("models"); // obtenção dos ficheiros dos modelos
-                    for(TiXmlElement* model = models->FirstChildElement("model"); model; model = model->NextSiblingElement("model")){
-                        addValueList(result->models, strdup(model->Attribute("file")));
-                    }
-        }
-    }
-    return result;
-}*/
 
 /** WARNING: Função privada, não incluir no config.hpp */
 void getWindowInfoFromXML(Config conf, TiXmlElement* root){
@@ -133,10 +90,19 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
-void addModel(Tree tree, const char* model){
+/*void addModel(Tree tree, const char* model){
     if(tree && model){// temos as condições para executar
         Group group = (Group)getRootValue(tree);
         addValueList(group->models, strdup(model)); // STRDUP ALOCA MEMÓRIA
+    }
+}*/
+
+/** WARNING: Função privada, não incluir no config.hpp */
+void addModel(Tree tree, const char* model){
+    if(tree && model){
+        Figura figura = fileToFigura(model);
+        Group group = (Group)getRootValue(tree);
+        addValueList(group->models, figura);
     }
 }
 
