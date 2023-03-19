@@ -1,5 +1,5 @@
 #include "config.hpp"
-
+/*
 struct config{
     // TODO: Acrescentar a window
     // Câmara
@@ -8,6 +8,14 @@ struct config{
     float up[3];
     float projection[3]; // fov, near, far
     List models; // TODO: Apagar isto -> substituir por Tree groups;
+};*/
+struct config{
+    float window[2];
+    float poscam[3];
+    float lookAt[3];
+    float up[3];
+    float projection[3]; // fov, near, far
+    Tree groups;
 };
 
 struct group{
@@ -24,8 +32,8 @@ struct transform{
 Config newConfig(){
     Config newConf = (Config)malloc(sizeof(struct config));
     if(newConf){
-        newConf->models = newEmptyList();
-        if(!newConf->models){ // não foi possível criar a lista
+        newConf->groups = newEmptyTree();
+        if(!newConf->groups){ // não foi possível criar a lista
             free(newConf);
             newConf = NULL;
         }
@@ -59,7 +67,7 @@ Transform newTransform(char type, float x, float y, float z, float angle = 0.0f)
     }
     return transform;
 }
-
+/*
 Config xmlToConfig(const char* filePath){
     Config result = newConfig();
     if(result){
@@ -93,13 +101,47 @@ Config xmlToConfig(const char* filePath){
         }
     }
     return result;
+}*/
+
+/** WARNING: Função privada, não incluir no config.hpp */
+void getWindowInfoFromXML(Config conf, TiXmlElement* root){
+    TiXmlElement* window = root->FirstChildElement("window"); // parâmetros da janela
+        conf->window[0] = atof(window->Attribute("width"));
+        conf->window[1] = atof(window->Attribute("height"));
 }
 
-List getModels(Config conf){
-    if(conf){
-        return conf->models;
+/** WARNING: Função privada, não incluir no config.hpp */
+void getCameraInfoFromXML(Config conf, TiXmlElement* root){
+    TiXmlElement* camera = root->FirstChildElement("camera"); // parâmetros da cầmara
+        TiXmlElement* posCamera = camera->FirstChildElement("position"); // posição da câmara
+        TiXmlElement* lookAtCamera = camera->FirstChildElement("lookAt"); // lookAt da câmara
+        TiXmlElement* upCamera = camera->FirstChildElement("up"); // vetor "up" da câmara
+        TiXmlElement* projectionCamera = camera->FirstChildElement("projection"); // projections
+        conf->poscam[0] = atof(posCamera->Attribute("x")); // coordenada x da posição da câmara
+        conf->poscam[1] = atof(posCamera->Attribute("y")); // coordenada y da posição da câmara
+        conf->poscam[2] = atof(posCamera->Attribute("z")); // coordenada z da posição da câmara
+        conf->lookAt[0] = atof(lookAtCamera->Attribute("x")); // coordenada x da posição lookAt da câmara
+        conf->lookAt[1] = atof(lookAtCamera->Attribute("y")); // coordenada y da posição lookAt da câmara
+        conf->lookAt[2] = atof(lookAtCamera->Attribute("z")); // coordenada z da posição lookAt da câmara
+        conf->up[0] = atof(upCamera->Attribute("x")); // coordenada x do vetor "up" da câmara
+        conf->up[1] = atof(upCamera->Attribute("y")); // coordenada y do vetor "up" da câmara
+        conf->up[2] = atof(upCamera->Attribute("z")); // coordenada z do vetor "up" da câmara
+        conf->projection[0] = atof(projectionCamera->Attribute("fov")); // parâmetro fov do xml de configuração
+        conf->projection[1] = atof(projectionCamera->Attribute("near")); // parâmetro near do xml de configuração
+        conf->projection[2] = atof(projectionCamera->Attribute("far")); // parâmetro far do xml de configuração
+}
+
+Config xmlToConfig(const char* filePath){
+    Config result = newConfig();
+    if(result){
+        TiXmlDocument doc;
+        if(doc.LoadFile(filePath)){
+            TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
+            getWindowInfoFromXML(result, root);
+            getCameraInfoFromXML(result, root);
+        }
     }
-    return NULL;
+    return result;
 }
 
 void setCamPosition(Config conf, float x, float y, float z){
@@ -146,9 +188,10 @@ float getZUp(Config conf){
     return conf->up[2];
 }
 
+/*
 void deleteConfig(Config conf){
     if(conf){
         deepDeleteList(conf->models, free);
         free(conf);
     }
-}
+}*/

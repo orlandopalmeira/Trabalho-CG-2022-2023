@@ -15,8 +15,6 @@ Config newConfig();
 
 Config xmlToConfig(const char*);
 
-List getModels(Config);
-
 void setCamPosition(Config, float, float, float);
 
 float getXPosCam(Config);
