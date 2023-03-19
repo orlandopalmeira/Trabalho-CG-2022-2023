@@ -75,6 +75,43 @@ void drawFiguras(List figs){
 	}
 }
 
+void drawGroups(Tree groups){
+	if(groups){
+		glPushMatrix(); // guarda o estado dos eixos
+
+		Group group = (Group)getRootValue(groups);
+		List transforms = getGroupTransforms(group), models = getGroupModels(group);
+
+		// Definição das transformações
+		for(unsigned long i = 0; i < getListLength(transforms); i++){
+			Transform t = (Transform)getListElemAt(transforms,i);
+			float x = transformX(t);
+			float y = transformY(t);
+			float z = transformZ(t);
+			char tr_type = transformType(t);
+			if(tr_type == 'r'){
+				float angle = transformAngle(t);
+				glRotatef(angle, x, y, z);
+            } else if(tr_type == 't'){
+				glTranslatef(x, y, z);
+            } else if(tr_type == 's'){
+				glScalef(x, y, z);
+            } 
+		}
+
+		// Desenho das figuras
+		drawFiguras(models);
+
+		// Procede para fazer o mesmo aos nodos filho. 
+        List filhos = getChildren(groups);
+        for(unsigned long i = 0; i < getListLength(filhos); i++){
+            Tree next = (Tree)getListElemAt(filhos, i);
+            drawGroups(next);
+        }
+		glPopMatrix(); // retorna ao respetivo estado anterior dos eixos.
+	}
+}
+
 void renderScene(void) {
 
 	// clear buffers
