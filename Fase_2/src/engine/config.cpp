@@ -131,6 +131,35 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
         conf->projection[2] = atof(projectionCamera->Attribute("far")); // parâmetro far do xml de configuração
 }
 
+// TEST FUNCTION
+Tree checkGroups(TiXmlElement* group){
+    Tree res = newEmptyTree();
+
+    // METER AS TRANSFORMS NA ARVORE
+    TiXmlElement* transform = group->FirstChildElement("transform");
+    for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
+        const char* name_of_transform = t->Value();
+        float angle;
+        if (strcmp(name_of_transform, "rotate") == 0) {
+            angle = atof(t->Attribute("angle"));
+        }
+        float x = atof(t->Attribute("x"));
+        float y = atof(t->Attribute("y"));
+        float z = atof(t->Attribute("z"));
+        printf("%g %g %g ", x, y, z);
+    }
+
+    // METER OS MODELS NA ARVORE
+
+    for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
+        Tree child = checkGroups(chGroup);
+        // Tratar de appends do filho para a árvore
+        addChild(res, child);
+    }
+    return res;
+}
+// TEST END
+
 Config xmlToConfig(const char* filePath){
     Config result = newConfig();
     if(result){
@@ -139,6 +168,8 @@ Config xmlToConfig(const char* filePath){
             TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
+            TiXmlElement* group = root->FirstChildElement("group");
+            checkGroups(group);
         }
     }
     return result;

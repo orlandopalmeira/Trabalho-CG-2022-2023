@@ -187,49 +187,49 @@ void keyProc(unsigned char key, int x, int y) {
 int main(int argc, char *argv[]) {
 	// Carregamento dos dados das figuras
 	configuration = xmlToConfig(argv[1]); 
-	List models   = getModels(configuration); // !NÃO FAZER DELETE DESTA LISTA! contém as paths dos modelos presentes no ficheiro de configuração
-	figuras 	  = newEmptyList(); // figuras no ficheiro de configuração
-	for(unsigned int i = 0; i < getListLength(models); i++){
-		addValueList(figuras, fileToFigura((char*)getListElemAt(models,i)));
-	}
-	// Carregamento dos dados da câmara
-	camx    = getXPosCam(configuration);
-	camy    = getYPosCam(configuration);
-	camz    = getZPosCam(configuration);
-	radius  = sqrt(camx*camx + camy*camy + camz*camz);
-	lookAtx = getXLookAt(configuration);
-	lookAty = getYLookAt(configuration);
-	lookAtz = getZLookAt(configuration);
-	upx 	= getXUp(configuration);
-	upy 	= getYUp(configuration);
-	upz 	= getZUp(configuration);
-	alpha = acos(camz/sqrt(camx*camx + camz*camz));
-	beta_ = asin(camy/radius);
-	// init GLUT and the window
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
-	glutInitWindowPosition(100,100);
-	glutInitWindowSize(800,800);
-	glutCreateWindow("Fase 1");
+	// List models   = getModels(configuration); // !NÃO FAZER DELETE DESTA LISTA! contém as paths dos modelos presentes no ficheiro de configuração
+	// figuras 	  = newEmptyList(); // figuras no ficheiro de configuração
+	// for(unsigned int i = 0; i < getListLength(models); i++){
+	// 	addValueList(figuras, fileToFigura((char*)getListElemAt(models,i)));
+	// }
+	// // Carregamento dos dados da câmara
+	// camx    = getXPosCam(configuration);
+	// camy    = getYPosCam(configuration);
+	// camz    = getZPosCam(configuration);
+	// radius  = sqrt(camx*camx + camy*camy + camz*camz);
+	// lookAtx = getXLookAt(configuration);
+	// lookAty = getYLookAt(configuration);
+	// lookAtz = getZLookAt(configuration);
+	// upx 	= getXUp(configuration);
+	// upy 	= getYUp(configuration);
+	// upz 	= getZUp(configuration);
+	// alpha = acos(camz/sqrt(camx*camx + camz*camz));
+	// beta_ = asin(camy/radius);
+	// // init GLUT and the window
+	// glutInit(&argc, argv);
+	// glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
+	// glutInitWindowPosition(100,100);
+	// glutInitWindowSize(800,800);
+	// glutCreateWindow("Fase 1");
 		
-	// Required callback registry 
-	glutDisplayFunc(renderScene);
-	glutReshapeFunc(changeSize);
+	// // Required callback registry 
+	// glutDisplayFunc(renderScene);
+	// glutReshapeFunc(changeSize);
 
 	
-	// put here the registration of the keyboard callbacks (por enquanto só mexem na camara como forma de debug)
-	glutKeyboardFunc(keyProc);
-	glutSpecialFunc(specKeyProc);
+	// // put here the registration of the keyboard callbacks (por enquanto só mexem na camara como forma de debug)
+	// glutKeyboardFunc(keyProc);
+	// glutSpecialFunc(specKeyProc);
 
 
-	// OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	// // OpenGL settings
+	// glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_CULL_FACE);
 	
-	// enter GLUT's main cycle
-	glutMainLoop();
+	// // enter GLUT's main cycle
+	// glutMainLoop();
 	
-	deepDeleteList(figuras,deleteFigura);
-	deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
-	return 1;
+	// deepDeleteList(figuras,deleteFigura);
+	// deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
+	// return 1;
 }

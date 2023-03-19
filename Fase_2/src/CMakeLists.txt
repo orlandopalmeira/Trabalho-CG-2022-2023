@@ -42,7 +42,7 @@ add_library(
 
 # Associa a biblioteca de parsing XML à biblioteca de configuração do engine.
 target_link_libraries(config_lib tinyXML)
-
+target_link_libraries(config_lib utils_lib)
 # Associa a biblioteca das figuras e dos pontos aos executáveis
 target_link_libraries(generator.exe utils_lib)
 target_link_libraries(engine.exe utils_lib tinyXML config_lib)
