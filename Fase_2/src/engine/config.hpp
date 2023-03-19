@@ -35,6 +35,20 @@ float getYUp(Config conf);
 
 float getZUp(Config conf);
 
+List getGroupTransforms(Group group);
+
+List getGroupModels(Group group);
+
+char transformType(Transform transf);
+
+float transformAngle(Transform transf);
+
+float transformX(Transform transf);
+
+float transformY(Transform transf);
+
+float transformZ(Transform transf);
+
 void deleteConfig(Config);
 
 /** WARNING: TEMPORARIA*/

@@ -248,6 +248,55 @@ float getZUp(Config conf){
     return conf->up[2];
 }
 
+List getGroupTransforms(Group group){
+    if(group){
+        return group->transforms;
+    }
+    return NULL;
+}
+
+List getGroupModels(Group group){
+    if(group){
+        return group->models;
+    }
+    return NULL;
+}
+
+char transformType(Transform transf){
+    if(transf){
+        return transf->type;
+    }
+    return -1;
+}
+
+float transformAngle(Transform transf){
+    if(transf){
+        return transf->angle;
+    }
+    return -1;
+}
+
+float transformX(Transform transf){
+    if(transf){
+        return transf->x;
+    }
+    return -666;
+}
+
+float transformY(Transform transf){
+    if(transf){
+        return transf->y;
+    }
+    return -666;
+}
+
+float transformZ(Transform transf){
+    if(transf){
+        return transf->z;
+    }
+    return -666;
+}
+
 /** WARNING: TEMPORARIA*/
 void printSpaces(unsigned int how_many){
 	for(unsigned int i = 0; i < how_many; i++){
