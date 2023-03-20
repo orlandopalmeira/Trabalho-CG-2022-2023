@@ -281,6 +281,27 @@ float transformZ(Transform transf){
     return -666;
 }
 
+float getFov(Config conf){
+    if(conf){
+        return conf->projection[0];
+    }
+    return -666;
+}
+
+float getNear(Config conf){
+    if(conf){
+        return conf->projection[1];
+    }
+    return -666;
+}
+
+float getFar(Config conf){
+    if(conf){
+        return conf->projection[2];
+    }
+    return -666;
+}
+
 /** WARNING: TEMPORARIA*/
 void printSpaces(unsigned int how_many){
 	for(unsigned int i = 0; i < how_many; i++){

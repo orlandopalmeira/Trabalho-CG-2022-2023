@@ -56,6 +56,12 @@ float transformY(Transform transf);
 
 float transformZ(Transform transf);
 
+float getFov(Config conf);
+
+float getNear(Config conf);
+
+float getFar(Config conf);
+
 void deleteConfig(Config);
 
 /** WARNING: TEMPORARIA*/
