@@ -37,7 +37,6 @@ float upz = 0.0f;
 int mode = GL_LINE;
 
 Config configuration = NULL;
-List figuras = NULL;
 
 void changeSize(int w, int h) {
 
@@ -228,13 +227,6 @@ int main(int argc, char *argv[]) {
 	// Carregamento da configuração
 	configuration = xmlToConfig(argv[1]); 
 	drawTreeDEBUG(configuration);
-	// drawTree(configuration);
-	// List models   = getModels(configuration); // !NÃO FAZER DELETE DESTA LISTA! contém as paths dos modelos presentes no ficheiro de configuração
-	// figuras 	  = newEmptyList(); // figuras no ficheiro de configuração
-	// for(unsigned int i = 0; i < getListLength(models); i++){
-	// 	addValueList(figuras, fileToFigura((char*)getListElemAt(models,i)));
-	// }
-	// Carregamento dos dados da câmara
 	
 	camx    = getXPosCam(configuration);
 	camy    = getYPosCam(configuration);
@@ -273,7 +265,6 @@ int main(int argc, char *argv[]) {
 	// enter GLUT's main cycle
 	glutMainLoop();
 	
-	// deepDeleteList(figuras,deleteFigura);
-	// deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
+	deleteConfig(configuration); 
 	return 1;
 }

@@ -90,6 +90,7 @@ void deepDeleteTree(Tree tree, void (*free_function)(void *)){
                 deepDeleteTree((Tree)getListElemAt(tree->filhos,i), free_function);
             }
         }
+        deleteList(tree->filhos);
         free_function(tree->valor);
         free(tree);
     }

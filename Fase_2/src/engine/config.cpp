@@ -10,9 +10,8 @@ struct config{
 };
 
 struct group{
-    List transforms;
-    List models;
-    
+    List transforms; // cada elementO é um Transform
+    List models; // cada elemento é uma Figura  
 };
 
 struct transform{
@@ -24,11 +23,6 @@ struct transform{
 Config newConfig(){
     Config newConf = (Config)malloc(sizeof(struct config));
     if(newConf){
-        /*newConf->groups = newEmptyTree();
-        if(!newConf->groups){ // não foi possível criar a lista
-            free(newConf);
-            newConf = NULL;
-        }*/
         newConf->groups = NULL;
     }
     return newConf;
@@ -90,14 +84,6 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
-/*void addModel(Tree tree, const char* model){
-    if(tree && model){// temos as condições para executar
-        Group group = (Group)getRootValue(tree);
-        addValueList(group->models, strdup(model)); // STRDUP ALOCA MEMÓRIA
-    }
-}*/
-
-/** WARNING: Função privada, não incluir no config.hpp */
 void addModel(Tree tree, const char* model){
     if(tree && model){
         Figura figura = fileToFigura(model);
@@ -110,15 +96,14 @@ void addModel(Tree tree, const char* model){
 void addTransform(Tree tree, Transform transform){
     if(tree && transform){// temos as condições para executar?
         Group group = (Group)getRootValue(tree);
-        addValueList(group->transforms, transform); // STRDUP ALOCA MEMÓRIA
+        addValueList(group->transforms, transform);
     }
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
 Tree checkGroups(TiXmlElement* group){
     if(group){
-        Tree res = newEmptyTree();
-        setRootValue(res,newGroup());
+        Tree res = newTree(newGroup());
 
         // METER AS TRANSFORMS NA ARVORE
         Transform transform_obj = NULL;
@@ -324,12 +309,8 @@ void drawGroupsDEBUG(Tree groups, unsigned int indent = 0){
             } else if(t->type == 's'){
                 printf("SCALE(%f,%f,%f)\n", t->x,t->y,t->z);
             } 
-		}/*
-        for(unsigned long i = 0; i < getListLength(models); i++){
-			printSpaces(indent);
-			char* model = (char*)getListElemAt(models, i);
-            printf("Model: %s\n", model);
-		}*/
+		}
+        
         printSpaces(indent);
         printf("Nodo com %lu models\n", getListLength(models));
         List filhos = getChildren(groups);
@@ -347,10 +328,23 @@ void drawTreeDEBUG(Config c){
     }
 }
 
-/*
+void deleteTransform(Transform transf){
+    if(transf){
+        free(transf);
+    }
+}
+
+void deleteGroup(Group group){
+    if(group){
+        deepDeleteList(group->transforms,(void (*)(void *))deleteTransform);
+        deepDeleteList(group->models,(void (*)(void *))deleteFigura);
+        free(group);
+    }
+}
+
 void deleteConfig(Config conf){
     if(conf){
-        deepDeleteList(conf->models, free);
+        deepDeleteTree(conf->groups,(void (*)(void *))deleteGroup);
         free(conf);
     }
-}*/
+}
