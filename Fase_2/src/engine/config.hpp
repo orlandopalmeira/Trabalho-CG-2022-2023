@@ -40,6 +40,8 @@ float getYUp(Config conf);
 
 float getZUp(Config conf);
 
+Tree getTreeGroups(Config conf);
+
 List getGroupTransforms(Group group);
 
 List getGroupModels(Group group);
@@ -57,7 +59,7 @@ float transformZ(Transform transf);
 void deleteConfig(Config);
 
 /** WARNING: TEMPORARIA*/
-void drawGroups(Tree groups, unsigned int indent);
+void drawGroupsDEBUG(Tree groups, unsigned int indent);
 /** WARNING: TEMPORARIA*/
-void drawTree(Config c);
+void drawTreeDEBUG(Config c);
 #endif // CONFIG

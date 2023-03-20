@@ -115,7 +115,6 @@ void addTransform(Tree tree, Transform transform){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
-// TEST FUNCTION
 Tree checkGroups(TiXmlElement* group){
     if(group){
         Tree res = newEmptyTree();
@@ -153,7 +152,6 @@ Tree checkGroups(TiXmlElement* group){
     }
     return NULL;
 }
-// TEST END
 
 Config xmlToConfig(const char* filePath){
     Config result = newConfig();
@@ -222,6 +220,13 @@ float getZUp(Config conf){
     return conf->up[2];
 }
 
+Tree getTreeGroups(Config conf){
+    if(conf){
+        return conf->groups;
+    }
+    return NULL;
+}
+
 List getGroupTransforms(Group group){
     if(group){
         return group->transforms;
@@ -279,7 +284,7 @@ void printSpaces(unsigned int how_many){
 }
 
 /** WARNING: TEMPORARIA*/
-void drawGroups(Tree groups, unsigned int indent = 0){
+void drawGroupsDEBUG(Tree groups, unsigned int indent = 0){
 	if(groups){
 		Group group = (Group)getRootValue(groups);
 		List transforms = group->transforms, models = group->models;
@@ -302,15 +307,15 @@ void drawGroups(Tree groups, unsigned int indent = 0){
         List filhos = getChildren(groups);
         for(unsigned long i = 0; i < getListLength(filhos); i++){
             Tree next = (Tree)getListElemAt(filhos, i);
-            drawGroups(next,indent+4);
+            drawGroupsDEBUG(next,indent+4);
         }
 	}
 }
 
 /** WARNING: TEMPORARIA*/
-void drawTree(Config c){
+void drawTreeDEBUG(Config c){
     if(c){
-        drawGroups(c->groups);
+        drawGroupsDEBUG(c->groups);
     }
 }
 
