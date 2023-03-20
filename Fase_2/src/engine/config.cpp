@@ -123,24 +123,28 @@ Tree checkGroups(TiXmlElement* group){
         // METER AS TRANSFORMS NA ARVORE
         Transform transform_obj = NULL;
         TiXmlElement* transform = group->FirstChildElement("transform");
-        for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
-            const char* name_of_transform = t->Value();
-            float angle = 0.0f;
-            if (strcmp(name_of_transform, "rotate") == 0) {
-                angle = atof(t->Attribute("angle"));
+        if(transform){
+            for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
+                const char* name_of_transform = t->Value();
+                float angle = 0.0f;
+                if (strcmp(name_of_transform, "rotate") == 0) {
+                    angle = atof(t->Attribute("angle"));
+                }
+                float x = atof(t->Attribute("x"));
+                float y = atof(t->Attribute("y"));
+                float z = atof(t->Attribute("z"));
+                transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
+                addTransform(res,transform_obj);
             }
-            float x = atof(t->Attribute("x"));
-            float y = atof(t->Attribute("y"));
-            float z = atof(t->Attribute("z"));
-            transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
-            addTransform(res,transform_obj);
         }
 
         // METER OS MODELS NA ARVORE
         TiXmlElement* models = group->FirstChildElement("models");
-        for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
-            const char* file_name = m->Attribute("file");
-            addModel(res,file_name);
+        if(models){
+            for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
+                const char* file_name = m->Attribute("file");
+                addModel(res,file_name);
+            }
         }
 
         for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
@@ -162,7 +166,8 @@ Config xmlToConfig(const char* filePath){
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
             TiXmlElement* group = root->FirstChildElement("group");
-            result->groups = checkGroups(group);
+            //result->groups = checkGroups(group);
+            result->groups = checkGroups(root);
         }
     }
     return result;
@@ -298,12 +303,14 @@ void drawGroupsDEBUG(Tree groups, unsigned int indent = 0){
             } else if(t->type == 's'){
                 printf("SCALE(%f,%f,%f)\n", t->x,t->y,t->z);
             } 
-		}
+		}/*
         for(unsigned long i = 0; i < getListLength(models); i++){
 			printSpaces(indent);
 			char* model = (char*)getListElemAt(models, i);
             printf("Model: %s\n", model);
-		}
+		}*/
+        printSpaces(indent);
+        printf("Nodo com %lu models\n", getListLength(models));
         List filhos = getChildren(groups);
         for(unsigned long i = 0; i < getListLength(filhos); i++){
             Tree next = (Tree)getListElemAt(filhos, i);
