@@ -165,12 +165,12 @@ void specKeyProc(int key_code, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
 	switch (key_code){
 		case GLUT_KEY_UP:{
-			radius -= 0.1f;
+			radius -= 5.0f;
 			break;
 		}
 		
 		case GLUT_KEY_DOWN:{
-			radius += 0.1f;
+			radius += 5.0f;
 			break;
 		}
 
