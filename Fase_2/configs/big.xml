@@ -11,21 +11,21 @@
             <translate x="4" y="0" z="0" />
         </transform>
         <models>
-            <model file="cone.3d" />
+            <model file="../Fase_2/outputs/cone.3d" />
         </models>
         <group>
             <transform>
                 <translate x="4" y="0" z="0"/>
             </transform>
             <models>
-                <model file="sphere.3d" />
+                <model file="../Fase_2/outputs/sphere.3d" />
             </models>
             <group>
                 <transform>
                     <translate x="0" y="4" z="0"/>
                 </transform>
                 <models>
-                    <model file="cone.3d" />
+                    <model file="../Fase_2/outputs/cone.3d" />
                 </models>
             </group>
         </group>
