@@ -100,7 +100,9 @@ void drawGroups(Tree groups){
 		}
 
 		// Desenho das figuras
+		glBegin(GL_TRIANGLES);
 		drawFiguras(models);
+		glEnd();
 
 		// Procede para fazer o mesmo aos nodos filho. 
         List filhos = getChildren(groups);
@@ -147,10 +149,10 @@ void renderScene(void) {
 
 	// figuras
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
-	glBegin(GL_TRIANGLES);
+	// glBegin(GL_TRIANGLES);
 	//drawFiguras(figuras);
 	drawGroups(getTreeGroups(configuration));
-    glEnd();
+    // glEnd();
 	
 	// End of frame
 	glutSwapBuffers();
