@@ -148,7 +148,8 @@ void renderScene(void) {
 	// figuras
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	glBegin(GL_TRIANGLES);
-	drawFiguras(figuras);
+	//drawFiguras(figuras);
+	drawGroups(getTreeGroups(configuration));
     glEnd();
 	
 	// End of frame
@@ -231,7 +232,7 @@ int main(int argc, char *argv[]) {
 	// 	addValueList(figuras, fileToFigura((char*)getListElemAt(models,i)));
 	// }
 	// Carregamento dos dados da câmara
-	/*
+	
 	camx    = getXPosCam(configuration);
 	camy    = getYPosCam(configuration);
 	camz    = getZPosCam(configuration);
@@ -271,5 +272,5 @@ int main(int argc, char *argv[]) {
 	
 	// deepDeleteList(figuras,deleteFigura);
 	// deleteConfig(configuration); // aqui, a List models já é apagada automaticamente, por isso é que não se pode fazer delete como foi dito na linha "List models = getModels(configuration);..."
-	return 1;*/
+	return 1;
 }

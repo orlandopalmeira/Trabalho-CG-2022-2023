@@ -165,7 +165,7 @@ Config xmlToConfig(const char* filePath){
             TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
-            TiXmlElement* group = root->FirstChildElement("group");
+            //TiXmlElement* group = root->FirstChildElement("group");
             //result->groups = checkGroups(group);
             result->groups = checkGroups(root);
         }
