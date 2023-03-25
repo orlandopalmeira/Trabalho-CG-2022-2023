@@ -38,6 +38,24 @@ int mode = GL_LINE;
 
 Config configuration = NULL;
 
+// Desenho dos eixos.
+void drawEixos(){
+	glBegin(GL_LINES);
+    // X axis in red
+    glColor3f(RED);
+    glVertex3f(-100.0f, 0.0f, 0.0f);
+    glVertex3f(100.0f, 0.0f, 0.0f);
+    // Y Axis in Green
+    glColor3f(GREEN);
+    glVertex3f(0.0f, -100.0f, 0.0f);
+    glVertex3f(0.0f, 100.0f, 0.0f);
+    // Z Axis in Blue
+    glColor3f(BLUE);
+    glVertex3f(0.0f, 0.0f, -100.0f);
+    glVertex3f(0.0f, 0.0f, 100.0f);
+    glEnd();
+}
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -126,29 +144,16 @@ void renderScene(void) {
 			  upx,upy,upz);
 
 	// put drawing instructions here
-	// linhas dos eixos
-	glBegin(GL_LINES);
-		// X axis in red
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
-		glVertex3f( 100.0f, 0.0f, 0.0f);
-		// Y Axis in Green
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f,-100.0f, 0.0f);
-		glVertex3f(0.0f, 100.0f, 0.0f);
-		// Z Axis in Blue
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f,-100.0f);
-		glVertex3f(0.0f, 0.0f, 100.0f);
-	glEnd();
+	// Desenho dos eixos
+	drawEixos();
 
-	glColor3f(1.0f, 1.0f, 1.0f);
 	// put the geometric transformations here
 	// ...
-	//
 
 	// figuras
+	glColor3f(WHITE);
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
+
 	// glBegin(GL_TRIANGLES);
 	//drawFiguras(figuras);
 	drawGroups(getTreeGroups(configuration));
@@ -226,7 +231,7 @@ void keyProc(unsigned char key, int x, int y) {
 int main(int argc, char *argv[]) {
 	// Carregamento da configuração
 	configuration = xmlToConfig(argv[1]); 
-	drawTreeDEBUG(configuration);
+	// drawTreeDEBUG(configuration);
 	
 	camx    = getXPosCam(configuration);
 	camy    = getYPosCam(configuration);

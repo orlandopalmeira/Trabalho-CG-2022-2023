@@ -9,22 +9,22 @@
     <group>
         <group>
             <transform>
-                <scale x="20" y="20" z="20"/> <!-- TAMANHO DO SOL -->
+                <scale x="20" y="20" z="20"/> <!-- Tamanho do Sol -->
             </transform>
             <models>
-                <model file="../Fase_2/outputs/sphere.3d" /> <!-- SOL -->
+                <model file="../Fase_2/outputs/sphere.3d" /> <!-- Sol -->
             </models>
         </group>
         <group>
             <transform>
-                <translate x="22" y="0" z="0"/>
+                <translate x="24" y="0" z="0"/>
             </transform>
             <group>
                 <transform>
-                    <scale x="0.5" y="0.5" z="0.5"/> <!-- TAMANHO DE MERCURIO -->
+                    <scale x="0.3" y="0.3" z="0.3"/> <!-- Tamanho de Mercúrio -->
                 </transform>
                 <models>
-                    <model file="../Fase_2/outputs/sphere.3d" /> <!-- MERCURIO -->
+                    <model file="../Fase_2/outputs/sphere.3d" /> <!-- Mercúrio -->
                 </models>
             </group>
             <group>
@@ -33,10 +33,10 @@
                 </transform>
                 <group>
                     <transform>
-                        <scale x="0.5" y="0.5" z="0.5"/> <!-- TAMANHO DE VENUS -->
+                        <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho de Vénus -->
                     </transform>
                     <models>
-                        <model file="../Fase_2/outputs/sphere.3d" /> <!-- VENUS -->
+                        <model file="../Fase_2/outputs/sphere.3d" /> <!-- Vénus -->
                     </models>
                 </group>
                 <group>
@@ -45,24 +45,20 @@
                     </transform>
                     <group>
                         <transform>
-                            <scale x="0.5" y="0.5" z="0.5"/> <!-- TAMANHO DA TERRA -->
+                            <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho da Terra -->
                         </transform>
                         <models>
-                            <model file="../Fase_2/outputs/sphere.3d" /> <!-- TERRA -->
+                            <model file="../Fase_2/outputs/sphere.3d" /> <!-- Terra -->
                         </models>
                     </group>
                     <group>
                         <transform>
                             <translate x="0" y="0" z="1"/> <!-- Distância da Lua à Terra -->
+                            <scale x="0.1" y="0.1" z="0.1"/> <!-- Tamanho da Lua -->
                         </transform>
-                        <group>
-                            <transform>
-                                <scale x="0.1" y="0.1" z="0.1"/> <!-- TAMANHO DA LUA -->
-                            </transform>
-                            <models>
-                                <model file="../Fase_2/outputs/sphere.3d" /> <!-- LUA -->
-                            </models>
-                        </group>
+                        <models>
+                            <model file="../Fase_2/outputs/sphere.3d" /> <!-- Lua -->
+                        </models>
                     </group>
                     <group>
                         <transform>
@@ -70,58 +66,67 @@
                         </transform>
                         <group>
                             <transform>
-                                <scale x="0.5" y="0.5" z="0.5"/> <!-- TAMANHO DE MARTE -->
+                                <scale x="0.4" y="0.4" z="0.4"/> <!-- Tamanho de Marte -->
                             </transform>
                             <models>
-                                <model file="../Fase_2/outputs/sphere.3d" /> <!-- MARTE -->
+                                <model file="../Fase_2/outputs/sphere.3d" /> <!-- Marte -->
                             </models>
                         </group>
                         <group>
                             <transform>
-                                <translate x="7" y="0" z="0"/>
+                                <translate x="10" y="0" z="0"/>
                             </transform>
                             <group>
                                 <transform>
-                                    <scale x="4" y="4" z="4"/> <!-- TAMANHO DE JUPITER -->
+                                    <scale x="6" y="6" z="6"/> <!-- Tamanho de Júpiter -->
                                 </transform>
                                 <models>
-                                    <model file="../Fase_2/outputs/sphere.3d" /> <!-- JUPITER -->
+                                    <model file="../Fase_2/outputs/sphere.3d" /> <!-- Júpiter -->
                                 </models>
                             </group>
                             <group>
                                 <transform>
-                                    <translate x="12" y="0" z="0"/>
+                                    <translate x="17" y="0" z="0"/>
                                 </transform>
                                 <group>
                                     <transform>
-                                        <scale x="5" y="5" z="5"/> <!-- TAMANHO DE SATURNO -->
+                                        <scale x="5" y="5" z="5"/> <!-- Tamanho de Saturno -->
                                     </transform>
                                     <models>
-                                        <model file="../Fase_2/outputs/sphere.3d" /> <!-- SATURNO -->
+                                        <model file="../Fase_2/outputs/sphere.3d" /> <!-- Saturno -->
                                     </models>
                                 </group>
                                 <group>
                                     <transform>
-                                        <translate x="10" y="0" z="0"/>
+                                        <rotate angle ="20" x="1" y="0" z="1"/> <!-- Ângulo de rotação do anel de Saturno -->
+                                        <scale x="1" y="1" z="1"/> <!-- Tamanho do Anel -->
+                                    </transform>
+                                    <models>
+                                        <model file="../Fase_2/outputs/ring.3d" /> <!-- Anel de Saturno -->
+                                    </models>
+                                </group>
+                                <group>
+                                    <transform>
+                                        <translate x="14" y="0" z="0"/>
                                     </transform>
                                     <group>
                                         <transform>
-                                            <scale x="3" y="3" z="3"/> <!-- TAMANHO DE URANO -->
+                                            <scale x="3" y="3" z="3"/> <!-- Tamanho de Úrano -->
                                         </transform>
                                         <models>
-                                            <model file="../Fase_2/outputs/sphere.3d" /> <!-- URANO -->
+                                            <model file="../Fase_2/outputs/sphere.3d" /> <!-- Úrano -->
                                         </models>
                                     </group>
                                     <group>
                                         <transform>
-                                            <translate x="7" y="0" z="0"/>
+                                            <translate x="10" y="0" z="0"/>
                                         </transform>
                                         <group>
                                             <transform>
-                                                <scale x="3" y="3" z="3"/> <!-- TAMANHO DE NEPTUNO -->
+                                                <scale x="3" y="3" z="3"/> <!-- Tamanho de Neptuno -->
                                             </transform>
                                             <models>
-                                                <model file="../Fase_2/outputs/sphere.3d" /> <!-- NEPTUNO -->
+                                                <model file="../Fase_2/outputs/sphere.3d" /> <!-- Neptuno -->
                                             </models>
                                         </group>
                                     </group>
