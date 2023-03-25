@@ -306,6 +306,31 @@ Figura generateCone(int radius, int height, int slices, int stacks){
     return cone;
 }
 
+Figura generateRing(float ri, float re, int slices){
+    Figura ring = newEmptyFigura();
+    float a = 0,delta = (2*M_PI) / slices;
+    if(ring){
+        for (int i = 0; i < slices; i++, a += delta){
+            addPonto(ring, newPontoSph(a,0.0f,ri));
+            addPonto(ring, newPontoSph(a,0.0f,re));
+            addPonto(ring, newPontoSph(a+delta,0.0f,ri));
+
+            addPonto(ring, newPontoSph(a+delta,0.0f,ri));
+            addPonto(ring, newPontoSph(a,0.0f,re));
+            addPonto(ring, newPontoSph(a+delta,0.0f,re));
+
+            addPonto(ring, newPontoSph(a+delta,0.0f,ri));
+            addPonto(ring, newPontoSph(a,0.0f,re));
+            addPonto(ring, newPontoSph(a,0.0f,ri));
+
+            addPonto(ring, newPontoSph(a,0.0f,re));
+            addPonto(ring, newPontoSph(a+delta,0.0f,ri));
+            addPonto(ring, newPontoSph(a+delta,0.0f,re));
+        }
+    }
+    return ring;
+}
+
 int main(int argc, char *argv[]){
     if (argc >= 5){
         Figura figura;
@@ -333,6 +358,12 @@ int main(int argc, char *argv[]){
             file_path = argv[6];
 
             figura = generateCone(radius, height, slices, stacks);
+        }
+        else if(strcmp(argv[1], "ring") == 0){
+            float ri = atof(argv[2]), re = atof(argv[3]), slices = atoi(argv[4]);
+            file_path = argv[5];
+
+            figura = generateRing(ri,re,slices);  
         }
         else{
             printf("Forma inválida\n");
