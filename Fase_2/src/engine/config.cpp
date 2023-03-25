@@ -16,8 +16,8 @@ struct group{
 
 struct transform{
     char type; // 't': translate, 's': scale, 'r': rotate
-    float angle; // para rotações
     float x,y,z; // para todas
+    float angle; // para rotações
 };
 
 Config newConfig(){
@@ -101,7 +101,7 @@ void addTransform(Tree tree, Transform transform){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
-Tree checkGroups(TiXmlElement* group){
+Tree parseGroups(TiXmlElement* group){
     if(group){
         Tree res = newTree(newGroup());
 
@@ -133,7 +133,7 @@ Tree checkGroups(TiXmlElement* group){
         }
 
         for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
-            Tree child = checkGroups(chGroup);
+            Tree child = parseGroups(chGroup);
             // Tratar de appends do filho para a árvore
             addTreeChild(res, child);
         }
@@ -150,9 +150,7 @@ Config xmlToConfig(const char* filePath){
             TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
-            //TiXmlElement* group = root->FirstChildElement("group");
-            //result->groups = checkGroups(group);
-            result->groups = checkGroups(root);
+            result->groups = parseGroups(root);
         }
     }
     return result;
