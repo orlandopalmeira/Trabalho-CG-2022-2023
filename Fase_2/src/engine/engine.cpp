@@ -9,6 +9,8 @@
 #include "../tinyXML/tinyxml.h"
 #include "config.hpp"
 #include "math.h"
+#include <iostream>
+#include <filesystem>
 
 using namespace std;
 
@@ -229,6 +231,18 @@ void keyProc(unsigned char key, int x, int y) {
 }
 
 int main(int argc, char *argv[]) {
+
+	if (argc < 2){
+		printf("Erro: Insira a diretoria para o ficheiro XML a ser analisado!\n");
+		return 1;
+	}
+	FILE *file_ptr = fopen(argv[1], "r");
+   	if (file_ptr == NULL) {
+   	   printf("Erro: Diretoria não existente!\n");
+   	   return 1;
+   	}
+   	fclose(file_ptr);
+
 	// Carregamento da configuração
 	configuration = xmlToConfig(argv[1]); 
 	// drawTreeDEBUG(configuration);
