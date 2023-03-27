@@ -37,25 +37,28 @@ float upy = 0.0f;
 float upz = 0.0f;
 
 int mode = GL_LINE;
+int show_eixos = 0;
 
 Config configuration = NULL;
 
-// Desenho dos eixos.
+// Desenha os eixos, caso a flag esteja ativa.
 void drawEixos(){
-	glBegin(GL_LINES);
-    // X axis in red
-    glColor3f(RED);
-    glVertex3f(-100.0f, 0.0f, 0.0f);
-    glVertex3f(100.0f, 0.0f, 0.0f);
-    // Y Axis in Green
-    glColor3f(GREEN);
-    glVertex3f(0.0f, -100.0f, 0.0f);
-    glVertex3f(0.0f, 100.0f, 0.0f);
-    // Z Axis in Blue
-    glColor3f(BLUE);
-    glVertex3f(0.0f, 0.0f, -100.0f);
-    glVertex3f(0.0f, 0.0f, 100.0f);
-    glEnd();
+	if (show_eixos){
+		glBegin(GL_LINES);
+		// X axis in red
+		glColor3f(RED);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		// Y Axis in Green
+		glColor3f(GREEN);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		// Z Axis in Blue
+		glColor3f(BLUE);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+		glEnd();
+	}
 }
 
 void changeSize(int w, int h) {
@@ -146,7 +149,7 @@ void renderScene(void) {
 			  upx,upy,upz);
 
 	// put drawing instructions here
-	// Desenho dos eixos
+	// Desenha os eixos, caso a flag esteja ativa.
 	drawEixos();
 
 	// put the geometric transformations here
@@ -222,6 +225,10 @@ void keyProc(unsigned char key, int x, int y) {
 
 		case('p'):
 			mode = GL_POINT;
+			break;
+		
+		case('x'):
+			show_eixos = !show_eixos;
 			break;
 
 		default:
