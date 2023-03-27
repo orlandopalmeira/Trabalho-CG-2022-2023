@@ -154,7 +154,7 @@ void renderScene(void) {
 
 	// put the geometric transformations here
 	// ...
-
+	//
 	// figuras
 	glColor3f(WHITE);
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
