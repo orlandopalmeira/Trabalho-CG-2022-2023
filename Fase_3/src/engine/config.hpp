@@ -56,6 +56,10 @@ float transformY(Transform transf);
 
 float transformZ(Transform transf);
 
+vector<float> translatePoints(Transform transf);
+
+void addPointToTranslate(Transform transf, float x, float y, float z);
+
 float getFov(Config conf);
 
 float getNear(Config conf);

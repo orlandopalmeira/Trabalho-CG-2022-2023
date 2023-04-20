@@ -29,7 +29,9 @@ add_library(
 	./utils/list.hpp
 	./utils/tree.cpp
 	./utils/tree.hpp
-)
+	./utils/matrix.cpp
+	./utils/matrix.hpp 
+) 
 
 # Biblioteca de parsing de XML
 add_library(

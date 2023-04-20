@@ -10,14 +10,16 @@ struct config{
 };
 
 struct group{
-    List transforms; // cada elementO é um Transform
+    List transforms; // cada elemento é um Transform
     List models; // cada elemento é uma Figura  
 };
 
 struct transform{
     char type; // 't': translate, 's': scale, 'r': rotate
     float x,y,z; // para todas
-    float angle; // para rotações
+    float angle; // para rotações, == -1 significa que não é usado
+    float time; // para rotações e translações, == -1 significa que não é usado
+    vector<float> points; // para translações, vazio significa que não é usado
 };
 
 Config newConfig(){
@@ -43,7 +45,7 @@ Group newGroup(){
     return new_group;
 }
 
-Transform newTransform(char type, float x, float y, float z, float angle = 0.0f){
+Transform newTransform(char type, float x, float y, float z, float angle = 0.0f, float time=0.0f, vector<float> points = {}){
     Transform transform = (Transform)malloc(sizeof(struct transform));
     if(transform){
         transform->type = type;
@@ -101,6 +103,31 @@ void addTransform(Tree tree, Transform transform){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
+void parseTransform(Tree tree, TiXmlElement* transforms){
+    if(transforms && tree){
+        for(TiXmlElement* t = transforms->FirstChildElement(); t; t = t->NextSiblingElement()){
+            vector<float> points;
+            const char* name_of_transform = t->Value();
+            float angle, time;
+            if(strcmp(name_of_transform,"rotate") == 0){
+                angle = t->Attribute("angle") ? atof(t->Attribute("angle")) : -1.0f;
+                time = t->Attribute("time") ? atof(t->Attribute("time")) : -1.0f;
+            }else if(strcmp(name_of_transform,"translate")){
+                for(TiXmlElement* p = t->FirstChildElement("point"); p; p = p->NextSiblingElement()){
+                    points.push_back(atof(p->Attribute("x")));
+                    points.push_back(atof(p->Attribute("y")));
+                    points.push_back(atof(p->Attribute("z")));
+                }
+            }
+            float x = atof(t->Attribute("x"));
+            float y = atof(t->Attribute("y"));
+            float z = atof(t->Attribute("z"));
+            addTransform(tree,newTransform(name_of_transform[0],x,y,z,angle,time,points));
+        }
+    }
+}
+
+/** WARNING: Função privada, não incluir no config.hpp */
 Tree parseGroups(TiXmlElement* group){
     if(group){
         Tree res = newTree(newGroup());
@@ -108,20 +135,21 @@ Tree parseGroups(TiXmlElement* group){
         // METER AS TRANSFORMS NA ARVORE
         Transform transform_obj = NULL;
         TiXmlElement* transform = group->FirstChildElement("transform");
-        if(transform){
-            for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
-                const char* name_of_transform = t->Value();
-                float angle = 0.0f;
-                if (strcmp(name_of_transform, "rotate") == 0) {
-                    angle = atof(t->Attribute("angle"));
-                }
-                float x = atof(t->Attribute("x"));
-                float y = atof(t->Attribute("y"));
-                float z = atof(t->Attribute("z"));
-                transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
-                addTransform(res,transform_obj);
-            }
-        }
+        // if(transform){
+        //     for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
+        //         const char* name_of_transform = t->Value();
+        //         float angle = 0.0f;
+        //         if (strcmp(name_of_transform, "rotate") == 0) {
+        //             angle = atof(t->Attribute("angle"));
+        //         }
+        //         float x = atof(t->Attribute("x"));
+        //         float y = atof(t->Attribute("y"));
+        //         float z = atof(t->Attribute("z"));
+        //         transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
+        //         addTransform(res,transform_obj);
+        //     }
+        // }
+        parseTransform(res,transform);
 
         // METER OS MODELS NA ARVORE
         TiXmlElement* models = group->FirstChildElement("models");
@@ -262,6 +290,21 @@ float transformZ(Transform transf){
         return transf->z;
     }
     return -666;
+}
+
+vector<float> translatePoints(Transform transf){
+    if(transf){
+        return transf->points;
+    }
+    return {};
+}
+
+void addPointToTranslate(Transform transf, float x, float y, float z){
+    if(transf){
+        transf->points.push_back(x);
+        transf->points.push_back(y);
+        transf->points.push_back(z);
+    }
 }
 
 float getFov(Config conf){
