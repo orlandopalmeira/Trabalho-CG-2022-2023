@@ -55,9 +55,7 @@ vector<unsigned int> buffersSizes; // aqui guardamos o tamanho de cada buffer de
 unsigned int figCount = 0; // total de figuras existentes no ficheiro de configuração.
 
 // Controlo de tempo
-#define DELTA_TIME 0.001f
 float init_time = 0.0f;
-vector<float> times;
 
 // Carrega os dados das figuras para os buffers.
 void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um inteiro que serve para seleccionar os buffers em que vamos escrever
@@ -330,9 +328,6 @@ int main(int argc, char *argv[]) {
 	beta_ = asin(camy/radius);
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
 	buffers = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada figura
-	for(unsigned int i = 0; i < figCount; i++){
-		times.push_back(0.0f);
-	}
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
