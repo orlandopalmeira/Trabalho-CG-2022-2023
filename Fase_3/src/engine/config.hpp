@@ -50,13 +50,23 @@ char transformType(Transform transf);
 
 float transformAngle(Transform transf);
 
+float transformTime(Transform transf);
+
 float transformX(Transform transf);
 
 float transformY(Transform transf);
 
 float transformZ(Transform transf);
 
-vector<float> translatePoints(Transform transf);
+void setTransformXYZ(Transform transf, float x, float y, float z);
+
+vector<float> transformYAxis(Transform transf);
+
+bool transformAlign(Transform transf);
+
+void setTransformYAxis(Transform transf, float* newYAxis);
+
+vector<vector<float>> translatePoints(Transform transf);
 
 void addPointToTranslate(Transform transf, float x, float y, float z);
 

@@ -17,9 +17,11 @@ struct group{
 struct transform{
     char type; // 't': translate, 's': scale, 'r': rotate
     float x,y,z; // para todas
-    float angle; // para rotações, == -1 significa que não é usado
-    float time; // para rotações e translações, == -1 significa que não é usado
-    vector<float> points; // para translações, vazio significa que não é usado
+    float angle; // para rotações, == 0 significa que não é usado
+    float time; // para rotações e translações, == 0 significa que não é usado
+    bool align; // para translações
+    vector<vector<float>>* points; // para translações, vazio significa que não é usado
+    float yAxis[3];
 };
 
 Config newConfig(){
@@ -45,14 +47,27 @@ Group newGroup(){
     return new_group;
 }
 
-Transform newTransform(char type, float x, float y, float z, float angle = 0.0f, float time=0.0f, vector<float> points = {}){
+Transform newTransform(char type, float x, float y, float z, float angle = 0.0f, float time = 0.0f, vector<vector<float>> points = {}, bool align = false){
     Transform transform = (Transform)malloc(sizeof(struct transform));
+    transform->points = new vector<vector<float>>();
     if(transform){
         transform->type = type;
         transform->x = x;
         transform->y = y;
         transform->z = z;
         transform->angle = angle;
+        transform->time = time;
+        for(vector<float> point : points){
+            vector<float> ptn;
+            ptn.push_back(point[0]);
+            ptn.push_back(point[1]);
+            ptn.push_back(point[2]); 
+            transform->points->push_back(ptn);
+        }
+        transform->align = align;
+        transform->yAxis[0] = 0.0f;
+        transform->yAxis[1] = 1.0f;
+        transform->yAxis[2] = 0.0f;
     }
     return transform;
 }
@@ -106,23 +121,30 @@ void addTransform(Tree tree, Transform transform){
 void parseTransform(Tree tree, TiXmlElement* transforms){
     if(transforms && tree){
         for(TiXmlElement* t = transforms->FirstChildElement(); t; t = t->NextSiblingElement()){
-            vector<float> points;
+            vector<vector<float>> points;
             const char* name_of_transform = t->Value();
-            float angle, time;
+            float angle = 0.0f, time = 0.0f;
+            bool align = false;
             if(strcmp(name_of_transform,"rotate") == 0){
-                angle = t->Attribute("angle") ? atof(t->Attribute("angle")) : -1.0f;
-                time = t->Attribute("time") ? atof(t->Attribute("time")) : -1.0f;
-            }else if(strcmp(name_of_transform,"translate")){
-                for(TiXmlElement* p = t->FirstChildElement("point"); p; p = p->NextSiblingElement()){
-                    points.push_back(atof(p->Attribute("x")));
-                    points.push_back(atof(p->Attribute("y")));
-                    points.push_back(atof(p->Attribute("z")));
+                angle = t->Attribute("angle") ? atof(t->Attribute("angle")) : 0.0f;
+                time = t->Attribute("time") ? atof(t->Attribute("time")) : 0.0f;
+            }else if(strcmp(name_of_transform,"translate") == 0){
+                if(t->Attribute("time") || t->Attribute("align")){
+                    time = t->Attribute("time") ? atof(t->Attribute("time")) : 0.0f;
+                    align = t->Attribute("align") ? (strcasecmp(t->Attribute("align"),"true") == 0 ? true : false) : false;
+                    for(TiXmlElement* p = t->FirstChildElement("point"); p; p = p->NextSiblingElement()){
+                        vector<float> ptn;
+                        ptn.push_back(atof(p->Attribute("x")));
+                        ptn.push_back(atof(p->Attribute("y")));
+                        ptn.push_back(atof(p->Attribute("z")));
+                        points.push_back(ptn);
+                    }
                 }
             }
-            float x = atof(t->Attribute("x"));
-            float y = atof(t->Attribute("y"));
-            float z = atof(t->Attribute("z"));
-            addTransform(tree,newTransform(name_of_transform[0],x,y,z,angle,time,points));
+            float x = t->Attribute("x") ? atof(t->Attribute("x")) : 0.0f;
+            float y = t->Attribute("y") ? atof(t->Attribute("y")) : 0.0f;
+            float z = t->Attribute("z") ? atof(t->Attribute("z")) : 0.0f;
+            addTransform(tree,newTransform(name_of_transform[0],x,y,z,angle,time,points,align));
         }
     }
 }
@@ -135,20 +157,6 @@ Tree parseGroups(TiXmlElement* group){
         // METER AS TRANSFORMS NA ARVORE
         Transform transform_obj = NULL;
         TiXmlElement* transform = group->FirstChildElement("transform");
-        // if(transform){
-        //     for(TiXmlElement* t = transform->FirstChildElement(); t; t = t->NextSiblingElement()){
-        //         const char* name_of_transform = t->Value();
-        //         float angle = 0.0f;
-        //         if (strcmp(name_of_transform, "rotate") == 0) {
-        //             angle = atof(t->Attribute("angle"));
-        //         }
-        //         float x = atof(t->Attribute("x"));
-        //         float y = atof(t->Attribute("y"));
-        //         float z = atof(t->Attribute("z"));
-        //         transform_obj = newTransform(name_of_transform[0], x, y, z, angle);
-        //         addTransform(res,transform_obj);
-        //     }
-        // }
         parseTransform(res,transform);
 
         // METER OS MODELS NA ARVORE
@@ -160,6 +168,7 @@ Tree parseGroups(TiXmlElement* group){
             }
         }
 
+        // Continuar recursivamente
         for(TiXmlElement* chGroup = group->FirstChildElement("group"); chGroup; chGroup = chGroup->NextSiblingElement("group")){
             Tree child = parseGroups(chGroup);
             // Tratar de appends do filho para a árvore
@@ -268,7 +277,14 @@ float transformAngle(Transform transf){
     if(transf){
         return transf->angle;
     }
-    return -1;
+    return 0.0f;
+}
+
+float transformTime(Transform transf){
+    if(transf){
+        return transf->time;
+    }
+    return 0.0f;
 }
 
 float transformX(Transform transf){
@@ -292,18 +308,57 @@ float transformZ(Transform transf){
     return -666;
 }
 
-vector<float> translatePoints(Transform transf){
+void setTransformXYZ(Transform transf, float x, float y, float z){
     if(transf){
-        return transf->points;
+        transf->x = x;
+        transf->y = y;
+        transf->z = z;
     }
-    return {};
+}
+
+vector<vector<float>> translatePoints(Transform transf){
+    vector<vector<float>> result; 
+    if(transf){
+        for(vector<float> point : *(transf->points)){
+            result.push_back(point);
+        }
+    }
+    return result;
+}
+
+vector<float> transformYAxis(Transform transf){
+    vector<float> result;
+    if(transf){
+        result.push_back(transf->yAxis[0]);
+        result.push_back(transf->yAxis[1]);
+        result.push_back(transf->yAxis[2]);
+        return result;
+    }
+    return result;
+}
+
+bool transformAlign(Transform transf){
+    if(transf){
+        return transf->align;
+    }
+    return false;
+}
+
+void setTransformYAxis(Transform transf, float* newYAxis){
+    if(transf && newYAxis){
+        transf->yAxis[0] = newYAxis[0];
+        transf->yAxis[1] = newYAxis[1];
+        transf->yAxis[2] = newYAxis[2];
+    }
 }
 
 void addPointToTranslate(Transform transf, float x, float y, float z){
     if(transf){
-        transf->points.push_back(x);
-        transf->points.push_back(y);
-        transf->points.push_back(z);
+        vector<float> ptn;
+        ptn.push_back(x);
+        ptn.push_back(y);
+        ptn.push_back(z);
+        transf->points->push_back(ptn);
     }
 }
 
@@ -389,6 +444,7 @@ void drawTreeDEBUG(Config c){
 
 void deleteTransform(Transform transf){
     if(transf){
+        delete transf->points;
         free(transf);
     }
 }

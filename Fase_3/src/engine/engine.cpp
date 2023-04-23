@@ -7,21 +7,26 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
 #include "../utils/list.hpp"
+#include "../utils/matrix.hpp"
 #include "../tinyXML/tinyxml.h"
 #include "config.hpp"
-#include "math.h"
+#include <math.h>
 #include <iostream>
 #include <filesystem>
+#include <unistd.h>
 
 using namespace std;
+
+// Obtenção do tempo actual
+#define NOW (1.0f*glutGet(GLUT_ELAPSED_TIME))/1000.0f
 
 // Códigos de cores
 #define RED 1.0f,0.0f,0.0f
 #define GREEN 0.0f,1.0f,0.0f
 #define BLUE 0.0f,0.0f,1.0f
-#define YELLOW 1.0f, 1.0f, 0.0f
-#define CYAN 0.0f, 1.0f, 1.0f
-#define WHITE 1.0f, 1.0f, 1.0f
+#define YELLOW 1.0f,1.0f,0.0f
+#define CYAN 0.0f,1.0f,1.0f
+#define WHITE 1.0f,1.0f,1.0f
 
 // Variáveis da câmara
 float alpha = M_PI / 4;
@@ -48,6 +53,14 @@ Config configuration = NULL;
 GLuint *buffers = NULL; // temos um buffer para cada figura
 vector<unsigned int> buffersSizes; // aqui guardamos o tamanho de cada buffer de cada figura
 unsigned int figCount = 0; // total de figuras existentes no ficheiro de configuração.
+
+// Controlo de tempo
+#define DELTA_TIME 0.001f
+float init_time = 0.0f;
+float pseudo_time = 0.0f;
+
+// Precisão de deslocação em curvas de catmull-rom
+#define PRECISION_CATMULL 0.0001
 
 // Carrega os dados das figuras para os buffers.
 void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um inteiro que serve para seleccionar os buffers em que vamos escrever
@@ -91,6 +104,62 @@ void drawEixos(){
 	}
 }
 
+void drawCatmullRomCurve(vector<vector<float>> controlPoints){
+	float pos[3];
+	glBegin(GL_LINE_LOOP);
+	for (float i = 0.0f; i <= 1.0f; i+=0.01f) {
+		getGlobalCatmullRomPoint(i,controlPoints,pos,NULL);
+		glVertex3f(pos[0], pos[1], pos[2]);
+	}
+	glEnd();
+}
+
+
+void executeTransformations(List transforms, int *index){
+	if(transforms){
+		for(unsigned long i = 0; i < getListLength(transforms); i++){
+			Transform t = (Transform)getListElemAt(transforms,i);
+			float x = transformX(t);
+			float y = transformY(t);
+			float z = transformZ(t);
+			char tr_type = transformType(t);
+			if(tr_type == 'r'){ // Rotação
+				float r_angle = transformAngle(t);
+				float r_time  = transformTime(t);
+				if(r_time > 0.0f){ // presumimos que <=0 indica que não se utiliza o tempo dado que tempo <= 0 não faz sentido.
+					r_angle = ((NOW-init_time)*360.0f)/r_time; // cálculo do ângulo de rotação em função do tempo passado (regra de três simples)
+				}
+				glRotatef(r_angle, x, y, z);
+            } else if(tr_type == 't'){ // Translação
+				float t_time = transformTime(t);
+				if(t_time > 0.0f){ // se o tempo for utilizado na translação, sabemos que é uma translação referente a uma curva de Catmull-Rom
+					float pos[3], deriv[3], y[3], z[3], rot[16]; // posição, vector velocidade e valor da velocidade neste instante; eixo Y, eixo Z e matriz de rotação
+					vector<vector<float>> points = translatePoints(t);
+					getGlobalCatmullRomPoint(pseudo_time,points,pos,deriv);
+					//! Arranjar maneira de permitir que a figura faça uma volta completa durante o tempo que é especificado.
+					drawCatmullRomCurve(points); // DEBUG
+					glTranslatef(pos[0],pos[1],pos[2]);
+					if(transformAlign(t)){
+						normalize(deriv);
+						cross(deriv,transformYAxis(t).data(),z); // Xi = deriv
+						normalize(z);
+						cross(z,deriv,y);// Xi = deriv
+						setTransformXYZ(t,y[0],y[1],y[2]);
+						normalize(y);
+						buildRotMatrix(deriv,y,z,rot);
+						glMultMatrixf(rot); 
+					}
+					
+				}else{
+					glTranslatef(x,y,z);
+				}
+            } else if(tr_type == 's'){ // Escala
+				glScalef(x, y, z);
+            } 
+		}
+	}
+}
+
 void drawGroups(Tree groups, int* index){
 	if(groups){
 		glPushMatrix(); // guarda o estado dos eixos
@@ -98,31 +167,16 @@ void drawGroups(Tree groups, int* index){
 		Group group = (Group)getRootValue(groups);
 		List transforms = getGroupTransforms(group);
 		unsigned long modelsCount = getListLength(getGroupModels(group));
+		executeTransformations(transforms,index);
 
-		// Definição das transformações
-		for(unsigned long i = 0; i < getListLength(transforms); i++){
-			Transform t = (Transform)getListElemAt(transforms,i);
-			float x = transformX(t);
-			float y = transformY(t);
-			float z = transformZ(t);
-			char tr_type = transformType(t);
-			if(tr_type == 'r'){
-				float angle = transformAngle(t);
-				glRotatef(angle, x, y, z);
-            } else if(tr_type == 't'){
-				glTranslatef(x, y, z);
-            } else if(tr_type == 's'){
-				glScalef(x, y, z);
-            } 
-		}
-
+		// Desenha o conteúdo dos buffers
 		for(unsigned long i = 0; i < modelsCount; i++, (*index)++){
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			glDrawArrays(GL_TRIANGLES, 0, buffersSizes[*index]);
 		}
 
-		// Procede para fazer o mesmo nos nodos filho. 
+		// Procede para fazer o mesmo nos nodos filhos. 
         List filhos = getChildren(groups);
         for(unsigned long i = 0; i < getListLength(filhos); i++){
             Tree next = (Tree)getListElemAt(filhos, i);
@@ -163,7 +217,7 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// set the camera
-	glLoadIdentity();
+	glLoadIdentity(); // super pop, faz refresh a tudo.
 	gluLookAt(radius*cos(beta_)*sin(alpha), radius*sin(beta_), radius*cos(beta_)*cos(alpha),
 		      lookAtx,lookAty,lookAtz,
 			  upx,upy,upz);
@@ -175,14 +229,12 @@ void renderScene(void) {
 	// figuras
 	glColor3f(WHITE);
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
-
+	pseudo_time += DELTA_TIME;
 	int index = 0; // serve para seleccionar o buffer que vai ser lido
 	drawGroups(getTreeGroups(configuration),&index);
-	
 	// End of frame
 	glutSwapBuffers();
 }
-
 
 // Só altera a posição da camera, para debug.
 void specKeyProc(int key_code, int x, int y) {
@@ -293,6 +345,7 @@ int main(int argc, char *argv[]) {
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
+	glutIdleFunc(renderScene);
 
 	
 	// put here the registration of the keyboard callbacks (por enquanto só mexem na camara como forma de debug)
@@ -311,6 +364,8 @@ int main(int argc, char *argv[]) {
 	// Carrega os dados para os buffers
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
+	// Cálculo do tempo
+	init_time = NOW;
 	// enter GLUT's main cycle
 	glutMainLoop();
 	
