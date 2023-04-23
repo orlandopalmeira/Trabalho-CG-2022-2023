@@ -17,8 +17,8 @@
 
 using namespace std;
 
-// Obtenção do tempo actual
-#define NOW (1.0f*glutGet(GLUT_ELAPSED_TIME))/1000.0f
+// Obtenção do tempo actual em segundos
+#define NOW ((1.0f*glutGet(GLUT_ELAPSED_TIME))/1000.0f)
 
 // Códigos de cores
 #define RED 1.0f,0.0f,0.0f
@@ -57,10 +57,7 @@ unsigned int figCount = 0; // total de figuras existentes no ficheiro de configu
 // Controlo de tempo
 #define DELTA_TIME 0.001f
 float init_time = 0.0f;
-float pseudo_time = 0.0f;
-
-// Precisão de deslocação em curvas de catmull-rom
-#define PRECISION_CATMULL 0.0001
+vector<float> times;
 
 // Carrega os dados das figuras para os buffers.
 void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um inteiro que serve para seleccionar os buffers em que vamos escrever
@@ -107,8 +104,9 @@ void drawEixos(){
 void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	float pos[3];
 	glBegin(GL_LINE_LOOP);
-	for (float i = 0.0f; i <= 1.0f; i+=0.01f) {
-		getGlobalCatmullRomPoint(i,controlPoints,pos,NULL);
+	float t = 0.0f;
+	for (int i = 0; i <= 100; i++, t+= 0.01f) {
+		getGlobalCatmullRomPoint(t,controlPoints,pos,NULL);
 		glVertex3f(pos[0], pos[1], pos[2]);
 	}
 	glEnd();
@@ -135,11 +133,10 @@ void executeTransformations(List transforms, int *index){
 				if(t_time > 0.0f){ // se o tempo for utilizado na translação, sabemos que é uma translação referente a uma curva de Catmull-Rom
 					float pos[3], deriv[3], y[3], z[3], rot[16]; // posição, vector velocidade e valor da velocidade neste instante; eixo Y, eixo Z e matriz de rotação
 					vector<vector<float>> points = translatePoints(t);
-					getGlobalCatmullRomPoint(pseudo_time,points,pos,deriv);
-					//! Arranjar maneira de permitir que a figura faça uma volta completa durante o tempo que é especificado.
+					getGlobalCatmullRomPoint(NOW/t_time,points,pos,deriv);
 					drawCatmullRomCurve(points); // DEBUG
 					glTranslatef(pos[0],pos[1],pos[2]);
-					if(transformAlign(t)){
+					if(transformAlign(t)){// só se alinha com a curva se isso estiver mencionado na configuração
 						normalize(deriv);
 						cross(deriv,transformYAxis(t).data(),z); // Xi = deriv
 						normalize(z);
@@ -229,7 +226,6 @@ void renderScene(void) {
 	// figuras
 	glColor3f(WHITE);
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
-	pseudo_time += DELTA_TIME;
 	int index = 0; // serve para seleccionar o buffer que vai ser lido
 	drawGroups(getTreeGroups(configuration),&index);
 	// End of frame
@@ -334,6 +330,9 @@ int main(int argc, char *argv[]) {
 	beta_ = asin(camy/radius);
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
 	buffers = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada figura
+	for(unsigned int i = 0; i < figCount; i++){
+		times.push_back(0.0f);
+	}
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
