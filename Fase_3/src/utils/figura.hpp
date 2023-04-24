@@ -16,6 +16,8 @@ Figura newFigura(List);
 
 void addPonto(Figura, Ponto);
 
+void addPontoArr(Figura, float*);
+
 void addPontos(Figura, Figura);
 
 void figuraToFile(Figura, const char*);

@@ -30,6 +30,10 @@ void addPonto(Figura f, Ponto p){
     }
 }
 
+void addPontoArr(Figura f, float* p){
+    addPonto(f,newPonto(p[0],p[1],p[2]));
+}
+
 void addPontos(Figura f, Figura toAdd){
     if(f){
         List pontos = toAdd->pontos;

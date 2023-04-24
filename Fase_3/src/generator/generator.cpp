@@ -1,5 +1,6 @@
 #include "../utils/figura.hpp"
 #include "../utils/ponto.hpp"
+#include "../utils/matrix.hpp"
 #include <string.h>
 #include <stdlib.h>
 
@@ -331,6 +332,90 @@ Figura generateRing(float ri, float re, int slices){
     return ring;
 }
 
+vector<vector<vector<float>>> readPatchesFile(const char* filePath){
+    FILE* file = fopen(filePath,"r");
+    vector<vector<vector<float>>> result;
+    if(file){
+        char buffer[2048];
+        // Obtenção do número de patches
+        if(!fgets(buffer,2047,file)) return result;
+        int numPatches = atoi(buffer);
+        vector<vector<int>> indicesPerPatch; // vector de vectores, cada vector tem tamanho 16
+
+        // Obtenção dos índices de cada patch
+        for(int i = 0; i < numPatches; i++){
+            if(!fgets(buffer,2047,file)) return result;
+            vector<int> indices;
+            for(char* token = strtok(buffer,","); token; token = strtok(NULL,",")){
+                indices.push_back(atoi(token));
+            }
+            indicesPerPatch.push_back(indices);
+        }
+
+        // Obtenção do número de pontos de controlo
+        if(!fgets(buffer,2047,file)) return result;
+        int numControlPoints = atoi(buffer);
+
+        // Obtenção dos pontos de controlo
+        vector<vector<float>> controlPoints;
+        for(int i = 0; i < numControlPoints; i++){
+            if(!fgets(buffer,2047,file)) return result;
+            vector<float> point;
+            for(char* token = strtok(buffer,","); token; token = strtok(NULL,",")){
+                point.push_back(atof(token));
+            }
+            controlPoints.push_back(point);
+        }
+
+        // Construção dos patches
+        for(vector<int> indices : indicesPerPatch){
+            vector<vector<float>> patch; // um patch é um conjunto de pontos, um ponto é um vector<float> de tamanho 3. Um patch terá 16 pontos.
+            for(int indice : indices){
+                vector<float> point;
+                point.push_back(controlPoints[indice][0]);
+                point.push_back(controlPoints[indice][1]);
+                point.push_back(controlPoints[indice][2]);
+                patch.push_back(point);
+            }
+            result.push_back(patch);
+        }
+        fclose(file);
+    }
+    return result;
+}
+
+Figura generateSurface(const char* filePath, int tessellation){
+    Figura result = newEmptyFigura();
+    float u = 0.0f, v = 0.0f, delta = 1.0f/tessellation;
+    float A[3], B[3], C[3], D[3];
+    vector<vector<vector<float>>> patches = readPatchesFile(filePath);
+    for(vector<vector<float>> patch : patches){ // um patch tem 16 pontos
+        for(int i = 0; i < tessellation; i++, u += delta){
+            for(int j = 0; j < tessellation; j++, v += delta){
+                surfacePoint(u,v,patch,A,NULL);
+                surfacePoint(u,v+delta,patch,B,NULL);
+                surfacePoint(u+delta,v,patch,C,NULL);
+                surfacePoint(u+delta,v+delta,patch,D,NULL);
+                addPontoArr(result,B);
+                addPontoArr(result,A);
+                addPontoArr(result,C);
+                addPontoArr(result,C);
+                addPontoArr(result,D);
+                addPontoArr(result,B);
+
+                addPontoArr(result,C);
+                addPontoArr(result,A);
+                addPontoArr(result,B);
+                addPontoArr(result,B);
+                addPontoArr(result,D);
+                addPontoArr(result,C);
+            }
+            v = 0.0f;
+        }
+    }
+    return result;
+}
+
 int main(int argc, char *argv[]){
     if (argc >= 5){
         Figura figura;
@@ -364,6 +449,13 @@ int main(int argc, char *argv[]){
             file_path = argv[5];
 
             figura = generateRing(ri,re,slices);  
+        }
+        else if(strcmp(argv[1], "patch") == 0){
+            float tessellation = atoi(argv[2]);
+            const char* patchesFile = argv[3];
+            file_path = argv[4];
+
+            figura = generateSurface(patchesFile,tessellation);
         }
         else{
             printf("Forma inválida\n");

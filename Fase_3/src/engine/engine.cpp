@@ -13,7 +13,6 @@
 #include <math.h>
 #include <iostream>
 #include <filesystem>
-#include <unistd.h>
 
 using namespace std;
 
@@ -110,7 +109,6 @@ void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	glEnd();
 }
 
-
 void executeTransformations(List transforms, int *index){
 	if(transforms){
 		for(unsigned long i = 0; i < getListLength(transforms); i++){
@@ -134,6 +132,7 @@ void executeTransformations(List transforms, int *index){
 					getGlobalCatmullRomPoint(NOW/t_time,points,pos,deriv);
 					drawCatmullRomCurve(points); // DEBUG
 					glTranslatef(pos[0],pos[1],pos[2]);
+
 					if(transformAlign(t)){// só se alinha com a curva se isso estiver mencionado na configuração
 						normalize(deriv);
 						cross(deriv,transformYAxis(t).data(),z); // Xi = deriv

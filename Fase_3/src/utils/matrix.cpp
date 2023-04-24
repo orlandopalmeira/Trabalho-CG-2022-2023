@@ -85,3 +85,35 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 
 	getCatmullRomPoint(t, controlPoints[indices[0]], controlPoints[indices[1]], controlPoints[indices[2]], controlPoints[indices[3]], pos, deriv);
 }
+
+void bezierCurvePoint(float t, vector<vector<float>> controlPoints, float* res, float* deriv){
+    float M[16] = { 1.0f,  3.0f, -3.0f, 1.0f,
+                    3.0f, -6.0f,  3.0f, 0.0f,
+                   -3.0f,  3.0f,  0.0f, 0.0f,
+                    1.0f,  0.0f,  0.0f, 0.0f}; // 4x4
+	vector<float> p0 = controlPoints[0], p1 = controlPoints[1], p2 = controlPoints[2], p3 = controlPoints[3];
+    float P[12] = {p0[0],p0[1],p0[2],
+				   p1[0],p1[1],p1[2],
+				   p2[0],p2[1],p2[2],
+				   p3[0],p3[1],p3[2]}; // 4x3
+	float T[4] = {t*t*t,t*t,t,1.0f}, DERT[4] = {3.0f*t*t,2.0f*t,1.0f,0.0f}; // T->1x4; DERT->1x4
+	float MP[12]; // 4x3
+	multiplyMatrices(4,4,M,4,3,P,MP);
+	if(res) multiplyMatrices(1,4,T,4,3,MP,res);
+	if(deriv) multiplyMatrices(1,4,DERT,4,3,MP,deriv);
+}
+
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* deriv){
+	vector<vector<float>> curve0 = {patch[0],patch[1],patch[2],patch[3]};
+	vector<vector<float>> curve1 = {patch[4],patch[5],patch[6],patch[7]};
+	vector<vector<float>> curve2 = {patch[8],patch[9],patch[10],patch[11]};
+	vector<vector<float>> curve3 = {patch[12],patch[13],patch[14],patch[15]};
+	float p0_[3], p1_[3], p2_[3], p3_[3];
+	bezierCurvePoint(u,curve0,p0_,NULL);
+	bezierCurvePoint(u,curve1,p1_,NULL);
+	bezierCurvePoint(u,curve2,p2_,NULL);
+	bezierCurvePoint(u,curve3,p3_,NULL);
+	vector<float> p0 = {p0_[0],p0_[1],p0_[2]}, p1 = {p1_[0],p1_[1],p1_[2]}, p2 = {p2_[0],p2_[1],p2_[2]}, p3 = {p3_[0],p3_[1],p3_[2]};
+	vector<vector<float>> newCurve = {p0,p1,p2,p3};
+	bezierCurvePoint(v,newCurve,res,deriv);
+}
