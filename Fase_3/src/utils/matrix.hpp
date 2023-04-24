@@ -48,13 +48,6 @@ void normalize(float *a);
 float length(float *a);
 
 /**
- * Altera a norma de um vector.
- * @param a Vetor cuja norma será alterada
- * @param newLength Nova norma que o vector terá
-*/
-void changeLength(float *a, float newLength);
-
-/**
  * Esta função é aquela p(t)
  * @param t instante de tempo da função p(t)
  * @param p0 Ponto de controlo da curva
@@ -74,7 +67,5 @@ void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<floa
  * @param deriv Derivada resultante
 */
 void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, float *pos, float *deriv);
-
-void bezierCurvePoint(float t, vector<vector<float>> controlPoints, float* res, float* deriv);
 
 void surfacePoint(float u, float v, vector<vector<float>> patch, float* res);

@@ -41,13 +41,6 @@ float length(float *a){
 	return sqrt(a[0]*a[0] + a[1] * a[1] + a[2] * a[2]);
 }
 
-void changeLength(float *a, float newLength){
-	normalize(a);
-	a[0] *= newLength;
-	a[1] *= newLength;
-	a[2] *= newLength;
-}
-
 void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<float> p2, vector<float> p3, float *pos, float *deriv) {
 
 	// catmull-rom matrix
@@ -87,7 +80,7 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 }
 
 void surfacePoint(float u, float v, vector<vector<float>> patch, float* res){
-	float M[16] = {1.0f,  3.0f, -3.0f, 1.0f,
+	float M[16] = {-1.0f,  3.0f, -3.0f, 1.0f,
                    3.0f, -6.0f,  3.0f, 0.0f,
                   -3.0f,  3.0f,  0.0f, 0.0f,
                    1.0f,  0.0f,  0.0f, 0.0f}; // 4x4
@@ -111,5 +104,5 @@ void surfacePoint(float u, float v, vector<vector<float>> patch, float* res){
 		multiplyMatrices(1,4,UM,4,4,P[i],UMP);
 		multiplyMatrices(1,4,UMP,4,1,MV,&res[i]);
 	}
-	
+
 }

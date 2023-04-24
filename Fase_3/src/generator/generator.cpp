@@ -396,22 +396,17 @@ Figura generateSurface(const char* filePath, int tessellation){
                 surfacePoint(u,v+delta,patch,B);
                 surfacePoint(u+delta,v,patch,C);
                 surfacePoint(u+delta,v+delta,patch,D);
+                
                 addPontoArr(result,B);
                 addPontoArr(result,A);
                 addPontoArr(result,C);
                 addPontoArr(result,C);
                 addPontoArr(result,D);
                 addPontoArr(result,B);
-
-                addPontoArr(result,C);
-                addPontoArr(result,A);
-                addPontoArr(result,B);
-                addPontoArr(result,B);
-                addPontoArr(result,D);
-                addPontoArr(result,C);
             }
             v = 0.0f;
         }
+        u = v = 0.0f;
     }
     return result;
 }
