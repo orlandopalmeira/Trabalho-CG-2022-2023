@@ -86,34 +86,30 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 	getCatmullRomPoint(t, controlPoints[indices[0]], controlPoints[indices[1]], controlPoints[indices[2]], controlPoints[indices[3]], pos, deriv);
 }
 
-void bezierCurvePoint(float t, vector<vector<float>> controlPoints, float* res, float* deriv){
-    float M[16] = { 1.0f,  3.0f, -3.0f, 1.0f,
-                    3.0f, -6.0f,  3.0f, 0.0f,
-                   -3.0f,  3.0f,  0.0f, 0.0f,
-                    1.0f,  0.0f,  0.0f, 0.0f}; // 4x4
-	vector<float> p0 = controlPoints[0], p1 = controlPoints[1], p2 = controlPoints[2], p3 = controlPoints[3];
-    float P[12] = {p0[0],p0[1],p0[2],
-				   p1[0],p1[1],p1[2],
-				   p2[0],p2[1],p2[2],
-				   p3[0],p3[1],p3[2]}; // 4x3
-	float T[4] = {t*t*t,t*t,t,1.0f}, DERT[4] = {3.0f*t*t,2.0f*t,1.0f,0.0f}; // T->1x4; DERT->1x4
-	float MP[12]; // 4x3
-	multiplyMatrices(4,4,M,4,3,P,MP);
-	if(res) multiplyMatrices(1,4,T,4,3,MP,res);
-	if(deriv) multiplyMatrices(1,4,DERT,4,3,MP,deriv);
-}
-
-void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* deriv){
-	vector<vector<float>> curve0 = {patch[0],patch[1],patch[2],patch[3]};
-	vector<vector<float>> curve1 = {patch[4],patch[5],patch[6],patch[7]};
-	vector<vector<float>> curve2 = {patch[8],patch[9],patch[10],patch[11]};
-	vector<vector<float>> curve3 = {patch[12],patch[13],patch[14],patch[15]};
-	float p0_[3], p1_[3], p2_[3], p3_[3];
-	bezierCurvePoint(u,curve0,p0_,NULL);
-	bezierCurvePoint(u,curve1,p1_,NULL);
-	bezierCurvePoint(u,curve2,p2_,NULL);
-	bezierCurvePoint(u,curve3,p3_,NULL);
-	vector<float> p0 = {p0_[0],p0_[1],p0_[2]}, p1 = {p1_[0],p1_[1],p1_[2]}, p2 = {p2_[0],p2_[1],p2_[2]}, p3 = {p3_[0],p3_[1],p3_[2]};
-	vector<vector<float>> newCurve = {p0,p1,p2,p3};
-	bezierCurvePoint(v,newCurve,res,deriv);
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res){
+	float M[16] = {1.0f,  3.0f, -3.0f, 1.0f,
+                   3.0f, -6.0f,  3.0f, 0.0f,
+                  -3.0f,  3.0f,  0.0f, 0.0f,
+                   1.0f,  0.0f,  0.0f, 0.0f}; // 4x4
+	float U[4] = {u*u*u,u*u,u,1.0f}, V[4] = {v*v*v,v*v,v,1.0f}; // U: 1x4; V: 4x1
+	float UM[4]; multiplyMatrices(1,4,U,4,4,M,UM); // UM: 1x4
+	float MV[4]; multiplyMatrices(4,4,M,4,1,V,MV); // MV: 4x1
+	float P[3][16] = {{patch[0][0],patch[1][0],patch[2][0],patch[3][0],
+					   patch[4][0],patch[5][0],patch[6][0],patch[7][0],
+					   patch[8][0],patch[9][0],patch[10][0],patch[11][0],
+					   patch[12][0],patch[13][0],patch[14][0],patch[15][0]},
+					  {patch[0][1],patch[1][1],patch[2][1],patch[3][1],
+					   patch[4][1],patch[5][1],patch[6][1],patch[7][1],
+					   patch[8][1],patch[9][1],patch[10][1],patch[11][1],
+					   patch[12][1],patch[13][1],patch[14][1],patch[15][1]},
+					  {patch[0][2],patch[1][2],patch[2][2],patch[3][2],
+					   patch[4][2],patch[5][2],patch[6][2],patch[7][2],
+					   patch[8][2],patch[9][2],patch[10][2],patch[11][2],
+					   patch[12][2],patch[13][2],patch[14][2],patch[15][2]}}; // Três matrizes 4x4, uma para cada componente X, Y e Z
+	for(int i = 0; i < 3; i++){ // Vamos calcular as componentes X, Y e Z do resultado.
+		float UMP[4]; // UMP: 1x4
+		multiplyMatrices(1,4,UM,4,4,P[i],UMP);
+		multiplyMatrices(1,4,UMP,4,1,MV,&res[i]);
+	}
+	
 }

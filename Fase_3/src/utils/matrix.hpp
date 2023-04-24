@@ -77,4 +77,4 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 
 void bezierCurvePoint(float t, vector<vector<float>> controlPoints, float* res, float* deriv);
 
-void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* deriv);
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res);
