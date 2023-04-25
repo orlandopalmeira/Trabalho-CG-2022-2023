@@ -55,6 +55,11 @@ unsigned int figCount = 0; // total de figuras existentes no ficheiro de configu
 
 // Controlo de tempo
 float init_time = 0.0f;
+int timebase;
+
+// Título na janela do engine
+unsigned int frame = 0;
+char title[64];
 
 // Carrega os dados das figuras para os buffers.
 void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um inteiro que serve para seleccionar os buffers em que vamos escrever
@@ -225,6 +230,16 @@ void renderScene(void) {
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	int index = 0; // serve para seleccionar o buffer que vai ser lido
 	drawGroups(getTreeGroups(configuration),&index);
+	// FPS Count
+	frame++;
+	int time = glutGet(GLUT_ELAPSED_TIME);
+		if (time - timebase > 1000) {
+		float fps = frame*1000.0f/(time-timebase);
+		snprintf(title,63,"FPS: %.2f",fps);
+		glutSetWindowTitle(title);
+		timebase = time;
+		frame = 0;
+	} 
 	// End of frame
 	glutSwapBuffers();
 }
@@ -358,6 +373,7 @@ int main(int argc, char *argv[]) {
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
 	// Cálculo do tempo
+	timebase = glutGet(GLUT_ELAPSED_TIME);
 	init_time = NOW;
 	// enter GLUT's main cycle
 	glutMainLoop();
