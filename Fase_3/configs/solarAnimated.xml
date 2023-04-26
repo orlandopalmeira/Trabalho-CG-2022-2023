@@ -125,6 +125,7 @@
         <transform>
             <rotate angle="15" x="0" y="0" z="1"/>
             <translate time="7" align="True">
+                <!-- Trajetória elíptica do teapot -->
                 <point x="57.0633910" y="0.0000000" z="-9.2705098"/>
                 <point x="48.5410197" y="0.0000000" z="-17.6335576"/>
                 <point x="35.2671151" y="0.0000000" z="-24.2705098"/>
