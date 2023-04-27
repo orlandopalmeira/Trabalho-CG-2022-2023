@@ -103,6 +103,7 @@ void drawEixos(){
 	}
 }
 
+//! Debug
 void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	float pos[3];
 	glBegin(GL_LINE_LOOP);

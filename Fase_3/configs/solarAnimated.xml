@@ -123,7 +123,7 @@
     </group>
     <group>
         <transform>
-            <rotate angle="15" x="0" y="0" z="1"/>
+            <rotate angle="15" x="0" y="0" z="1"/><!-- Serve para a trajetória do teapot não ficar paralela ao plano XZ -->
             <translate time="7" align="True">
                 <!-- Trajetória elíptica do teapot -->
                 <point x="57.0633910" y="0.0000000" z="-9.2705098"/>

@@ -20,7 +20,7 @@ struct transform{
     float angle; // para rotações, == 0 significa que não é usado
     float time; // para rotações e translações, == 0 significa que não é usado
     bool align; // para translações
-    vector<vector<float>>* points; // para translações, vazio significa que não é usado
+    vector<vector<float>> points; // para translações, vazio significa que não é usado
     float yAxis[3];
 };
 
@@ -49,7 +49,7 @@ Group newGroup(){
 
 Transform newTransform(char type, float x, float y, float z, float angle = 0.0f, float time = 0.0f, vector<vector<float>> points = {}, bool align = false){
     Transform transform = (Transform)malloc(sizeof(struct transform));
-    transform->points = new vector<vector<float>>();
+    // transform->points = new vector<vector<float>>();
     if(transform){
         transform->type = type;
         transform->x = x;
@@ -62,7 +62,7 @@ Transform newTransform(char type, float x, float y, float z, float angle = 0.0f,
             ptn.push_back(point[0]);
             ptn.push_back(point[1]);
             ptn.push_back(point[2]); 
-            transform->points->push_back(ptn);
+            transform->points.push_back(ptn);
         }
         transform->align = align;
         transform->yAxis[0] = 0.0f;
@@ -319,7 +319,7 @@ void setTransformXYZ(Transform transf, float x, float y, float z){
 vector<vector<float>> translatePoints(Transform transf){
     vector<vector<float>> result; 
     if(transf){
-        for(vector<float> point : *(transf->points)){
+        for(vector<float> point : transf->points){
             result.push_back(point);
         }
     }
@@ -358,7 +358,7 @@ void addPointToTranslate(Transform transf, float x, float y, float z){
         ptn.push_back(x);
         ptn.push_back(y);
         ptn.push_back(z);
-        transf->points->push_back(ptn);
+        transf->points.push_back(ptn);
     }
 }
 
@@ -444,7 +444,7 @@ void drawTreeDEBUG(Config c){
 
 void deleteTransform(Transform transf){
     if(transf){
-        delete transf->points;
+        // delete transf->points;
         free(transf);
     }
 }

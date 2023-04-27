@@ -392,11 +392,12 @@ Figura generateSurface(const char* filePath, int tessellation){
     for(vector<vector<float>> patch : patches){ // um patch tem 16 pontos
         for(int i = 0; i < tessellation; i++, u += delta){
             for(int j = 0; j < tessellation; j++, v += delta){
+                // Cálculo dos pontos
                 surfacePoint(u,v,patch,A);
                 surfacePoint(u,v+delta,patch,B);
                 surfacePoint(u+delta,v,patch,C);
                 surfacePoint(u+delta,v+delta,patch,D);
-                
+                // Triangulação
                 addPontoArr(result,B);
                 addPontoArr(result,A);
                 addPontoArr(result,C);
