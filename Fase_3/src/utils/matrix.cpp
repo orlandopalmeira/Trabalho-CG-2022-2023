@@ -42,8 +42,7 @@ float length(float *a){
 }
 
 void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<float> p2, vector<float> p3, float *pos, float *deriv) {
-
-	// catmull-rom matrix
+	// Matriz catmull-rom
 	float m[16] = {-0.5f,  1.5f, -1.5f,  0.5f,
 				    1.0f, -2.5f,  2.0f, -0.5f,
 				   -0.5f,  0.0f,  0.5f,  0.0f,
@@ -54,12 +53,9 @@ void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<floa
 				   p2[0],p2[1],p2[2],
 				   p3[0],p3[1],p3[2]}; //4x3
 	float A[12]; // 4x3
-	// Compute A = M * P
     multiplyMatrices(4,4,m,4,3,P,A);
 	float T[4] = {t*t*t,t*t,t,1}, DERT[4] = {3*t*t,2*t,1,0}; // T-> 1x4, DERT -> 1x4
-	// Compute pos = T * A
     if(pos) multiplyMatrices(1,4,T,4,3,A,pos);
-	// compute deriv = T' * A
 	if(deriv) multiplyMatrices(1,4,DERT,4,3,A,deriv);
 }
 

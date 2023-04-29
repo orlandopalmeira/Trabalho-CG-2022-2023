@@ -126,14 +126,14 @@ void executeTransformations(List transforms, int *index){
 			if(tr_type == 'r'){ // Rotação
 				float r_angle = transformAngle(t);
 				float r_time  = transformTime(t);
-				if(r_time > 0.0f){ // presumimos que <=0 indica que não se utiliza o tempo dado que tempo <= 0 não faz sentido.
-					r_angle = ((NOW-init_time)*360.0f)/r_time; // cálculo do ângulo de rotação em função do tempo passado (regra de três simples)
+				if(r_time > 0.0f){ 
+					r_angle = ((NOW-init_time)*360.0f)/r_time; 
 				}
 				glRotatef(r_angle, x, y, z);
             } else if(tr_type == 't'){ // Translação
 				float t_time = transformTime(t);
 				if(t_time > 0.0f){ // se o tempo for utilizado na translação, sabemos que é uma translação referente a uma curva de Catmull-Rom
-					float pos[3], deriv[3], y[3], z[3], rot[16]; // posição, vector velocidade e valor da velocidade neste instante; eixo Y, eixo Z e matriz de rotação
+					float pos[3], deriv[3], y[3], z[3], rot[16];
 					vector<vector<float>> points = translatePoints(t);
 					getGlobalCatmullRomPoint(NOW/t_time,points,pos,deriv);
 					drawCatmullRomCurve(points); // DEBUG
@@ -144,7 +144,8 @@ void executeTransformations(List transforms, int *index){
 						cross(deriv,transformYAxis(t).data(),z); // Xi = deriv
 						normalize(z);
 						cross(z,deriv,y);// Xi = deriv
-						setTransformXYZ(t,y[0],y[1],y[2]);
+						// setTransformXYZ(t,y[0],y[1],y[2]);
+						setTransformYAxis(t,y);
 						normalize(y);
 						buildRotMatrix(deriv,y,z,rot);
 						glMultMatrixf(rot); 
@@ -205,11 +206,18 @@ void changeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
 	// Set perspective
-	//gluPerspective(45.0f ,ratio, 1.0f ,1000.0f);
 	gluPerspective(getFov(configuration), ratio, getNear(configuration), getFar(configuration));
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
+}
+//! Debug
+void drawTeapot(){
+	glPushMatrix();
+	glColor3f(WHITE);
+	glTranslatef(-5,0,0);
+	glutWireTeapot(1);
+	glPopMatrix();
 }
 
 void renderScene(void) {
@@ -225,7 +233,6 @@ void renderScene(void) {
 	// put drawing instructions here
 	// Desenha os eixos, caso a flag esteja ativa.
 	drawEixos();
-
 	// figuras
 	glColor3f(WHITE);
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -234,7 +241,7 @@ void renderScene(void) {
 	// FPS Count
 	frame++;
 	int time = glutGet(GLUT_ELAPSED_TIME);
-		if (time - timebase > 1000) {
+	if (time - timebase > 1000) {
 		float fps = frame*1000.0f/(time-timebase);
 		snprintf(title,63,"FPS: %.2f",fps);
 		glutSetWindowTitle(title);

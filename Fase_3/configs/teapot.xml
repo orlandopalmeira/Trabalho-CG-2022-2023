@@ -1,6 +1,6 @@
 <!-- Este ficheiro serve para verificar se as nossas superfícies de Bezier estão a funcionar. -->
 <world>
-    <window width="1024" height="1024" />
+    <window width="1920" height="1080" />
     <camera>
         <position x="5" y="5" z="5" />
         <lookAt x="0" y="0" z="0" />
@@ -9,8 +9,8 @@
     </camera>
     <group>
         <transform>
-            <!-- <rotate time="7" x="0" y="1" z="0" /> -->
-            <translate x="0" y="-1" z="0"/>
+            <!-- <translate x="0" y="-1" z="0"/>
+            <rotate time="7" x="0" y="1" z="0" /> -->
             <rotate angle="-90" x="1" y="0" z="0"/>
         </transform>
         <models>
