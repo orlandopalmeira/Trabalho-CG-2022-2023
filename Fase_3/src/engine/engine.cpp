@@ -139,12 +139,11 @@ void executeTransformations(List transforms, int *index){
 					drawCatmullRomCurve(points); // DEBUG
 					glTranslatef(pos[0],pos[1],pos[2]);
 
-					if(transformAlign(t)){// só se alinha com a curva se isso estiver mencionado na configuração
+					if(transformAlign(t)){
 						normalize(deriv);
 						cross(deriv,transformYAxis(t).data(),z); // Xi = deriv
 						normalize(z);
 						cross(z,deriv,y);// Xi = deriv
-						// setTransformXYZ(t,y[0],y[1],y[2]);
 						setTransformYAxis(t,y);
 						normalize(y);
 						buildRotMatrix(deriv,y,z,rot);
