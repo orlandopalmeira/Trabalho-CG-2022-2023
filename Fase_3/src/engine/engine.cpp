@@ -61,8 +61,11 @@ int timebase;
 unsigned int frame = 0;
 char title[64];
 
+// Visualização das curvas de Catmull-Rom
+bool showCurves = false;
+
 // Carrega os dados das figuras para os buffers.
-void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um inteiro que serve para seleccionar os buffers em que vamos escrever
+void loadBuffersData(Tree groups, int* index){ 
 	if(groups){
 		Group group = (Group)getRootValue(groups);
 		List models = getGroupModels(group);
@@ -72,7 +75,7 @@ void loadBuffersData(Tree groups, int* index){ //* o index é um endereço de um
 			vector<float> toBuffer = figuraToVector(fig);
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[(*index)++]);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toBuffer.size(), toBuffer.data(), GL_STATIC_DRAW);
-			buffersSizes.push_back(toBuffer.size()/3); // dividimos por 3 porque cada ponto tem 3 coordenadas
+			buffersSizes.push_back(toBuffer.size()/3); 
 		}
 
 		List filhos = getChildren(groups);
@@ -136,7 +139,7 @@ void executeTransformations(List transforms, int *index){
 					float pos[3], deriv[3], y[3], z[3], rot[16];
 					vector<vector<float>> points = translatePoints(t);
 					getGlobalCatmullRomPoint(NOW/t_time,points,pos,deriv);
-					drawCatmullRomCurve(points); // DEBUG
+					if (showCurves) drawCatmullRomCurve(points);
 					glTranslatef(pos[0],pos[1],pos[2]);
 
 					if(transformAlign(t)){
@@ -310,6 +313,10 @@ void keyProc(unsigned char key, int x, int y) {
 		
 		case('x'):
 			show_eixos = !show_eixos;
+			break;
+
+		case 'c':
+			showCurves = !showCurves;
 			break;
 
 		default:

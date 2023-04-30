@@ -1,11 +1,12 @@
 from sys import argv
 import random
 from math import cos, sin, sqrt, pi
+import numpy as np
 
 if(len(argv) < 6):
     print("Insira os seguintes argumentos por ordem:")
     print(" 1) Seed para os números aleatórios")
-    print(" 2) Raio do cometa")
+    print(" 2) \"Raio\" do cometa")
     print(" 3) Altura máxima das irregularidades do cometa")
     print(" 4) Slices do cometa (em termos de patches)")
     print(" 5) Stacks do cometa (em termos de patches)")
@@ -24,6 +25,17 @@ def pontoSph(alpha: float, beta: float, radius: float):
             radius * sin(beta),
             radius * cos(beta) * cos(alpha))
 
+def rodaPonto(ponto: tuple, alpha: float):
+    Rot =  np.array([[ cos(alpha), 0, sin(alpha)],
+                     [ 0,          1,          0],
+                     [-sin(alpha), 0, cos(alpha)]])
+    (x,y,z) = ponto
+    p = np.dot(Rot,np.array([[x],[y],[z]]))
+    return (p[0][0], p[1][0], p[2][0])
+
+def rodaPontos(pontos: list, alpha: float):
+    return [rodaPonto(ponto,alpha) for ponto in pontos]
+
 def irregularidade(ponto: tuple):
     (x,y,z) = ponto
     norma = sqrt(x*x + y*y + z*z)
@@ -34,10 +46,10 @@ def irregularidade(ponto: tuple):
 
 def cometPatch(alpha: float, beta: float, a_delta: float, b_delta: float, radius: float):
     patch = [
-        (alpha,beta,radius),(alpha,beta+b_delta,radius),(alpha,beta+2*b_delta,radius),(alpha,beta+3*b_delta,radius),
-        (alpha+a_delta,beta,radius),(alpha+a_delta,beta+b_delta,radius),(alpha+a_delta,beta+2*b_delta,radius),(alpha+a_delta,beta+3*b_delta,radius),
-        (alpha+2*a_delta,beta,radius),(alpha+2*a_delta,beta+b_delta,radius),(alpha+2*a_delta,beta+2*b_delta,radius),(alpha+2*a_delta,beta+3*b_delta,radius),
-        (alpha+3*a_delta,beta,radius),(alpha+3*a_delta,beta+b_delta,radius),(alpha+3*a_delta,beta+2*b_delta,radius),(alpha+3*a_delta,beta+3*b_delta,radius)
+        (alpha,beta,radius),(alpha+a_delta,beta,radius),(alpha+2*a_delta,beta,radius),(alpha+3*a_delta,beta,radius),
+        (alpha,beta+b_delta,radius),(alpha+a_delta,beta+b_delta,radius),(alpha+2*a_delta,beta+b_delta,radius),(alpha+3*a_delta,beta+b_delta,radius),
+        (alpha,beta+2*b_delta,radius),(alpha+a_delta,beta+2*b_delta,radius),(alpha+2*a_delta,beta+2*b_delta,radius),(alpha+3*a_delta,beta+2*b_delta,radius),
+        (alpha,beta+3*b_delta,radius),(alpha+a_delta,beta+3*b_delta,radius),(alpha+2*a_delta,beta+3*b_delta,radius),(alpha+3*a_delta,beta+3*b_delta,radius)
     ]
     return [pontoSph(x,y,z) for (x,y,z) in patch]
 
@@ -51,7 +63,7 @@ def cometPatches(slices: int, stacks: int, radius: float):
     for sl in range(slices):
         for st in range(stacks):
             patchUp = cometPatch(a_delta*sl,b_delta*st,a_delta/3,b_delta/3,radius)
-            patchDown = [(z,-y,x) for (x,y,z) in patchUp]
+            patchDown = rodaPontos([(z,-y,x) for (x,y,z) in patchUp],a_delta/2)
             for i in [5,6,9,10]:
                 patchUp[i] = irregularidade(patchUp[i])
                 patchDown[i] = irregularidade(patchDown[i])
