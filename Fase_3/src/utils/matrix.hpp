@@ -28,7 +28,7 @@ void multiplyMatrices(int, int, const float*, int, int, const float*, float*, in
 void buildRotMatrix(const float *x, const float *y, const float *z, float *m);
 
 /**
- * Calcula o producto cruzado (cross product) de um vector
+ * Calcula o producto cruzado (cross product) de dois vectores.
  * @param a Vector que é utilizado no cálculo
  * @param b Vector que é utilizado no cálculo
  * @param res Vector que armazena no resultado do producto.
@@ -46,6 +46,16 @@ void normalize(float *a);
  * @param a Vector cuja norma vai ser calculada.
 */
 float length(float *a);
+
+/**
+ * Calcula o produto escalar entre dois vectores.
+*/
+float dot(float* v1, float* v2);
+
+/**
+ * Calcula o ângulo entre dois vectores.
+*/
+float angleVectors(float* v1, float* v2);
 
 /**
  * Esta função é aquela p(t)

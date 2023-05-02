@@ -27,6 +27,10 @@ using namespace std;
 #define CYAN 0.0f,1.0f,1.0f
 #define WHITE 1.0f,1.0f,1.0f
 
+// Modos da câmara
+#define SPHERICAL true
+#define FREE false
+
 // Variáveis da câmara
 float alpha = M_PI / 4;
 float beta_ = M_PI / 4;
@@ -40,6 +44,7 @@ float lookAtz = 0.0f;
 float upx = 0.0f;
 float upy = 0.0f;
 float upz = 0.0f;
+bool cameraMode;
 
 // Variáveis de visualização
 int mode = GL_LINE;
@@ -59,7 +64,7 @@ int timebase;
 
 // Título na janela do engine
 unsigned int frame = 0;
-char title[64];
+char title[128];
 
 // Visualização das curvas de Catmull-Rom
 bool showCurves = false;
@@ -222,16 +227,65 @@ void drawTeapot(){
 	glPopMatrix();
 }
 
+void sphericalCamera(){
+	camx = radius*cos(beta_)*sin(alpha);
+	camy = radius*sin(beta_);
+	camz = radius*cos(beta_)*cos(alpha);
+}
+
+// Deslocações da câmara em modo FREE
+void walkLeft(){
+	float v_up[3] = {upx,upy,upz}, v_r[3], v_d[3] = {lookAtx-camx,lookAty-camy,lookAtz-camz};
+	cross(v_d,v_up,v_r); normalize(v_r); // r = d * up
+	normalize(v_d);
+	float k = -1.0f; // velocidade de deslocação
+	camx += k*v_r[0]; camy += k*v_r[1]; camz += k*v_r[2];
+	lookAtx = camx + v_d[0]; lookAty = camy + v_d[1]; lookAtz = camz + v_d[2]; 
+}
+
+void walkRight(){
+	float v_up[3] = {upx,upy,upz}, v_r[3], v_d[3] = {lookAtx-camx,lookAty-camy,lookAtz-camz};
+	cross(v_d,v_up,v_r); normalize(v_r); // r = d * up
+	normalize(v_d);
+	float k = 1.0f; // velocidade de deslocação
+	camx += k*v_r[0]; camy += k*v_r[1]; camz += k*v_r[2];
+	lookAtx = camx + v_d[0]; lookAty = camy + v_d[1]; lookAtz = camz + v_d[2];
+}
+
+void walkForward(){
+	float v_d[3] = {lookAtx-camx,lookAty-camy,lookAtz-camz};
+	normalize(v_d);
+	float k = 1.0f;
+	camx += k*v_d[0]; camy += k*v_d[1]; camz += k*v_d[2];
+	lookAtx = camx + v_d[0]; lookAty = camy + v_d[1]; lookAtz = camz + v_d[2];
+}
+
+void walkBackwards(){
+	float v_d[3] = {lookAtx-camx,lookAty-camy,lookAtz-camz};
+	normalize(v_d);
+	float k = -1.0f;
+	camx += k*v_d[0]; camy += k*v_d[1]; camz += k*v_d[2];
+	lookAtx = camx + v_d[0]; lookAty = camy + v_d[1]; lookAtz = camz + v_d[2];
+}
+
+
+void moveHead(){
+	lookAtx = camx + radius * cos(beta_) * sin(alpha);
+    lookAty = camy + radius * sin(beta_);
+    lookAtz = camz + radius * cos(beta_) * cos(alpha);
+}
+
+// Fim das deslocações da câmara em modo FREE
+
 void renderScene(void) {
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// set the camera
 	glLoadIdentity(); // super pop, faz refresh a tudo.
-	gluLookAt(radius*cos(beta_)*sin(alpha), radius*sin(beta_), radius*cos(beta_)*cos(alpha),
-		      lookAtx,lookAty,lookAtz,
-			  upx,upy,upz);
-
+	if (cameraMode == SPHERICAL)
+		sphericalCamera();
+	gluLookAt(camx,camy,camz, lookAtx,lookAty,lookAtz, upx,upy,upz);
 	// put drawing instructions here
 	// Desenha os eixos, caso a flag esteja ativa.
 	drawEixos();
@@ -245,7 +299,7 @@ void renderScene(void) {
 	int time = glutGet(GLUT_ELAPSED_TIME);
 	if (time - timebase > 1000) {
 		float fps = frame*1000.0f/(time-timebase);
-		snprintf(title,63,"FPS: %.2f",fps);
+		snprintf(title,127,"FPS: %.2f, PCAM: (%.2f,%.2f,%.2f), LA: (%.2f,%.2f,%.2f), alpha = %.2f, beta = %.2f, CamMode: %s",fps,camx,camy,camz,lookAtx,lookAty,lookAtz,alpha,beta_, cameraMode ? "SPH" : "FREE");
 		glutSetWindowTitle(title);
 		timebase = time;
 		frame = 0;
@@ -259,12 +313,38 @@ void specKeyProc(int key_code, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
 	switch (key_code){
 		case GLUT_KEY_UP:{
-			radius -= 5.0f;
+			if(cameraMode == SPHERICAL){
+				radius -= 5.0f;
+			}else{
+				beta_ +=  0.1f;
+				moveHead();
+			}
 			break;
 		}
 		
 		case GLUT_KEY_DOWN:{
-			radius += 5.0f;
+			if(cameraMode == SPHERICAL){
+				radius += 5.0f;
+			}else{
+				beta_ -= 0.1f;
+				moveHead();
+			}
+			break;
+		}
+
+		case GLUT_KEY_LEFT:{
+			if(cameraMode == FREE){
+				alpha += 0.1f;
+				moveHead();
+			}
+			break;
+		}
+
+		case GLUT_KEY_RIGHT:{
+			if(cameraMode == FREE){
+				alpha -= 0.1f;
+				moveHead();
+			}
 			break;
 		}
 
@@ -280,22 +360,38 @@ void keyProc(unsigned char key, int x, int y) {
 	switch (key)
 	{
 		case 'a': { // left
-			alpha -= 0.1f;
+			if(cameraMode == SPHERICAL){
+				alpha -= 0.1f;
+			}else{
+				walkLeft();
+			}
 			break;
 		}
 
 		case 'd': { // right
-			alpha += 0.1f;
+			if(cameraMode == SPHERICAL){
+				alpha += 0.1f;
+			} else {
+				walkRight();
+			}
 			break;
 		}
 
 		case 'w': { // up 
-			beta_ += beta_ <= 1.48f ? 0.1f : 0.0f;
+			if(cameraMode == SPHERICAL){
+				beta_ += beta_ <= 1.48f ? 0.1f : 0.0f;
+			} else {
+				walkForward();
+			}
 			break;
 		}
 
 		case 's': { // down
-			beta_ -= beta_ >= -1.48f ? 0.1f : 0.0f;
+			if(cameraMode == SPHERICAL){
+				beta_ -= beta_ >= -1.48f ? 0.1f : 0.0f;
+			}else{
+				walkBackwards();
+			}
 			break;
 		}
 
@@ -319,6 +415,42 @@ void keyProc(unsigned char key, int x, int y) {
 			showCurves = !showCurves;
 			break;
 
+		case 'v':{
+			if (cameraMode == FREE){
+				radius  = sqrt(camx*camx + camy*camy + camz*camz);
+				lookAtx = lookAty = lookAtz = 0.0f;
+				beta_ = asin(camy/radius);
+				alpha = atan(camx/camz);
+				sphericalCamera();
+				cameraMode = SPHERICAL;
+			} else { // cameraMode == SPHERICAL
+				float v_d[3] = {lookAtx-camx,lookAty-camy,lookAtz-camz}; normalize(v_d);
+				float aux[3] = {-camx, 0.0f, -camz};
+				alpha = M_PI+alpha;
+				beta_ = -beta_;// para evitar que o lookAt vá para um sítio completamente inesperado.
+				lookAtx = camx + cos(beta_) * sin(alpha);
+				lookAty = camy + sin(beta_);
+				lookAtz = camz + cos(beta_) * cos(alpha);
+				cameraMode = FREE;
+			}
+			break;
+		}
+
+		case '+':{
+			if(cameraMode == FREE){
+				camy += 1.0f;
+				lookAty += 1.0f;
+			}
+			break;
+		}
+
+		case '-':{
+			if(cameraMode == FREE){
+				camy -= 1.0f;
+				lookAty -= 1.0f;
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -354,6 +486,7 @@ int main(int argc, char *argv[]) {
 	upz 	= getZUp(configuration);
 	alpha = acos(camz/sqrt(camx*camx + camz*camz));
 	beta_ = asin(camy/radius);
+	cameraMode = SPHERICAL;
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
 	buffers = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada figura
 	// init GLUT and the window

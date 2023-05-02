@@ -17,9 +17,9 @@ Ponto newPonto(float x, float y, float z){
 }
 
 Ponto newPontoSph(float a, float b, float radius){
-    float z = radius * cos(b) * cos(a);
     float x = radius * cos(b) * sin(a);
     float y = radius * sin(b);
+    float z = radius * cos(b) * cos(a);
     
     return newPonto(x, y, z);
 }

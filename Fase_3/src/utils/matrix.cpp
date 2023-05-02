@@ -41,6 +41,18 @@ float length(float *a){
 	return sqrt(a[0]*a[0] + a[1] * a[1] + a[2] * a[2]);
 }
 
+float dot(float* v1, float* v2) {
+  	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+}
+
+float angleVectors(float* v1, float* v2) {
+  float dotProduct = dot(v1, v2);
+  float l1 = length(v1);
+  float l2 = length(v2);
+  return acos(dotProduct / (l1 * l2));
+}
+
+
 void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<float> p2, vector<float> p3, float *pos, float *deriv) {
 	// Matriz catmull-rom
 	float m[16] = {-0.5f,  1.5f, -1.5f,  0.5f,
