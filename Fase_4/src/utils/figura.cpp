@@ -3,22 +3,24 @@
 using namespace std;
 
 struct figura{
-    List pontos; // lista de pontos
+    vector<Ponto>* pontos;
+    vector<Ponto>* normais;
+    vector<Ponto>* textCoords;
 };
 
 Figura newEmptyFigura(){
     Figura r = (Figura)malloc(sizeof(struct figura));
     if(r != NULL){
-        r->pontos = newEmptyList();
+        r->pontos = new vector<Ponto>();
     }
     return r;
 }
 
-Figura newFigura(List pontos){
+Figura newFigura(vector<Ponto> pontos){
     Figura r = newEmptyFigura();
     if(r != NULL){
-        for(unsigned long i = 0; i < getListLength(pontos); i++){
-            addPonto(r, (Ponto)getListElemAt(pontos,i));
+        for(unsigned long i = 0; i < pontos.size(); i++){
+            addPonto(r, pontos[i]);
         }
     }
     return r;
@@ -26,7 +28,7 @@ Figura newFigura(List pontos){
 
 void addPonto(Figura f, Ponto p){
     if(f){
-        addValueList(f->pontos, p);
+        f->pontos->push_back(p);
     }
 }
 
@@ -34,14 +36,31 @@ void addPontoArr(Figura f, float* p){
     addPonto(f,newPonto(p[0],p[1],p[2]));
 }
 
+void addPontoNormalTextCoord(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord = NULL){
+    if (ponto) addPonto(f,ponto);
+    if (normal) f->normais->push_back(normal);
+    if (textCoord) f->textCoords->push_back(textCoord);
+}
+
+void addPontoNormalTextCoordArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
+    if(ponto) addPontoArr(f, ponto);
+    if(normal) {
+        f->normais->push_back(newPonto(normal[0],normal[1],normal[2]));
+    }
+    if(textCoord){
+        f->textCoords->push_back(newPonto(textCoord[0],textCoord[1],textCoord[2]));
+    }
+}
+
 void addPontos(Figura f, Figura toAdd){
     if(f){
-        List pontos = toAdd->pontos;
-        for(unsigned long i = 0; i < getListLength(pontos); i++){
-            addValueList(f->pontos,getListElemAt(pontos,i));
+        vector<Ponto>* pontos = toAdd->pontos;
+        for(Ponto p: *pontos){
+            addPonto(f,p);
         }
     }
 }
+
 
 void figuraToFile(Figura f, const char* path){
     if(!f){
@@ -53,13 +72,18 @@ void figuraToFile(Figura f, const char* path){
         printf("Ocorreu um erro na abertura do ficheiro '%s'\n", path);
         return;
     }
-    fprintf(file,"%lu\n",getListLength(f->pontos));
-    for(unsigned long i = 0; i < getListLength(f->pontos); i++){
-        Ponto p = (Ponto)getListElemAt(f->pontos, i);
-        fprintf(file, "%g,%g,%g\n", getX(p), getY(p), getZ(p));
+    vector<Ponto> pontos = *(f->pontos);
+    vector<Ponto> normais = *(f->normais);
+    vector<Ponto> textCoords = *(f->textCoords);
+    size_t len = pontos.size();
+    fprintf(file,"%lu\n",len);
+    for(unsigned long i = 0; i < len; i++){
+        Ponto p = pontos[i], normal = normais[i], textCoord = textCoords[i];
+        fprintf(file, "%g,%g,%g,%g,%g,%g,%g,%g\n", getX(p), getY(p), getZ(p), getX(normal), getY(normal), getZ(normal), getX(textCoord), getY(textCoord));
     }
     fclose(file);
 }
+
 
 Figura fileToFigura(const char* path){
     Figura f = newEmptyFigura();
@@ -68,29 +92,23 @@ Figura fileToFigura(const char* path){
         char buffer[1024];
         fgets(buffer, 1023, file);
         int vertices = atoi(buffer);
-        float x, y, z;
+        float xp, yp, zp, xn, yn, zn, xtc, ytc;
         for(int i = 0; i < vertices; i++){
             fgets(buffer, 1023, file);
-            sscanf(buffer, "%f,%f,%f", &x, &y, &z);
-            addPonto(f, newPonto(x, y, z));
+            sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f", &xp, &yp, &zp, &xn, &yn, &zn, &xtc, &ytc);
+            addPontoNormalTextCoord(f, newPonto(xp, yp, zp), newPonto(xn, yn, zn), newPonto(xtc, ytc, 0.0f));
         }
         fclose(file);
     }
     return f;
 }
 
-List getPontos(Figura f){
-    if(f){
-        return f->pontos;
-    }
-    return NULL;
-}
-
 vector<float> figuraToVector(Figura f){
     vector<float> result;
-    List pontos = f->pontos;
-    for(unsigned long i = 0; i < getListLength(pontos); i++){
-        Ponto p = (Ponto)getListElemAt(pontos,i);
+    vector<Ponto> pontos = *(f->pontos);
+    size_t len = pontos.size();
+    for(unsigned long i = 0; i < len; i++){
+        Ponto p = pontos[i];
         result.push_back(getX(p));
         result.push_back(getY(p));
         result.push_back(getZ(p));
@@ -100,17 +118,18 @@ vector<float> figuraToVector(Figura f){
 
 void deleteFigura(void* figura){
     if(figura){
-        for(unsigned long i = 0; i < getListLength(((Figura)figura)->pontos); i++){
-            deletePonto((Ponto)getListElemAt(((Figura)figura)->pontos,i));
+        Figura fig = (Figura)figura;
+        for(Ponto p: *(fig->pontos)){
+            deletePonto(p);
         }
-        deleteList(((Figura)figura)->pontos);
+        delete fig->pontos;
         free(figura);
     }
 }
 
 void deleteFigura2(void* figura){
     if(figura){
-        deleteList(((Figura)figura)->pontos);
+        delete ((Figura)figura)->pontos;
         free(figura);
     }
 }

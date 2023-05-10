@@ -12,19 +12,21 @@ typedef struct figura* Figura;
 
 Figura newEmptyFigura();
 
-Figura newFigura(List);
+Figura newFigura(vector<Ponto>);
 
 void addPonto(Figura, Ponto);
 
 void addPontoArr(Figura, float*);
+
+void addPontoNormalTextCoord(Figura f, Ponto, Ponto, Ponto);
+
+void addPontoNormalTextCoordArr(Figura f, float*, float*, float*);
 
 void addPontos(Figura, Figura);
 
 void figuraToFile(Figura, const char*);
 
 Figura fileToFigura(const char*);
-
-List getPontos(Figura);
 
 vector<float> figuraToVector(Figura);
 

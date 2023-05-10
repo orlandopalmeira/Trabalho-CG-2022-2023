@@ -11,7 +11,7 @@
             <scale x="20" y="20" z="20"/> <!-- Tamanho do Sol -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Sol -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Sol -->
         </models>
     </group>
     <group>
@@ -21,7 +21,7 @@
             <scale x="0.3" y="0.3" z="0.3"/> <!-- Tamanho de Mercúrio -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Mercúrio -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Mercúrio -->
         </models>
     </group>
     <group>
@@ -31,7 +31,7 @@
             <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho de Vénus -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Vénus -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Vénus -->
         </models>
     </group>
     <group>
@@ -44,7 +44,7 @@
                 <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho da Terra -->
             </transform>
             <models>
-                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Terra -->
+                <model file="../Fase_4/outputs/sphere.3d" /> <!-- Terra -->
             </models>
         </group>
         <group>
@@ -54,7 +54,7 @@
                 <scale x="0.1" y="0.1" z="0.1"/> <!-- Tamanho da Lua -->
             </transform>
             <models>
-                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Lua -->
+                <model file="../Fase_4/outputs/sphere.3d" /> <!-- Lua -->
             </models>
         </group>
     </group>
@@ -65,7 +65,7 @@
             <scale x="0.4" y="0.4" z="0.4"/> <!-- Tamanho de Marte -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Marte -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Marte -->
         </models>
     </group>
     <group>
@@ -75,7 +75,7 @@
             <scale x="6" y="6" z="6"/> <!-- Tamanho de Júpiter -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Júpiter -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Júpiter -->
         </models>
     </group>
     <group>
@@ -88,7 +88,7 @@
                 <scale x="5" y="5" z="5"/> <!-- Tamanho de Saturno -->
             </transform>
             <models>
-                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Saturno -->
+                <model file="../Fase_4/outputs/sphere.3d" /> <!-- Saturno -->
             </models>
         </group>
         <group>
@@ -97,7 +97,7 @@
                 <scale x="1" y="1" z="1"/> <!-- Tamanho do Anel -->
             </transform>
             <models>
-                <model file="../Fase_3/outputs/ring.3d" /> <!-- Anel de Saturno -->
+                <model file="../Fase_4/outputs/ring.3d" /> <!-- Anel de Saturno -->
             </models>
         </group>
     </group>
@@ -108,7 +108,7 @@
             <scale x="3" y="3" z="3"/> <!-- Tamanho de Úrano -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Úrano -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Úrano -->
         </models>
     </group>
     <group>
@@ -118,7 +118,7 @@
             <scale x="3" y="3" z="3"/> <!-- Tamanho de Neptuno -->
         </transform>
         <models>
-            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Neptuno -->
+            <model file="../Fase_4/outputs/sphere.3d" /> <!-- Neptuno -->
         </models>
     </group>
     <group>
@@ -150,7 +150,7 @@
             <rotate angle="-90" x="1" y="0" z="0"/>
         </transform>
         <models>
-            <model file="../Fase_3/outputs/teapot.3d" /> 
+            <model file="../Fase_4/outputs/teapot.3d" /> 
         </models>
     </group>
     <group>
@@ -180,7 +180,7 @@
             <scale x="2" y="2" z="2"/>
         </transform>
         <models>
-            <model file="../Fase_3/outputs/comet.3d" /> 
+            <model file="../Fase_4/outputs/comet.3d" /> 
         </models>
     </group>
 </world>

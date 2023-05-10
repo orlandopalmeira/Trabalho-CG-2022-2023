@@ -111,7 +111,6 @@ void drawEixos(){
 	}
 }
 
-//! Debug
 void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	float pos[3];
 	glBegin(GL_LINE_LOOP);
@@ -218,14 +217,6 @@ void changeSize(int w, int h) {
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
 }
-//! Debug
-void drawTeapot(){
-	glPushMatrix();
-	glColor3f(WHITE);
-	glTranslatef(-5,0,0);
-	glutWireTeapot(1);
-	glPopMatrix();
-}
 
 void sphericalCamera(){
 	camx = radius*cos(beta_)*sin(alpha);
@@ -267,7 +258,6 @@ void walkBackwards(){
 	camx += k*v_d[0]; camy += k*v_d[1]; camz += k*v_d[2];
 	lookAtx = camx + v_d[0]; lookAty = camy + v_d[1]; lookAtz = camz + v_d[2];
 }
-
 
 void moveHead(){
 	lookAtx = camx + radius * cos(beta_) * sin(alpha);
