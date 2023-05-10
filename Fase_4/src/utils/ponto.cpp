@@ -8,6 +8,8 @@ Ponto newEmptyPonto(){
     return newPonto(0.0f, 0.0f, 0.0f);
 }
 
+
+
 Ponto newPonto(float x, float y, float z){
     Ponto r = (Ponto)malloc(sizeof(struct ponto));
     if(r != NULL){
@@ -22,6 +24,11 @@ Ponto newPontoSph(float a, float b, float radius){
     float z = radius * cos(b) * cos(a);
     
     return newPonto(x, y, z);
+}
+
+// Recebe um array com três elementos.
+Ponto newPontoArr(float* p){
+    return newPonto(p[0], p[1], p[2]);
 }
 
 float getX(Ponto p){

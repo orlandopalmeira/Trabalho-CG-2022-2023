@@ -21,27 +21,42 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         float arrx[4] = {x1, x2, x3, x4};
         float arrz[4] = {z1, z2, z3, z4};
 
-        // float arrx[4] = {x1,x3,x2,x4};
-        // float arrz[4] = {z1,z3,z2,z4};
+        // Normal virada para cima (z = 1)
+        float normal[] = {0.0f ,0.0f, 1.0f};
+
+        // Texture coordinates
+        float texDelta = 1.0f / divisions;
+        //! Não está definida a inversão disto
+        float arrxTex[4] = {0, 1-texDelta, 1-texDelta, 1-texDelta};
+        float arrzTex[4] = {1, 1         , 1         , 1-texDelta};
+
         if (baixo == 1){
+            // float arrx[4] = {x1,x3,x2,x4};
+            // float arrz[4] = {z1,z3,z2,z4};
             arrx[1] = x3;
             arrx[2] = x2;
             arrz[1] = z3;
             arrz[2] = z2;
+
+            // Vira a normal para baixo (z = -1)
+            normal[0] = 0.0f;
+            normal[1] = 0.0f;
+            normal[2] = -1.0f;
         }
 
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPonto(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]));
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
+                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[0], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[2] + coluna * texDelta, arrzTex[2], 0) );
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]));
-                addPonto(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]));
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[3], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[2], 0) );
             }
             arrz[0] += div_side;arrz[1] += div_side;arrz[2] += div_side;arrz[3] += div_side;
+            arrzTex[0] += texDelta;arrzTex[1] += texDelta;arrzTex[2] += texDelta;arrzTex[3] += texDelta;
         }
     }
     return plano;
