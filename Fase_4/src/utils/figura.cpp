@@ -11,11 +11,14 @@ struct figura{
 Figura newEmptyFigura(){
     Figura r = (Figura)malloc(sizeof(struct figura));
     if(r != NULL){
-        r->pontos = new vector<Ponto>();
+        r->pontos     = new vector<Ponto>();
+        r->normais    = new vector<Ponto>();
+        r->textCoords = new vector<Ponto>();
     }
     return r;
 }
 
+// Argumento recebe apenas o array de posiçoes
 Figura newFigura(vector<Ponto> pontos){
     Figura r = newEmptyFigura();
     if(r != NULL){
@@ -26,22 +29,26 @@ Figura newFigura(vector<Ponto> pontos){
     return r;
 }
 
+// Recebe uma struct Ponto para adicionar ao array das posições.
 void addPonto(Figura f, Ponto p){
     if(f){
         f->pontos->push_back(p);
     }
 }
 
+// Recebe uma array de 3 valores que constituem o ponto a adicionar.
 void addPontoArr(Figura f, float* p){
     addPonto(f,newPonto(p[0],p[1],p[2]));
 }
 
+// Recebe 3 Pontos para adicionar aos respetivos arrays de valores
 void addPontoNormalTextCoord(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord = NULL){
     if (ponto) addPonto(f,ponto);
     if (normal) f->normais->push_back(normal);
     if (textCoord) f->textCoords->push_back(textCoord);
 }
 
+// Recebe 3 pontos, no formato de array, para adicionar aos respetivos arrays de valores
 void addPontoNormalTextCoordArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
     if(ponto) addPontoArr(f, ponto);
     if(normal) {
@@ -52,6 +59,7 @@ void addPontoNormalTextCoordArr(Figura f, float *ponto = NULL, float* normal = N
     }
 }
 
+//! Esta função não está atualizada tendo em conta os novos vetores de normais e textura
 void addPontos(Figura f, Figura toAdd){
     if(f){
         vector<Ponto>* pontos = toAdd->pontos;
