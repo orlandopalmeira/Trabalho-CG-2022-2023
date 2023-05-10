@@ -1,0 +1,186 @@
+<world>
+    <window width="1920" height="1080" />
+    <camera>
+        <position x="60" y="70" z="110" />
+        <lookAt x="0" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+        <projection fov="30" near="1" far="1000" />
+    </camera>
+    <group>
+        <transform>
+            <scale x="20" y="20" z="20"/> <!-- Tamanho do Sol -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Sol -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time="1" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Mercúrio-->
+            <translate x="24" y="0" z="0"/>
+            <scale x="0.3" y="0.3" z="0.3"/> <!-- Tamanho de Mercúrio -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Mercúrio -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time="2.57" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Vénus-->
+            <translate x="29" y="0" z="0"/>
+            <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho de Vénus -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Vénus -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time="4.2" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol da Terra-->
+            <translate x="34" y="0" z="0"/>
+        </transform>
+        <group>
+            <transform>
+                <scale x="0.5" y="0.5" z="0.5"/> <!-- Tamanho da Terra -->
+            </transform>
+            <models>
+                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Terra -->
+            </models>
+        </group>
+        <group>
+            <transform>
+                <rotate time="0.5" x="0" y="1" z="0"/>
+                <translate x="0" y="0" z="1"/> <!-- Distância da Lua à Terra -->
+                <scale x="0.1" y="0.1" z="0.1"/> <!-- Tamanho da Lua -->
+            </transform>
+            <models>
+                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Lua -->
+            </models>
+        </group>
+    </group>
+    <group>
+        <transform>
+            <rotate time="7.88" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Marte-->
+            <translate x="39" y="0" z="0"/>
+            <scale x="0.4" y="0.4" z="0.4"/> <!-- Tamanho de Marte -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Marte -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time ="20" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Júpiter-->
+            <translate x="49" y="0" z="0"/>
+            <scale x="6" y="6" z="6"/> <!-- Tamanho de Júpiter -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Júpiter -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time="25" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Saturno-->
+            <translate x="66" y="0" z="0"/>
+        </transform>
+        <group>
+            <transform>
+                <scale x="5" y="5" z="5"/> <!-- Tamanho de Saturno -->
+            </transform>
+            <models>
+                <model file="../Fase_3/outputs/sphere.3d" /> <!-- Saturno -->
+            </models>
+        </group>
+        <group>
+            <transform>
+                <rotate angle ="20" x="1" y="0" z="1"/> <!-- Ângulo de rotação do anel de Saturno -->
+                <scale x="1" y="1" z="1"/> <!-- Tamanho do Anel -->
+            </transform>
+            <models>
+                <model file="../Fase_3/outputs/ring.3d" /> <!-- Anel de Saturno -->
+            </models>
+        </group>
+    </group>
+    <group>
+        <transform>
+            <rotate time ="40" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Urano-->
+            <translate x="80" y="0" z="0"/>
+            <scale x="3" y="3" z="3"/> <!-- Tamanho de Úrano -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Úrano -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate time ="55" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Neptuno-->
+            <translate x="90" y="0" z="0"/>
+            <scale x="3" y="3" z="3"/> <!-- Tamanho de Neptuno -->
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/sphere.3d" /> <!-- Neptuno -->
+        </models>
+    </group>
+    <group>
+        <transform>
+            <rotate angle="15" x="0" y="0" z="1"/><!-- Serve para a trajetória do teapot não ficar paralela ao plano XZ -->
+            <translate time="7" align="True">
+                <!-- Trajetória elíptica do teapot -->
+                <point x="57.0633910" y="0.0000000" z="-9.2705098"/>
+                <point x="48.5410197" y="0.0000000" z="-17.6335576"/>
+                <point x="35.2671151" y="0.0000000" z="-24.2705098"/>
+                <point x="18.5410197" y="0.0000000" z="-28.5316955"/>
+                <point x="-0.0000000" y="0.0000000" z="-30.0000000"/>
+                <point x="-18.5410197" y="0.0000000" z="-28.5316955"/>
+                <point x="-35.2671151" y="0.0000000" z="-24.2705098"/>
+                <point x="-48.5410197" y="0.0000000" z="-17.6335576"/>
+                <point x="-57.0633910" y="0.0000000" z="-9.2705098"/>
+                <point x="-60.0000000" y="0.0000000" z="0.0000000"/>
+                <point x="-57.0633910" y="0.0000000" z="9.2705098"/>
+                <point x="-48.5410197" y="0.0000000" z="17.6335576"/>
+                <point x="-35.2671151" y="0.0000000" z="24.2705098"/>
+                <point x="-18.5410197" y="0.0000000" z="28.5316955"/>
+                <point x="0.0000000" y="0.0000000" z="30.0000000"/>
+                <point x="18.5410197" y="0.0000000" z="28.5316955"/>
+                <point x="35.2671151" y="0.0000000" z="24.2705098"/>
+                <point x="48.5410197" y="0.0000000" z="17.6335576"/>
+                <point x="57.0633910" y="0.0000000" z="9.2705098"/>
+                <point x="60.0000000" y="0.0000000" z="0.0000000"/>
+            </translate>
+            <rotate angle="-90" x="1" y="0" z="0"/>
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/teapot.3d" /> 
+        </models>
+    </group>
+    <group>
+        <transform>
+            <translate time="7" align="True">
+                <point x="57.0633910" y="-1.7633558" z="-18.5410197"/>
+                <point x="48.5410197" y="2.8531695" z="-35.2671151"/>
+                <point x="35.2671151" y="-2.8531695" z="-48.5410197"/>
+                <point x="18.5410197" y="1.7633558" z="-57.0633910"/>
+                <point x="-0.0000000" y="-0.0000000" z="-60.0000000"/>
+                <point x="-18.5410197" y="-1.7633558" z="-57.0633910"/>
+                <point x="-35.2671151" y="2.8531695" z="-48.5410197"/>
+                <point x="-48.5410197" y="-2.8531695" z="-35.2671151"/>
+                <point x="-57.0633910" y="1.7633558" z="-18.5410197"/>
+                <point x="-60.0000000" y="-0.0000000" z="0.0000000"/>
+                <point x="-57.0633910" y="-1.7633558" z="18.5410197"/>
+                <point x="-48.5410197" y="2.8531695" z="35.2671151"/>
+                <point x="-35.2671151" y="-2.8531695" z="48.5410197"/>
+                <point x="-18.5410197" y="1.7633558" z="57.0633910"/>
+                <point x="0.0000000" y="-0.0000000" z="60.0000000"/>
+                <point x="18.5410197" y="-1.7633558" z="57.0633910"/>
+                <point x="35.2671151" y="2.8531695" z="48.5410197"/>
+                <point x="48.5410197" y="-2.8531695" z="35.2671151"/>
+                <point x="57.0633910" y="1.7633558" z="18.5410197"/>
+                <point x="60.0000000" y="0.0000000" z="0.0000000"/>
+            </translate>
+            <scale x="2" y="2" z="2"/>
+        </transform>
+        <models>
+            <model file="../Fase_3/outputs/comet.3d" /> 
+        </models>
+    </group>
+</world>
