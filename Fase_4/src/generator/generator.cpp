@@ -50,13 +50,13 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[0], 0) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1], 0) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[2] + coluna * texDelta, arrzTex[2], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[0]) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[2] + coluna * texDelta, arrzTex[2]) );
                 // Segundo triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1], 0) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[3], 0) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[2], 0) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[3]) );
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto(arrxTex[0] + coluna * texDelta, arrzTex[2]) );
             }
             arrz[0] += div_side;arrz[1] += div_side;arrz[2] += div_side;arrz[3] += div_side;
             arrzTex[0] += texDelta;arrzTex[1] += texDelta;arrzTex[2] += texDelta;arrzTex[3] += texDelta;

@@ -7,7 +7,7 @@ typedef struct ponto* Ponto;
 
 Ponto newEmptyPonto();
 
-Ponto newPonto(float x, float y, float z);
+Ponto newPonto(float x, float y, float z = 0.0f);
 
 Ponto newPontoSph(float a, float b, float radius);
 
