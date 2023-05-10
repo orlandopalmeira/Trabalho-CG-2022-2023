@@ -21,8 +21,8 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         float arrx[4] = {x1, x2, x3, x4};
         float arrz[4] = {z1, z2, z3, z4};
 
-        // Normal virada para cima (z = 1)
-        float normal[] = {0.0f ,0.0f, 1.0f};
+        // Normal virada para cima (y = 1)
+        float normal[] = {0.0f ,1.0f, 0.0f};
 
         // Texture coordinates
         float texDelta = 1.0f / divisions;
@@ -37,10 +37,8 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
             arrz[1] = z3;
             arrz[2] = z2;
 
-            // Vira a normal para baixo (z = -1)
-            normal[0] = 0.0f;
-            normal[1] = 0.0f;
-            normal[2] = -1.0f;
+            // Vira a normal para baixo (y = -1)
+            normal[1] = -1.0f;
 
             arrxTex[1] = texDelta;
             arrxTex[2] = 0;
