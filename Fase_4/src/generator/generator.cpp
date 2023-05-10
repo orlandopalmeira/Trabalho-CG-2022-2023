@@ -22,7 +22,7 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         float arrz[4] = {z1, z2, z3, z4};
 
         // Normal virada para cima (y = 1)
-        float normal[] = {0.0f ,1.0f, 0.0f};
+        float normal[3] = {0.0f ,1.0f, 0.0f};
 
         // Texture coordinates
         float texDelta = 1.0f / divisions;
@@ -30,19 +30,20 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         float arrzTex[4] = {1, 1-texDelta, 1       , 1-texDelta};
 
         if (baixo == 1){
-            // float arrx[4] = {x1,x3,x2,x4};
-            // float arrz[4] = {z1,z3,z2,z4};
+            // Faço a troca para que a ordem em que desenha o triangulo passe a ser 0 2 1 3 (imaginando a grelha ordenada).
+            // para que a regra da mão direita indique os triangulos para baixo.
             arrx[1] = x3;
-            arrx[2] = x2;
             arrz[1] = z3;
+            arrx[2] = x2;
             arrz[2] = z2;
 
             // Vira a normal para baixo (y = -1)
             normal[1] = -1.0f;
 
+            // Processo igual ao efetuado em cima.
             arrxTex[1] = texDelta;
-            arrxTex[2] = 0;
             arrzTex[1] = 1;
+            arrxTex[2] = 0;
             arrzTex[2] = 1 - texDelta;
         }
 
