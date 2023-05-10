@@ -77,14 +77,16 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f, int reverse = 
         float arrx[4] = {x1, x2, x3, x4};
         float arrz[4] = {z1, z2, z3, z4};
 
-        // float arrx[4] = {x1,x3,x2,x4};
-        // float arrz[4] = {z1,z3,z2,z4};
-        if (reverse == 1)
-        {
+        // Normal virada para o ponto com z = -1
+        float normal[3] = {0.0f ,0.0f, -1.0f};
+
+        if (reverse == 1){
             arrx[1] = x3;
             arrx[2] = x2;
             arrz[1] = z3;
             arrz[2] = z2;
+
+            normal[2] = 1.0f;
         }
 
         for (int linha = 0; linha < divisions; linha++)
@@ -120,17 +122,19 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
         float arrx[4] = {x1, x2, x3, x4};
         float arrz[4] = {z1, z2, z3, z4};
 
-        // float arrx[4] = {x1,x3,x2,x4};
-        // float arrz[4] = {z1,z3,z2,z4};
+        // Normal virada para o ponto com x = -1
+        float normal[3] = {-1.0f ,0.0f, 0.0f};
+
         if (reverse == 1){
             arrx[1] = x3;
             arrx[2] = x2;
             arrz[1] = z3;
             arrz[2] = z2;
+
+            normal[0] = 1.0f;
         }
 
-        for (int linha = 0; linha < divisions; linha++)
-        {
+        for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
                 addPonto(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]));
