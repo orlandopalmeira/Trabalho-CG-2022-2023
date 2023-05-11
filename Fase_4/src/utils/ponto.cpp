@@ -72,9 +72,9 @@ Ponto normalizePonto(Ponto p){
     Ponto novo = dupPonto(p);
     float x = getX(novo), y = getY(novo), z = getZ(novo);
     float l = sqrt(x*x + y*y + z*z);
-    p->x /= l;
-    p->y /= l;
-    p->z /= l;
+    novo->x /= l;
+    novo->y /= l;
+    novo->z /= l;
     return novo;
 }
 
