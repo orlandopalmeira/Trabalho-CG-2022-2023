@@ -66,6 +66,15 @@ void addPontos(Figura f, Figura toAdd){
         for(Ponto p: *pontos){
             addPonto(f,p);
         }
+        vector<Ponto>* pontosNormal = toAdd->normais;
+        for(Ponto p: *pontosNormal){
+            f->normais->push_back(p);
+        }
+        vector<Ponto>* pontosTex = toAdd->textCoords;
+        for(Ponto p: *pontosTex){
+            addPonto(f,p);
+            f->textCoords->push_back(p);
+        }
     }
 }
 

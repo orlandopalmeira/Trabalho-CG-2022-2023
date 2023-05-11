@@ -93,13 +93,13 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f, int reverse = 
         {
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPonto(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h));
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
+                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h));
-                addPonto(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h));
-                addPonto(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h));
+                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
             }
             arrz[0] += div_side;
             arrz[1] += div_side;
@@ -137,13 +137,13 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPonto(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]));
-                addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
-                addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
                 // Segundo triângulo do quadrado
-                addPonto(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]));
-                addPonto(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]));
-                addPonto(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]));
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPontoNormalTextCoord(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
             }
             arrz[0] += div_side;
             arrz[1] += div_side;
