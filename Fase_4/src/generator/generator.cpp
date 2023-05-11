@@ -158,8 +158,8 @@ Figura generateBox(int length, int divisions){
     if (box){// se deu NULL, é porque houve erros
         float dimension2 = (float)length / 2; //, div_side = (float)length/divisions;
         Figura faceCima, faceBaixo, faceLateral1, faceLateral2, faceLateral3, faceLateral4;
-        faceCima = generatePlaneXZ(length, divisions, dimension2, 0);
-        faceBaixo = generatePlaneXZ(length, divisions, -dimension2, 1);
+        faceCima = generatePlaneXZ(length, divisions, dimension2, 0);   //! vai ter de se criar uma nova funcao para isto devido à diferenca de texturas.
+        faceBaixo = generatePlaneXZ(length, divisions, -dimension2, 1); //! vai ter de se criar uma nova funcao para isto devido à diferenca de texturas.
         faceLateral1 = generatePlaneXY(length, divisions, -dimension2, 0);
         faceLateral2 = generatePlaneXY(length, divisions, dimension2, 1);
         faceLateral3 = generatePlaneYZ(length, divisions, -dimension2, 0);
