@@ -46,6 +46,10 @@ float getYUp(Config conf);
 
 float getZUp(Config conf);
 
+vector<Light> getLights(Config conf);
+
+size_t howManyLights(Config conf);
+
 Tree getTreeGroups(Config conf);
 
 List getGroupTransforms(Group group);

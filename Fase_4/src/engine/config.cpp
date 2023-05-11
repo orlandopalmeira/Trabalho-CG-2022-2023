@@ -287,6 +287,14 @@ float getZUp(Config conf){
     return conf->up[2];
 }
 
+vector<Light> getLights(Config conf){
+    return *(conf->lights);
+}
+
+size_t howManyLights(Config conf){
+    return conf->lights->size();
+}
+
 Tree getTreeGroups(Config conf){
     if(conf){
         return conf->groups;

@@ -114,6 +114,7 @@ void drawEixos(){
 	}
 }
 
+// Desenha a curva de catmull rom
 void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	float pos[3];
 	glBegin(GL_LINE_LOOP);
@@ -125,6 +126,7 @@ void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	glEnd();
 }
 
+// Executa as trasnformações geométricas de uma certa figura
 void executeTransformations(List transforms, int *index){
 	if(transforms){
 		for(unsigned long i = 0; i < getListLength(transforms); i++){
@@ -170,6 +172,7 @@ void executeTransformations(List transforms, int *index){
 	}
 }
 
+// Desenha todos os groups do XML
 void drawGroups(Tree groups, int* index){
 	if(groups){
 		glPushMatrix(); // guarda o estado dos eixos
@@ -193,6 +196,51 @@ void drawGroups(Tree groups, int* index){
             drawGroups(next,index);
         }
 		glPopMatrix(); // retorna ao respetivo estado anterior dos eixos.
+	}
+}
+
+// Devolve a constante GL_LIGHT(i) dado o seu índice
+int gl_light(int i){
+	switch(i){
+		case 0: return GL_LIGHT0;
+		case 1: return GL_LIGHT1;
+		case 2: return GL_LIGHT2;
+		case 3: return GL_LIGHT3;
+		case 4: return GL_LIGHT4;
+		case 5: return GL_LIGHT5;
+		case 6: return GL_LIGHT6;
+		case 7: return GL_LIGHT7;
+	}
+	return -1;
+}
+
+void executeLights(vector<Light>* lights){
+	vector<Light> luzes = *lights;
+	for(int i = 0; i < luzes.size(); i++){
+		Light luz = luzes[i];
+		vector<float> lPos = getLightPos(luz); lPos.push_back(1.0f);
+		vector<float> lDir = getLightDir(luz); lPos.push_back(0.0f);
+		float cutoff = getLightCutoff(luz);
+
+		switch(getLightType(luz)){
+			case 'p':{
+				glLightfv(gl_light(i), GL_POSITION, lPos.data());
+				break;
+			}
+
+			case 'd':{
+				glLightfv(gl_light(i), GL_POSITION, lDir.data());
+				break;
+			}
+
+			case 's':{
+				glLightfv(gl_light(i), GL_POSITION, lPos.data());
+				glLightfv(gl_light(i), GL_SPOT_DIRECTION, lDir.data());
+				glLightf(gl_light(i), GL_SPOT_CUTOFF, cutoff);
+				glLightf(gl_light(i), GL_SPOT_EXPONENT, 0.0); //! Não sei se pode ser assim!!!
+				break;
+			}
+		}
 	}
 }
 
@@ -221,6 +269,7 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+// Deslocação da câmara no modo SPHERICAL
 void sphericalCamera(){
 	camx = radius*cos(beta_)*sin(alpha);
 	camy = radius*sin(beta_);
@@ -267,7 +316,6 @@ void moveHead(){
     lookAty = camy + radius * sin(beta_);
     lookAtz = camz + radius * cos(beta_) * cos(alpha);
 }
-
 // Fim das deslocações da câmara em modo FREE
 
 void renderScene(void) {
@@ -279,7 +327,6 @@ void renderScene(void) {
 	if (cameraMode == SPHERICAL)
 		sphericalCamera();
 	gluLookAt(camx,camy,camz, lookAtx,lookAty,lookAtz, upx,upy,upz);
-	// put drawing instructions here
 	// Desenha os eixos, caso a flag esteja ativa.
 	drawEixos();
 	// figuras
@@ -450,6 +497,35 @@ void keyProc(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
+void init(){
+	glewInit();
+	// OpenGL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_VERTEX_ARRAY);
+	// Iluminação
+	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
+		if(howManyLights(configuration) > 8){
+			printf("Número de luzes definidas superior a 8\n");
+			exit(1);
+		}
+		glEnable(GL_LIGHTING); 
+		for(int i = 0; i < howManyLights(configuration); i++){
+			glEnable(gl_light(i));
+		}
+	}
+	// Fim iluminação
+	glPolygonMode(GL_FRONT, GL_LINE);
+	// Cria os buffers
+	glGenBuffers(figCount, buffers);
+	// Carrega os dados para os buffers
+	int index = 0; // serve para seleccionar o buffer que vai ser escrito
+	loadBuffersData(getTreeGroups(configuration),&index);
+	// Cálculo do tempo
+	timebase = glutGet(GLUT_ELAPSED_TIME);
+	init_time = NOW;
+}
+
 int main(int argc, char *argv[]) {
 
 	if (argc < 2){
@@ -494,27 +570,13 @@ int main(int argc, char *argv[]) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
-
 	
 	// put here the registration of the keyboard callbacks (por enquanto só mexem na camara como forma de debug)
 	glutKeyboardFunc(keyProc);
 	glutSpecialFunc(specKeyProc);
 
 
-	glewInit();
-	// OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_VERTEX_ARRAY);
-	glPolygonMode(GL_FRONT, GL_LINE);
-	// Cria os buffers
-	glGenBuffers(figCount, buffers);
-	// Carrega os dados para os buffers
-	int index = 0; // serve para seleccionar o buffer que vai ser escrito
-	loadBuffersData(getTreeGroups(configuration),&index);
-	// Cálculo do tempo
-	timebase = glutGet(GLUT_ELAPSED_TIME);
-	init_time = NOW;
+	init();
 	// enter GLUT's main cycle
 	glutMainLoop();
 	
