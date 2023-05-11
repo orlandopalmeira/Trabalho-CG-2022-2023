@@ -18,7 +18,7 @@ void addPonto(Figura, Ponto);
 
 void addPontoArr(Figura, float*);
 
-void addPNT(Figura f, Ponto, Ponto, Ponto);
+void addPNT(Figura f, Ponto, Ponto, Ponto textCoord = NULL);
 
 void addSpherePoint(Figura f, Ponto, Ponto textCoord = NULL);
 

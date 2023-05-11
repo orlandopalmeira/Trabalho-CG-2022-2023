@@ -277,13 +277,15 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         float alpha = 2.0f * M_PI / slices;
         float start = 0.0f;
         Ponto basePoints[slices] = {};
+        float normal[3] = {0.0f, -1.0f, 0.0f};
+
         for (int i = 0; i < slices; i++){
             Ponto np = newPonto(radius * sin(start), 0.0f, radius * cos(start));
             basePoints[i] = np;
-            addPonto(cone, np);
-            addPonto(cone, newPonto(0.0f, 0.0f, 0.0f));
+            addPNT(cone, np, newPontoArr(normal));
+            addPNT(cone, newPonto(0.0f, 0.0f, 0.0f), newPontoArr(normal));
             start += alpha;
-            addPonto(cone, newPonto(radius * sin(start), 0.0f, radius * cos(start)));
+            addPNT(cone, newPonto(radius * sin(start), 0.0f, radius * cos(start)), newPontoArr(normal));
         }
 
         // Tratamento das faces laterais

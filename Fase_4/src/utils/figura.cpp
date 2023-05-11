@@ -43,7 +43,7 @@ void addPontoArr(Figura f, float* p){
 
 
 // Recebe 3 Pontos para adicionar aos respetivos arrays de valores.
-void addPNT(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord = NULL){
+void addPNT(Figura f, Ponto ponto, Ponto normal, Ponto textCoord){
     if (ponto) addPonto(f,ponto);
     if (normal) f->normais->push_back(normal);
     if (textCoord) f->textCoords->push_back(textCoord);
@@ -55,7 +55,7 @@ void addPNT(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord =
 // Calcula automaticamente a normal do ponto, tendo em conta que é uma esfera.
 void addSpherePoint(Figura f, Ponto ponto, Ponto textCoord){
     addPonto(f,ponto);
-    
+
     // Cálculo da normal
     Ponto normal = normalizePonto(ponto);
     f->normais->push_back(normal);
