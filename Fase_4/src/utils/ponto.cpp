@@ -29,6 +29,10 @@ Ponto newPontoArr(float* p){
     return newPonto(p[0], p[1], p[2]);
 }
 
+Ponto newPonto2f(float x, float y){
+    return newPonto(x, y, 0);
+}
+
 float getX(Ponto p){
     if(p){
         return p->x;

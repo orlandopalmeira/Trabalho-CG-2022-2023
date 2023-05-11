@@ -87,7 +87,7 @@ void figuraToFile(Figura f, const char* path){
     fprintf(file,"%lu\n",len);
     for(unsigned long i = 0; i < len; i++){
         Ponto p = pontos[i], normal = normais[i], textCoord = textCoords[i];
-        fprintf(file, "%g,%g,%g,%g,%g,%g,%g,%g\n", getX(p), getY(p), getZ(p), getX(normal), getY(normal), getZ(normal), getX(textCoord), getY(textCoord));
+        fprintf(file, "%g,%g,%g; %g,%g,%g; %g,%g\n", getX(p), getY(p), getZ(p), getX(normal), getY(normal), getZ(normal), getX(textCoord), getY(textCoord));
     }
     fclose(file);
 }
@@ -103,7 +103,7 @@ Figura fileToFigura(const char* path){
         float xp, yp, zp, xn, yn, zn, xtc, ytc;
         for(int i = 0; i < vertices; i++){
             fgets(buffer, 1023, file);
-            sscanf(buffer, "%f,%f,%f,%f,%f,%f,%f,%f", &xp, &yp, &zp, &xn, &yn, &zn, &xtc, &ytc);
+            sscanf(buffer, "%f,%f,%f; %f,%f,%f; %f,%f", &xp, &yp, &zp, &xn, &yn, &zn, &xtc, &ytc);
             addPontoNormalTextCoord(f, newPonto(xp, yp, zp), newPonto(xn, yn, zn), newPonto(xtc, ytc, 0.0f));
         }
         fclose(file);

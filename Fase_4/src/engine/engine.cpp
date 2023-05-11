@@ -97,15 +97,18 @@ void drawEixos(){
 		glBegin(GL_LINES);
 		// X axis in red
 		glColor3f(RED);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
+		// glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 		glVertex3f(100.0f, 0.0f, 0.0f);
 		// Y Axis in Green
 		glColor3f(GREEN);
-		glVertex3f(0.0f, -100.0f, 0.0f);
+		// glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 		glVertex3f(0.0f, 100.0f, 0.0f);
 		// Z Axis in Blue
 		glColor3f(BLUE);
-		glVertex3f(0.0f, 0.0f, -100.0f);
+		// glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
 		glVertex3f(0.0f, 0.0f, 100.0f);
 		glEnd();
 	}
@@ -482,7 +485,7 @@ int main(int argc, char *argv[]) {
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
-	glutInitWindowPosition(100,100);
+	glutInitWindowPosition(1200,300);
 	//glutInitWindowSize(800,800);
 	glutInitWindowSize(getWindowWidth(configuration), getWindowHeight(configuration));
 	glutCreateWindow("Fase 3");
