@@ -50,13 +50,13 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]), newPontoArr(normal), newPonto2f(arrxTex[0] + coluna * texDelta, arrzTex[0]) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto2f(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto2f(arrxTex[2] + coluna * texDelta, arrzTex[2]) );
+                addPNT(plano, newPonto(arrx[0] + coluna * div_side, h, arrz[0]), newPontoArr(normal), newPonto2f(arrxTex[0] + coluna * texDelta, arrzTex[0]) );
+                addPNT(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto2f(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
+                addPNT(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto2f(arrxTex[2] + coluna * texDelta, arrzTex[2]) );
                 // Segundo triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto2f(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]), newPontoArr(normal), newPonto2f(arrxTex[3] + coluna * texDelta, arrzTex[3]) );
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto2f(arrxTex[2] + coluna * texDelta, arrzTex[2]) );
+                addPNT(plano, newPonto(arrx[1] + coluna * div_side, h, arrz[1]), newPontoArr(normal), newPonto2f(arrxTex[1] + coluna * texDelta, arrzTex[1]) );
+                addPNT(plano, newPonto(arrx[3] + coluna * div_side, h, arrz[3]), newPontoArr(normal), newPonto2f(arrxTex[3] + coluna * texDelta, arrzTex[3]) );
+                addPNT(plano, newPonto(arrx[2] + coluna * div_side, h, arrz[2]), newPontoArr(normal), newPonto2f(arrxTex[2] + coluna * texDelta, arrzTex[2]) );
             }
             arrz[0] += div_side; arrz[1] += div_side; arrz[2] += div_side; arrz[3] += div_side; 
             arrzTex[0] -= texDelta; arrzTex[1] -= texDelta; arrzTex[2] -= texDelta; arrzTex[3] -= texDelta;
@@ -92,13 +92,13 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f, int reverse = 
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
+                addPNT(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
+                addPNT(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
+                addPNT(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 
                 // Segundo triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(arrx[1] + coluna * div_side, arrz[1], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(arrx[3] + coluna * div_side, arrz[3], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(arrx[2] + coluna * div_side, arrz[2], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
             }
             arrz[0] += div_side;
             arrz[1] += div_side;
@@ -136,13 +136,13 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f, int reverse = 
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[0] + coluna * div_side, arrz[0]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
                 // Segundo triângulo do quadrado
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
-                addPontoNormalTextCoord(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[1] + coluna * div_side, arrz[1]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[3] + coluna * div_side, arrz[3]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
+                addPNT(plano, newPonto(h, arrx[2] + coluna * div_side, arrz[2]), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord
             }
             arrz[0] += div_side;
             arrz[1] += div_side;
@@ -212,13 +212,13 @@ Figura generateSphere(int radius, int slices, int stacks){
             bDown = -(beta_diff / 2);
 
             // Criação da base
-            addPonto(sphere, newPontoSph(a1, bDown, radius)); 
-            addPonto(sphere, newPontoSph(a2, bDown, radius));
-            addPonto(sphere, newPontoSph(a1, bUp, radius));
+            addSpherePoint(sphere, newPontoSph(a1, bDown, radius)); 
+            addSpherePoint(sphere, newPontoSph(a2, bDown, radius));
+            addSpherePoint(sphere, newPontoSph(a1, bUp, radius));
 
-            addPonto(sphere, newPontoSph(a1, bUp, radius));
-            addPonto(sphere, newPontoSph(a2, bDown, radius));
-            addPonto(sphere, newPontoSph(a2, bUp, radius));
+            addSpherePoint(sphere, newPontoSph(a1, bUp, radius));
+            addSpherePoint(sphere, newPontoSph(a2, bDown, radius));
+            addSpherePoint(sphere, newPontoSph(a2, bUp, radius));
         }
 
         Ponto p1Up = newPontoSph(a1, bUp, radius), p1Up_ = p1Up;
@@ -229,41 +229,41 @@ Figura generateSphere(int radius, int slices, int stacks){
         for (int j = 0; j < stacks - 1; j++){
             // Construção da stack de cima
             // -- Triângulo da esquerda
-            addPonto(sphere, dupPonto(p1Up));
-            addPonto(sphere, dupPonto(p2Up));
+            addSpherePoint(sphere, dupPonto(p1Up));
+            addSpherePoint(sphere, dupPonto(p2Up));
             bUp += beta_diff;
             p1Up = newPontoSph(a1, bUp, radius);
-            addPonto(sphere, p1Up);
+            addSpherePoint(sphere, p1Up);
             // -- Triângulo da direita
-            addPonto(sphere, dupPonto(p1Up));
-            addPonto(sphere, dupPonto(p2Up));
+            addSpherePoint(sphere, dupPonto(p1Up));
+            addSpherePoint(sphere, dupPonto(p2Up));
             p2Up = newPontoSph(a2, bUp, radius);
-            addPonto(sphere, p2Up);
+            addSpherePoint(sphere, p2Up);
 
             // Construção da stack de baixo
             // -- Triângulo da direita
-            addPonto(sphere, dupPonto(p2Down));
-            addPonto(sphere, dupPonto(p1Down));
+            addSpherePoint(sphere, dupPonto(p2Down));
+            addSpherePoint(sphere, dupPonto(p1Down));
             bDown -= beta_diff;
             p2Down = newPontoSph(a2, bDown, radius);
-            addPonto(sphere, p2Down);
+            addSpherePoint(sphere, p2Down);
 
             // -- Triângulo da esquerda
-            addPonto(sphere, dupPonto(p2Down));
-            addPonto(sphere, dupPonto(p1Down));
+            addSpherePoint(sphere, dupPonto(p2Down));
+            addSpherePoint(sphere, dupPonto(p1Down));
             p1Down = newPontoSph(a1, bDown, radius);
-            addPonto(sphere, p1Down);
+            addSpherePoint(sphere, p1Down);
         }
 
         // Construção do triângulo final de cima
-        addPonto(sphere, dupPonto(p1Up));
-        addPonto(sphere, dupPonto(p2Up));
-        addPonto(sphere, newPonto(0.0f, radius, 0.0f));
+        addSpherePoint(sphere, dupPonto(p1Up));
+        addSpherePoint(sphere, dupPonto(p2Up));
+        addSpherePoint(sphere, newPonto(0.0f, radius, 0.0f));
         
         // Construção do triângulo final de baixo
-        addPonto(sphere, dupPonto(p2Down));
-        addPonto(sphere, dupPonto(p1Down));
-        addPonto(sphere, newPonto(0.0f, -radius, 0.0f));
+        addSpherePoint(sphere, dupPonto(p2Down));
+        addSpherePoint(sphere, dupPonto(p1Down));
+        addSpherePoint(sphere, newPonto(0.0f, -radius, 0.0f));
         deletePonto(p1Up_); deletePonto(p1Down_); // para efeitos de gestão de memória
         deletePonto(p2Up_); deletePonto(p2Down_); // para efeitos de gestão de memória
     }

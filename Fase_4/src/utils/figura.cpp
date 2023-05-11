@@ -41,15 +41,33 @@ void addPontoArr(Figura f, float* p){
     addPonto(f,newPonto(p[0],p[1],p[2]));
 }
 
-// Recebe 3 Pontos para adicionar aos respetivos arrays de valores
-void addPontoNormalTextCoord(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord = NULL){
+
+// Recebe 3 Pontos para adicionar aos respetivos arrays de valores.
+void addPNT(Figura f, Ponto ponto = NULL, Ponto normal = NULL, Ponto textCoord = NULL){
     if (ponto) addPonto(f,ponto);
     if (normal) f->normais->push_back(normal);
     if (textCoord) f->textCoords->push_back(textCoord);
+    else{
+        f->textCoords->push_back(newPonto2f(0,0));
+    }
+}
+
+// Calcula automaticamente a normal do ponto, tendo em conta que é uma esfera.
+void addSpherePoint(Figura f, Ponto ponto, Ponto textCoord){
+    addPonto(f,ponto);
+    
+    // Cálculo da normal
+    Ponto normal = normalizePonto(ponto);
+    f->normais->push_back(normal);
+
+    if (textCoord) f->textCoords->push_back(textCoord);
+    else{
+        f->textCoords->push_back(newPonto2f(0,0));
+    }
 }
 
 // Recebe 3 pontos, no formato de array, para adicionar aos respetivos arrays de valores
-void addPontoNormalTextCoordArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
+void addPNTArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
     if(ponto) addPontoArr(f, ponto);
     if(normal) {
         f->normais->push_back(newPonto(normal[0],normal[1],normal[2]));
@@ -111,7 +129,7 @@ Figura fileToFigura(const char* path){
         for(int i = 0; i < vertices; i++){
             fgets(buffer, 1023, file);
             sscanf(buffer, "%f,%f,%f; %f,%f,%f; %f,%f", &xp, &yp, &zp, &xn, &yn, &zn, &xtc, &ytc);
-            addPontoNormalTextCoord(f, newPonto(xp, yp, zp), newPonto(xn, yn, zn), newPonto(xtc, ytc, 0.0f));
+            addPNT(f, newPonto(xp, yp, zp), newPonto(xn, yn, zn), newPonto(xtc, ytc, 0.0f));
         }
         fclose(file);
     }

@@ -18,9 +18,11 @@ void addPonto(Figura, Ponto);
 
 void addPontoArr(Figura, float*);
 
-void addPontoNormalTextCoord(Figura f, Ponto, Ponto, Ponto);
+void addPNT(Figura f, Ponto, Ponto, Ponto);
 
-void addPontoNormalTextCoordArr(Figura f, float*, float*, float*);
+void addSpherePoint(Figura f, Ponto, Ponto textCoord = NULL);
+
+void addPNTArr(Figura f, float*, float*, float*);
 
 void addPontos(Figura, Figura);
 

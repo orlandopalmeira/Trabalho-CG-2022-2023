@@ -68,6 +68,16 @@ float distance(Ponto p1, Ponto p2){
     return std::sqrt(dx*dx + dy*dy + dz*dz);
 }
 
+Ponto normalizePonto(Ponto p){
+    Ponto novo = dupPonto(p);
+    float x = getX(novo), y = getY(novo), z = getZ(novo);
+    float l = sqrt(x*x + y*y + z*z);
+    p->x /= l;
+    p->y /= l;
+    p->z /= l;
+    return novo;
+}
+
 Ponto dupPonto(Ponto ponto){
     return newPonto(ponto->x, ponto->y, ponto->z);
 }
