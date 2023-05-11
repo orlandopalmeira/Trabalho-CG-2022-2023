@@ -54,9 +54,17 @@ int show_eixos = 0;
 Config configuration = NULL;
 
 // VBO's
+// modelos
 GLuint *buffers = NULL; // temos um buffer para cada figura
 vector<unsigned int> buffersSizes; // aqui guardamos o tamanho de cada buffer de cada figura
 unsigned int figCount = 0; // total de figuras existentes no ficheiro de configuração.
+// Normais
+GLuint *buffersN = NULL; // temos um buffer para cada normal
+vector<unsigned int> buffersNSizes; // aqui guardamos o tamanho de cada buffer de cada normal
+// Texturas
+// TODO
+
+// FIM dos VBO's
 
 // Controlo de tempo
 float init_time = 0.0f;
@@ -75,12 +83,19 @@ void loadBuffersData(Tree groups, int* index){
 		Group group = (Group)getRootValue(groups);
 		List models = getGroupModels(group);
 
-		for(unsigned long i = 0; i < getListLength(models); i++){
+		for(unsigned long i = 0; i < getListLength(models); i++, (*index)++){
 			Figura fig = (Figura)getListElemAt(models,i);
 			vector<float> toBuffer = figuraToVector(fig);
-			glBindBuffer(GL_ARRAY_BUFFER, buffers[(*index)++]);
+			vector<float> toNormals = figuraToNormals(fig);
+			// Vértices/pontos
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toBuffer.size(), toBuffer.data(), GL_STATIC_DRAW);
 			buffersSizes.push_back(toBuffer.size()/3); 
+			// Normais
+			glBindBuffer(GL_ARRAY_BUFFER, buffersN[*index]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toNormals.size(), toNormals.data(), GL_STATIC_DRAW);
+			buffersNSizes.push_back(toNormals.size()/3); 
+
 		}
 
 		List filhos = getChildren(groups);
@@ -93,6 +108,7 @@ void loadBuffersData(Tree groups, int* index){
 
 // Desenha os eixos, caso a flag esteja ativa.
 void drawEixos(){
+	glDisable(GL_LIGHTING);
 	if (show_eixos){
 		glBegin(GL_LINES);
 		// X axis in red
@@ -112,6 +128,7 @@ void drawEixos(){
 		glVertex3f(0.0f, 0.0f, 100.0f);
 		glEnd();
 	}
+	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
 // Desenha a curva de catmull rom
@@ -179,14 +196,28 @@ void drawGroups(Tree groups, int* index){
 
 		Group group = (Group)getRootValue(groups);
 		List transforms = getGroupTransforms(group);
-		unsigned long modelsCount = getListLength(getGroupModels(group));
+		List models = getGroupModels(group);
+		unsigned long modelsCount = getListLength(models);
 		executeTransformations(transforms,index);
 
 		// Desenha o conteúdo dos buffers
 		for(unsigned long i = 0; i < modelsCount; i++, (*index)++){
+			Figura model = (Figura)getListElemAt(models,i);
+			// Definição da cor do modelo/figura
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, getDiffuse(model).data());
+			glMaterialfv(GL_FRONT, GL_AMBIENT, getAmbient(model).data());
+			glMaterialfv(GL_FRONT, GL_SPECULAR, getSpecular(model).data());
+			glMaterialfv(GL_FRONT, GL_EMISSION, getEmissive(model).data());
+			glMaterialf(GL_FRONT, GL_SHININESS, getShininess(model));
+
+			// Vértices/pontos
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			glDrawArrays(GL_TRIANGLES, 0, buffersSizes[*index]);
+			// Normais
+			glBindBuffer(GL_ARRAY_BUFFER,buffersN[*index]);
+			glNormalPointer(GL_FLOAT,0,0);
+			glDrawArrays(GL_TRIANGLES, 0, buffersNSizes[*index]);
 		}
 
 		// Procede para fazer o mesmo nos nodos filhos. 
@@ -214,10 +245,10 @@ int gl_light(int i){
 	return -1;
 }
 
-void executeLights(vector<Light>* lights){
-	vector<Light> luzes = *lights;
-	for(int i = 0; i < luzes.size(); i++){
-		Light luz = luzes[i];
+void executeLights(){
+	vector<Light> lights = getLights(configuration);
+	for(int i = 0; i < lights.size(); i++){
+		Light luz = lights[i];
 		vector<float> lPos = getLightPos(luz); lPos.push_back(1.0f);
 		vector<float> lDir = getLightDir(luz); lPos.push_back(0.0f);
 		float cutoff = getLightCutoff(luz);
@@ -331,6 +362,7 @@ void renderScene(void) {
 	drawEixos();
 	// figuras
 	glColor3f(WHITE);
+	executeLights();
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	int index = 0; // serve para seleccionar o buffer que vai ser lido
 	drawGroups(getTreeGroups(configuration),&index);
@@ -498,13 +530,19 @@ void keyProc(unsigned char key, int x, int y) {
 }
 
 void init(){
+	float dark[4] = {0.2, 0.2, 0.2, 1.0};
+	float white[4] = {1.0, 1.0, 1.0, 1.0};
+	float black[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	glewInit();
 	// OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
+		glEnable(GL_RESCALE_NORMAL);
 		if(howManyLights(configuration) > 8){
 			printf("Número de luzes definidas superior a 8\n");
 			exit(1);
@@ -513,11 +551,13 @@ void init(){
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
 		}
+		float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 	}
 	// Fim iluminação
 	glPolygonMode(GL_FRONT, GL_LINE);
 	// Cria os buffers
-	glGenBuffers(figCount, buffers);
+	glGenBuffers(figCount*2, buffers); //! multiplicamos por 2 porque temos vértices + normais. Quando aplicarmos texturas, temos de multiplicar por 3.
 	// Carrega os dados para os buffers
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
@@ -558,6 +598,7 @@ int main(int argc, char *argv[]) {
 	cameraMode = SPHERICAL;
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
 	buffers = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada figura
+	buffersN = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada normal
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);

@@ -103,12 +103,39 @@ void getCameraInfoFromXML(Config conf, TiXmlElement* root){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
-void addModel(Tree tree, const char* model){
-    if(tree && model){
-        Figura figura = fileToFigura(model);
-        Group group = (Group)getRootValue(tree);
-        addValueList(group->models, figura);
+void addModel(Tree tree, TiXmlElement* model){
+    TiXmlElement* color = model->FirstChildElement("color"), *diffuse = NULL, *ambient = NULL, *specular = NULL, *emissive = NULL, *shininess = NULL;
+    TiXmlElement* texture = model->FirstChildElement("texture");
+    if(color){
+        diffuse = color->FirstChildElement("diffuse");
+        ambient = color->FirstChildElement("ambient");
+        specular = color->FirstChildElement("specular");
+        emissive = color->FirstChildElement("emissive");
+        shininess = color->FirstChildElement("shininess");
     }
+    const char* model_file = model->Attribute("file");
+
+    Figura figura = fileToFigura(model_file); // carrega os vértices, normais e textCoords
+    if(texture){
+        setTextureFile(figura, texture->Attribute("file"));
+    }
+    if(diffuse){
+        setDiffuse(figura,ATOF(diffuse->Attribute("R")),ATOF(diffuse->Attribute("G")),ATOF(diffuse->Attribute("B")));
+    }
+    if(ambient){
+        setAmbient(figura,ATOF(ambient->Attribute("R")),ATOF(ambient->Attribute("G")),ATOF(ambient->Attribute("B")));
+    }
+    if(specular){
+        setSpecular(figura,ATOF(specular->Attribute("R")),ATOF(specular->Attribute("G")),ATOF(specular->Attribute("B")));
+    }
+    if(emissive){
+        setEmissive(figura,ATOF(emissive->Attribute("R")),ATOF(emissive->Attribute("G")),ATOF(emissive->Attribute("B")));
+    }
+    if(shininess){
+        setShininess(figura,ATOF(shininess->Attribute("value")));    
+    }
+    Group group = (Group)getRootValue(tree);
+    addValueList(group->models, figura);
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
@@ -203,8 +230,7 @@ Tree parseGroups(TiXmlElement* group){
         TiXmlElement* models = group->FirstChildElement("models");
         if(models){
             for(TiXmlElement* m = models->FirstChildElement("model"); m; m = m->NextSiblingElement("model")){
-                const char* file_name = m->Attribute("file");
-                addModel(res,file_name);
+                addModel(res,m);
             }
         }
 
