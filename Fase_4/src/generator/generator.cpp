@@ -89,8 +89,7 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f, int reverse = 
             normal[2] = 1.0f;
         }
 
-        for (int linha = 0; linha < divisions; linha++)
-        {
+        for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
                 // Primeiro triângulo do quadrado
                 addPontoNormalTextCoord(plano, newPonto(arrx[0] + coluna * div_side, arrz[0], h), newPontoArr(normal), newPonto2f(0,0)); //! sem text coord 

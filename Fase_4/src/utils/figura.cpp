@@ -59,7 +59,6 @@ void addPontoNormalTextCoordArr(Figura f, float *ponto = NULL, float* normal = N
     }
 }
 
-//! Esta função não está atualizada tendo em conta os novos vetores de normais e textura
 void addPontos(Figura f, Figura toAdd){
     if(f){
         vector<Ponto>* pontos = toAdd->pontos;
@@ -72,7 +71,6 @@ void addPontos(Figura f, Figura toAdd){
         }
         vector<Ponto>* pontosTex = toAdd->textCoords;
         for(Ponto p: *pontosTex){
-            addPonto(f,p);
             f->textCoords->push_back(p);
         }
     }
@@ -131,6 +129,12 @@ vector<float> figuraToVector(Figura f){
         result.push_back(getZ(p));
     }
     return result;
+}
+
+int size(Figura f){
+    vector<Ponto> pontos = *(f->pontos);
+    size_t len = pontos.size();
+    return len;
 }
 
 void deleteFigura(void* figura){

@@ -30,6 +30,8 @@ Figura fileToFigura(const char*);
 
 vector<float> figuraToVector(Figura);
 
+int size(Figura f);
+
 void deleteFigura(void*);
 
 void deleteFigura2(void*);
