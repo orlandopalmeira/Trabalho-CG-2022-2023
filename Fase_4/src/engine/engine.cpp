@@ -530,31 +530,39 @@ void keyProc(unsigned char key, int x, int y) {
 }
 
 void init(){
-	float dark[4] = {0.2, 0.2, 0.2, 1.0};
-	float white[4] = {1.0, 1.0, 1.0, 1.0};
-	float black[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	glewInit();
-	// OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	
+	GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
+	GLfloat white[4] = {1.0, 1.0, 1.0, 1.0};
+	float black[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
-		glEnable(GL_RESCALE_NORMAL);
+		glEnable(GL_LIGHTING); 
+		// glEnable(GL_RESCALE_NORMAL);
 		if(howManyLights(configuration) > 8){
 			printf("Número de luzes definidas superior a 8\n");
 			exit(1);
 		}
-		glEnable(GL_LIGHTING); 
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
 		}
-		float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+		// float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
+
+    	glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
+    	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+    	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 	}
 	// Fim iluminação
+
+	// OpenGL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	// glEnable(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
 	glPolygonMode(GL_FRONT, GL_LINE);
 	// Cria os buffers
 	glGenBuffers(figCount*2, buffers); //! multiplicamos por 2 porque temos vértices + normais. Quando aplicarmos texturas, temos de multiplicar por 3.
@@ -605,7 +613,7 @@ int main(int argc, char *argv[]) {
 	glutInitWindowPosition(1200,300);
 	//glutInitWindowSize(800,800);
 	glutInitWindowSize(getWindowWidth(configuration), getWindowHeight(configuration));
-	glutCreateWindow("Fase 3");
+	glutCreateWindow("Fase 4");
 		
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
