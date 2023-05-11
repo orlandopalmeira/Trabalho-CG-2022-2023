@@ -83,10 +83,11 @@ Ponto coneNormal(float a, float h, float raio){
     float y = cos(atan(h/raio));
     float z = cos(a);
 
+    //! Pode ter aqui alguns problemas de leaking de memória.
     Ponto vetornormal = newPonto(x,y,z);
-    float distance_unnormalized = distance(newPonto(0,0,0), vetornormal); ////DEBUG
+    float distance_unnormalized = distance(newPonto(0,0,0), vetornormal); //// !DEBUG ver se é mesmo preciso normalizar
     Ponto result = normalizePonto(vetornormal);
-    float distance_normalized = distance(newPonto(0,0,0), result); ////DEBUG
+    float distance_normalized = distance(newPonto(0,0,0), result); //// !DEBUG
     return result;
 }
 
