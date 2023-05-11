@@ -4,7 +4,13 @@
 #include "../utils/list.hpp"
 #include "../utils/tree.hpp"
 #include "../utils/figura.hpp"
+#include "light.hpp"
+#include <vector>
 #include <stdlib.h>
+
+#define ATOF(arg) (arg == NULL ? 0.0f : atof(arg))
+
+using namespace std;
 
 typedef struct config* Config;
 

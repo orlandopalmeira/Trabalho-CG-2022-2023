@@ -6,6 +6,7 @@ struct config{
     float lookAt[3];
     float up[3];
     float projection[3]; // fov, near, far
+    vector<Light>* lights;
     Tree groups;
 };
 
@@ -28,6 +29,7 @@ Config newConfig(){
     Config newConf = (Config)malloc(sizeof(struct config));
     if(newConf){
         newConf->groups = NULL;
+        newConf->lights = new vector<Light>();
     }
     return newConf;
 }
@@ -150,6 +152,44 @@ void parseTransform(Tree tree, TiXmlElement* transforms){
 }
 
 /** WARNING: Função privada, não incluir no config.hpp */
+void parseLights(Config conf, TiXmlElement* lights){
+    if(lights == NULL) return; //* Se não houver dados de iluminação, não se faz nada.
+    float dirX = 0.0f, dirY = 0.0f, dirZ = 0.0f, posX = 0.0f, posY = 0.0f, posZ = 0.0f, cutoff = 0.0f;
+    Light l;
+    for(TiXmlElement* light = lights->FirstChildElement("light"); light != NULL; light = light->NextSiblingElement("light")){
+        const char* type = light->Attribute("type");
+        switch(type[0]){
+            case 'p':{ // point
+                posX = ATOF(light->Attribute("posX"));
+                posY = ATOF(light->Attribute("posY"));
+                posZ = ATOF(light->Attribute("posZ"));
+                break;
+            }
+
+            case 'd':{ // directional
+                dirX = ATOF(light->Attribute("dirX"));
+                dirY = ATOF(light->Attribute("dirY"));
+                dirZ = ATOF(light->Attribute("dirZ"));
+                break;
+            }
+
+            case 's':{ // spotlight
+                posX = ATOF(light->Attribute("posX"));
+                posY = ATOF(light->Attribute("posY"));
+                posZ = ATOF(light->Attribute("posZ"));
+                dirX = ATOF(light->Attribute("dirX"));
+                dirY = ATOF(light->Attribute("dirY"));
+                dirZ = ATOF(light->Attribute("dirZ"));
+                cutoff = ATOF(light->Attribute("cutoff"));
+                break;
+            }
+        }   
+        l = newLight(type[0],posX,posY,posZ,dirX,dirY,dirZ,cutoff);
+        conf->lights->push_back(l);
+    }
+}
+
+/** WARNING: Função privada, não incluir no config.hpp */
 Tree parseGroups(TiXmlElement* group){
     if(group){
         Tree res = newTree(newGroup());
@@ -185,8 +225,10 @@ Config xmlToConfig(const char* filePath){
         TiXmlDocument doc;
         if(doc.LoadFile(filePath)){
             TiXmlElement* root = doc.FirstChildElement("world"); // todo o conteúdo do ficheiro
+            TiXmlElement* lights = root->FirstChildElement("lights"); // dados da iluminação
             getWindowInfoFromXML(result, root);
             getCameraInfoFromXML(result, root);
+            parseLights(result,lights);
             result->groups = parseGroups(root);
         }
     }

@@ -2,8 +2,8 @@
 
 struct light{
     char type; // 'p': point, 'd': directional, 's': spotlight
-    vector<float> pos;
-    vector<float> dir;
+    vector<float>* pos;
+    vector<float>* dir;
     float cutoff;
 };
 
@@ -12,13 +12,13 @@ Light newEmptyLight(){
     if(res){
         res->type = 0;
         
-        res->pos.push_back(0.0f);
-        res->pos.push_back(0.0f);
-        res->pos.push_back(0.0f);
+        res->pos->push_back(0.0f);
+        res->pos->push_back(0.0f);
+        res->pos->push_back(0.0f);
 
-        res->dir.push_back(0.0f);
-        res->dir.push_back(0.0f);
-        res->dir.push_back(0.0f);
+        res->dir->push_back(0.0f);
+        res->dir->push_back(0.0f);
+        res->dir->push_back(0.0f);
 
         res->cutoff = 0.0f;
     }
@@ -52,9 +52,10 @@ void setLightType(Light l, char type){
 }
 
 void setLightPos(Light l, float x, float y, float z){
-    l->pos[0] = x;
-    l->pos[1] = y;
-    l->pos[2] = z;
+    float *posArr = l->pos->data();
+    posArr[0] = x;
+    posArr[1] = y;
+    posArr[2] = z;
 }
 
 void setLightPosArr(Light l, float* pos){
@@ -62,9 +63,10 @@ void setLightPosArr(Light l, float* pos){
 }
 
 void setLightDir(Light l, float x, float y, float z){
-    l->dir[0] = x;
-    l->dir[1] = y;
-    l->dir[2] = z;
+    float *dirArr = l->dir->data();
+    dirArr[0] = x;
+    dirArr[1] = y;
+    dirArr[2] = z;
 }
 
 void setLightDirArr(Light l, float* dir){
@@ -80,11 +82,11 @@ char getLightType(Light l){
 }
 
 vector<float> getLightPos(Light l){
-    return l->pos;
+    return *(l->pos);
 }
 
 vector<float> getLightDir(Light l){
-    return l->dir;
+    return *(l->dir);
 }
 
 float getLightCutoff(Light l){
