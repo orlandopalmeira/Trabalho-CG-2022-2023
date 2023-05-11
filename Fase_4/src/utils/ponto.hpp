@@ -27,6 +27,8 @@ float distance(Ponto p1, Ponto p2);
 
 Ponto normalizePonto(Ponto p);
 
+Ponto coneNormal(float a, float h, float raio);
+
 Ponto dupPonto(Ponto);
 
 void deletePonto(Ponto p);

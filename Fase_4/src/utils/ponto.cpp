@@ -78,6 +78,18 @@ Ponto normalizePonto(Ponto p){
     return novo;
 }
 
+Ponto coneNormal(float a, float h, float raio){
+    float x = sin(a);
+    float y = cos(atan(h/raio));
+    float z = cos(a);
+
+    Ponto vetornormal = newPonto(x,y,z);
+    float distance_unnormalized = distance(newPonto(0,0,0), vetornormal); ////DEBUG
+    Ponto result = normalizePonto(vetornormal);
+    float distance_normalized = distance(newPonto(0,0,0), result); ////DEBUG
+    return result;
+}
+
 Ponto dupPonto(Ponto ponto){
     return newPonto(ponto->x, ponto->y, ponto->z);
 }

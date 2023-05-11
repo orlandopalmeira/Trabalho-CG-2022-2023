@@ -275,17 +275,19 @@ Figura generateCone(int radius, int height, int slices, int stacks){
     if (cone){
         // Criação da base do cone.
         float alpha = 2.0f * M_PI / slices;
-        float start = 0.0f;
+        float cur_alpha = 0.0f;
         Ponto basePoints[slices] = {};
+        Ponto normals[slices] = {};
         float normal[3] = {0.0f, -1.0f, 0.0f};
 
         for (int i = 0; i < slices; i++){
-            Ponto np = newPonto(radius * sin(start), 0.0f, radius * cos(start));
+            Ponto np = newPonto(radius * sin(cur_alpha), 0.0f, radius * cos(cur_alpha));
             basePoints[i] = np;
+            normals[i] = coneNormal(cur_alpha, height, radius);
             addPNT(cone, np, newPontoArr(normal));
             addPNT(cone, newPonto(0.0f, 0.0f, 0.0f), newPontoArr(normal));
-            start += alpha;
-            addPNT(cone, newPonto(radius * sin(start), 0.0f, radius * cos(start)), newPontoArr(normal));
+            cur_alpha += alpha;
+            addPNT(cone, newPonto(radius * sin(cur_alpha), 0.0f, radius * cos(cur_alpha)), newPontoArr(normal));
         }
 
         // Tratamento das faces laterais
@@ -294,11 +296,13 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         // Para cada face
         for(int j = 0; j < slices; j++){
             Ponto p1 = basePoints[j]; // Ponto da base 1 - p1
+            Ponto normal1 = normals[j];
             int nj = j+1;
-            if (j + 1 == slices){ // para voltar ao primeiro ponto da base, uma vez que dá uma volta.
+            if (nj == slices){ // para voltar ao primeiro ponto da base, uma vez que dá uma volta.
                 nj = 0;
             }
             Ponto p2 = basePoints[nj]; // Ponto da base 2 - p2
+            Ponto normal2 = normals[nj];
             //float b1_diff = distanceToOrigin(p1) / stacks;
             float b1x_diff = getX(p1) / stacks; // Diferença entre a coordenada X e 0 do p1
             float b1z_diff = getZ(p1) / stacks; // Diferença entre a coordenada Z e 0 do p1
@@ -310,21 +314,21 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             // Para cada stack da face
             for(int i = 0; i < stacks-1; i++){
                 // Triangulo da esquerda
-                addPonto(cone, dupPonto(l_p1));
-                addPonto(cone, dupPonto(l_p2));
+                addPNT(cone, dupPonto(l_p1), normal1);
+                addPNT(cone, dupPonto(l_p2), normal2);
                 l_p1 = newPonto(getX(l_p1) - b1x_diff, getY(l_p1) + h_diff  , getZ(l_p1) - b1z_diff);
-                addPonto(cone, l_p1);
+                addPNT(cone, l_p1, normal1);
 
                 // Triangulo da direita
-                addPonto(cone, dupPonto(l_p2));
+                addPNT(cone, dupPonto(l_p2), normal2);
                 l_p2 = newPonto(getX(l_p2) - b2x_diff, getY(l_p2) + h_diff  , getZ(l_p2) - b2z_diff);
-                addPonto(cone, l_p2);
-                addPonto(cone, dupPonto(l_p1));
+                addPNT(cone, l_p2, normal2);
+                addPNT(cone, dupPonto(l_p1), normal1);
             }
             // Construir triangulo do topo.
-            addPonto(cone, dupPonto(l_p1));
-            addPonto(cone, dupPonto(l_p2));
-            addPonto(cone, newPonto(0.0f, (float)height, 0.0f)); // vértice topo do triângulo do topo
+            addPNT(cone, dupPonto(l_p1), normal1);
+            addPNT(cone, dupPonto(l_p2), normal2);
+            addPNT(cone, newPonto(0.0f, (float)height, 0.0f), normal1); // vértice topo do triângulo do topo
         }
     }
     return cone;
