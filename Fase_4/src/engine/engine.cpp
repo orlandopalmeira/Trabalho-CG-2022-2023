@@ -608,8 +608,9 @@ int main(int argc, char *argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(1200,300);
-	//glutInitWindowSize(800,800);
+	// glutInitWindowPosition(1200,1100);
 	glutInitWindowSize(getWindowWidth(configuration), getWindowHeight(configuration));
+	//glutInitWindowSize(800,800);
 	glutCreateWindow("Fase 4");
 		
 	// Required callback registry 

@@ -9,6 +9,7 @@
 
 using namespace std;
 
+//! nao implementei as duas funcoes (queria ver se era mesmo necessário)
 // Direção padrão é o eixo positivo dos Y (para cima).
 Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0){
     Figura plano = newEmptyFigura();
@@ -40,7 +41,6 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
             // Vira a normal para baixo (y = -1)
             normal[1] = -1.0f;
 
-            // Processo igual ao efetuado em cima.
             arrxTex[1] = texDelta;
             arrzTex[1] = 1;
             arrxTex[2] = 0;
@@ -58,13 +58,13 @@ Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0)
                 addPNT(plano, newPonto(arrx[3] + coluna*div_side, h, arrz[3] + linha*div_side), newPontoArr(normal), newPonto2f(arrxTex[3] + coluna*texDelta, arrzTex[3]) );
                 addPNT(plano, newPonto(arrx[2] + coluna*div_side, h, arrz[2] + linha*div_side), newPontoArr(normal), newPonto2f(arrxTex[2] + coluna*texDelta, arrzTex[2]) );
             }
-            // arrz[0] += div_side; arrz[1] += div_side; arrz[2] += div_side; arrz[3] += div_side; 
             arrzTex[0] -= texDelta; arrzTex[1] -= texDelta; arrzTex[2] -= texDelta; arrzTex[3] -= texDelta;
         }
     }
     return plano;
 }
 
+//* Verificado
 // Direção padrão é o eixo positivo dos Z.
 Figura generatePlaneXYposZ(int length, int divisions, float h = 0.0f){
     Figura plano = newEmptyFigura();
@@ -78,64 +78,59 @@ Figura generatePlaneXYposZ(int length, int divisions, float h = 0.0f){
         float arry[4] = {yA, yB, yC, yD};
         //* Posição dos indices dos arrays um mini-quadrado que faz parte da face de um cubo.
         // 1   3
-
         // 0   2
-
-        //* Ordem do desenho dos vertices relativamente aos seus indices (implementado no ciclo em baixo)
-        // 0 -> 2 -> 1
-        // 1 -> 2 -> 3
 
         // Normal virada para o ponto com z = 1
         float normal[3] = {0.0f ,0.0f, 1.0f};
 
         // Texture coordinates
         float texDelta = 1.0f / divisions;
-        // Aqui aplica-se uma lógica similar aos arrays de posiçoes de um quadrado, tal como está referido em cima.
-        float arrxTex[4] = {0, 0       , texDelta, texDelta};
-        float arryTex[4] = {0, texDelta, 0       , texDelta};
+        float arrS[4] = {0, 0       , texDelta, texDelta};
+        float arrT[4] = {0, texDelta, 0       , texDelta};
 
         for (int linha = 0; linha < divisions; linha++){
             for (int coluna = 0; coluna < divisions; coluna++){
-                float x, y, tx, ty;
+                float x, y, s, t; int i;
 
-                //* Primeiro triângulo do quadrado. Ordem: 0-2-1
-                // Indice 0
-                x = arrx[0] + coluna*div_side; y = arry[0] + linha*div_side;
-                tx = arrxTex[0] + coluna*texDelta; ty = arryTex[0] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                //* Primeiro triângulo do quadrado. Ordem: 0 -> 2 -> 1
+                i = 0;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
                 
-                // Indice 2
-                x = arrx[2] + coluna*div_side; y = arry[2] + linha*div_side;
-                tx = arrxTex[2] + coluna*texDelta; ty = arryTex[2] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                i = 2;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
                 
-                // Indice 1
-                x = arrx[1] + coluna*div_side; y = arry[1] + linha*div_side;
-                tx = arrxTex[1] + coluna*texDelta; ty = arryTex[1] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                i = 1;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
                 
-                //* Segundo triângulo do quadrado. Ordem: 1-2-3
-                // Indice 1
-                x = arrx[1] + coluna*div_side; y = arry[1] + linha*div_side;
-                tx = arrxTex[1] + coluna*texDelta; ty = arryTex[1] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                //* Segundo triângulo do quadrado. Ordem: 1 -> 2 -> 3
+                i = 1;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
                 
-                // Indice 2
-                x = arrx[2] + coluna*div_side; y = arry[2] + linha*div_side;
-                tx = arrxTex[2] + coluna*texDelta; ty = arryTex[2] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                i = 2;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
 
-                // Indice 3
-                x = arrx[3] + coluna*div_side; y = arry[3] + linha*div_side;
-                tx = arrxTex[3] + coluna*texDelta; ty = arryTex[3] + linha*texDelta;
-                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(tx, ty));
+                i = 3;
+                x = arrx[i] + coluna*div_side; y = arry[i] + linha*div_side;
+                s = arrS[i] + coluna*texDelta; t = arrT[i] + linha*texDelta;
+                addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
             }
         }
     }
     return plano;
 }
 
-// Direção padrão é o eixo negativo dos Z.
+//* Verificado
+// Direção do eixo negativo dos Z.
 Figura generatePlaneXY(int length, int divisions, float h = 0.0f){
     Figura plano = newEmptyFigura();
     if (plano){
@@ -146,6 +141,9 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f){
             xD = -dimension2 + div_side, yD = -dimension2 + div_side;
         float arrx[4] = {xA, xB, xC, xD};
         float arry[4] = {yA, yB, yC, yD};
+        //* Posição dos indices dos arrays um mini-quadrado que faz parte da face de um cubo.
+        // 3   1
+        // 2   0
 
         // Normal virada para o ponto com z = -1
         float normal[3] = {0.0f ,0.0f, -1.0f};
@@ -159,7 +157,7 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f){
             for (int coluna = 0; coluna < divisions; coluna++){
                 float x, y, s, t; int i;
 
-                // Primeiro triângulo do quadrado
+                //* Primeiro triângulo do quadrado.  Ordem: 0 -> 1 -> 2
                 i = 0;
                 x=arrx[i] + coluna*div_side; y=arry[i] + linha*div_side;
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
@@ -175,7 +173,7 @@ Figura generatePlaneXY(int length, int divisions, float h = 0.0f){
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
                 addPNT(plano, newPonto(x, y, h), newPontoArr(normal), newPonto2f(s, t));
                 
-                // Segundo triângulo do quadrado
+                //* Segundo triângulo do quadrado. Ordem: 1 -> 3 -> 2
                 i = 1;
                 x=arrx[i] + coluna*div_side; y=arry[i] + linha*div_side;
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
@@ -211,10 +209,6 @@ Figura generatePlaneYZposX(int length, int divisions, float h = 0.0f){
         //* Posição dos indices dos arrays um mini-quadrado que faz parte da face de um cubo.
         // 3   2
         // 1   0
-
-        //* Ordem do desenho dos vertices relativamente aos seus indices (implementado no ciclo em baixo)
-        // 0 -> 2 -> 1
-        // 2 -> 3 -> 1
 
         // Normal virada para o ponto com x = 1
         float normal[3] = {1.0f ,0.0f, 0.0f};
@@ -266,7 +260,7 @@ Figura generatePlaneYZposX(int length, int divisions, float h = 0.0f){
 }
 
 //* VERIFICADO
-// Direção padrão é o eixo negativo dos X.
+// Direção do eixo negativo dos X.
 Figura generatePlaneYZ(int length, int divisions, float h = 0.0f){
     Figura plano = newEmptyFigura();
     if (plano){ 
@@ -281,10 +275,6 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f){
         // 2   3
         // 0   1
 
-        //* Ordem do desenho dos vertices relativamente aos seus indices (implementado no ciclo em baixo)
-        // 0 -> 1 -> 2
-        // 1 -> 3 -> 2
-
         // Normal virada para o ponto com x = -1
         float normal[3] = {-1.0f ,0.0f, 0.0f};
 
@@ -297,7 +287,7 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f){
             for (int coluna = 0; coluna < divisions; coluna++){
                 float y, z, s, t; int i;
 
-                // Primeiro triângulo do quadrado
+                //* Primeiro triângulo do quadrado. Ordem: 0 -> 1 -> 2
                 i = 0;
                 y = arry[i] + coluna*div_side; z = arrz[i] + linha*div_side;
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
@@ -313,7 +303,7 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f){
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
                 addPNT(plano, newPonto(h, y, z), newPontoArr(normal), newPonto2f(s, t));
 
-                // Segundo triângulo do quadrado
+                //* Segundo triângulo do quadrado. Ordem: 1 -> 3 -> 2
                 i = 1;
                 y = arry[i] + coluna*div_side; z = arrz[i] + linha*div_side;
                 s = arrS[i] - coluna*texDelta; t = arrT[i] + linha*texDelta;
@@ -337,8 +327,8 @@ Figura generatePlaneYZ(int length, int divisions, float h = 0.0f){
 
 Figura generateBox(int length, int divisions){
     Figura box = newEmptyFigura();
-    if (box){// se deu NULL, é porque houve erros
-        float dimension2 = (float)length / 2; //, div_side = (float)length/divisions;
+    if (box){
+        float dimension2 = (float)length / 2;
         Figura faceCima, faceBaixo, faceLateral1, faceLateral2, faceLateral3, faceLateral4;
         faceCima = generatePlaneXZ(length, divisions, dimension2, 0);
         faceBaixo = generatePlaneXZ(length, divisions, -dimension2, 1);
@@ -349,8 +339,8 @@ Figura generateBox(int length, int divisions){
         faceLateral3 = generatePlaneYZ(length, divisions, -dimension2);
         faceLateral4 = generatePlaneYZposX(length, divisions, dimension2);
 
-        addPontos(box, faceCima);  // face de baixo do cubo
-        addPontos(box, faceBaixo); // face de cima do cubo
+        addPontos(box, faceCima);
+        addPontos(box, faceBaixo);
         addPontos(box, faceLateral1);
         addPontos(box, faceLateral2);
         addPontos(box, faceLateral3);
