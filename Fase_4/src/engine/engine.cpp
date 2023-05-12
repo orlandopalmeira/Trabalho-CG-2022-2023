@@ -549,8 +549,8 @@ void init(){
 			glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
 			glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 		}
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 
 		// float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
 
