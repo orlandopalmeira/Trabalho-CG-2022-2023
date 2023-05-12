@@ -545,7 +545,7 @@ void init(){
 		}
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
-			
+
 			glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
 			glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
 			glLightfv(GL_LIGHT0, GL_SPECULAR, white);
@@ -570,6 +570,7 @@ void init(){
 	// Cria os buffers
 	glGenBuffers(figCount, buffers); 
 	glGenBuffers(figCount, buffersN);
+	//!glGenBuffers(figCount, buffersTextCoords);
 	// Carrega os dados para os buffers
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
