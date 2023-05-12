@@ -108,7 +108,7 @@ void loadBuffersData(Tree groups, int* index){
 
 // Desenha os eixos, caso a flag esteja ativa.
 void drawEixos(){
-	glDisable(GL_LIGHTING);
+	// glDisable(GL_LIGHTING);
 	if (show_eixos){
 		glBegin(GL_LINES);
 		// X axis in red
@@ -128,7 +128,7 @@ void drawEixos(){
 		glVertex3f(0.0f, 0.0f, 100.0f);
 		glEnd();
 	}
-	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
+	// if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
 // Desenha a curva de catmull rom
@@ -545,13 +545,16 @@ void init(){
 		}
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
+			
+			glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+			glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 		}
+
 		// float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
 
-    	glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-    	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-    	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
+    	
 	}
 	// Fim iluminação
 
@@ -565,7 +568,8 @@ void init(){
 
 	glPolygonMode(GL_FRONT, GL_LINE);
 	// Cria os buffers
-	glGenBuffers(figCount*2, buffers); //! multiplicamos por 2 porque temos vértices + normais. Quando aplicarmos texturas, temos de multiplicar por 3.
+	glGenBuffers(figCount, buffers); 
+	glGenBuffers(figCount, buffersN);
 	// Carrega os dados para os buffers
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
