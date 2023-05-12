@@ -546,9 +546,9 @@ void init(){
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
 
-			glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-			glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-			glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+			glLightfv(gl_light(i), GL_AMBIENT, dark);
+			glLightfv(gl_light(i), GL_DIFFUSE, white);
+			glLightfv(gl_light(i), GL_SPECULAR, white);
 		}
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 
