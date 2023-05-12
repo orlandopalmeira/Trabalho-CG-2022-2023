@@ -553,7 +553,7 @@ void init(){
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 
 		// float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
-
+		// glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
     	
 	}
 	// Fim iluminação
