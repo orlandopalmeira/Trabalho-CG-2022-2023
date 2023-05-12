@@ -538,7 +538,7 @@ void init(){
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
 		glEnable(GL_LIGHTING); 
-		// glEnable(GL_RESCALE_NORMAL);
+		glEnable(GL_RESCALE_NORMAL);
 		if(howManyLights(configuration) > 8){
 			printf("Número de luzes definidas superior a 8\n");
 			exit(1);
