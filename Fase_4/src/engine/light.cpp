@@ -18,10 +18,12 @@ Light newEmptyLight(){
         res->pos->push_back(0.0f);
         res->pos->push_back(0.0f);
         res->pos->push_back(0.0f);
+        res->pos->push_back(1.0f); // é um ponto
 
         res->dir->push_back(0.0f);
         res->dir->push_back(0.0f);
         res->dir->push_back(0.0f);
+        res->dir->push_back(0.0f);// é um vector
 
         res->cutoff = 0.0f;
     }
@@ -86,7 +88,7 @@ char getLightType(Light l){
 
 vector<float> getLightPos(Light l){
     vector<float> pos;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 4; i++){
         pos.push_back(l->pos->at(i));
     }
     return pos;
@@ -94,7 +96,7 @@ vector<float> getLightPos(Light l){
 
 vector<float> getLightDir(Light l){
     vector<float> dir;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 4; i++){
         dir.push_back(l->dir->at(i));
     }
     return dir;

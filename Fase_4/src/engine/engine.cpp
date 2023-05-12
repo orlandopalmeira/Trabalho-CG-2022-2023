@@ -144,7 +144,7 @@ void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 }
 
 // Executa as trasnformações geométricas de uma certa figura
-void executeTransformations(List transforms, int *index){
+void executeTransformations(List transforms){
 	if(transforms){
 		for(unsigned long i = 0; i < getListLength(transforms); i++){
 			Transform t = (Transform)getListElemAt(transforms,i);
@@ -198,7 +198,7 @@ void drawGroups(Tree groups, int* index){
 		List transforms = getGroupTransforms(group);
 		List models = getGroupModels(group);
 		unsigned long modelsCount = getListLength(models);
-		executeTransformations(transforms,index);
+		executeTransformations(transforms);
 
 		// Desenha o conteúdo dos buffers
 		for(unsigned long i = 0; i < modelsCount; i++, (*index)++){
@@ -249,8 +249,8 @@ void executeLights(){
 	vector<Light> lights = getLights(configuration);
 	for(int i = 0; i < lights.size(); i++){
 		Light luz = lights[i];
-		vector<float> lPos = getLightPos(luz); lPos.push_back(1.0f);
-		vector<float> lDir = getLightDir(luz); lPos.push_back(0.0f);
+		vector<float> lPos = getLightPos(luz); 
+		vector<float> lDir = getLightDir(luz); normalize(lDir.data());
 		float cutoff = getLightCutoff(luz);
 
 		switch(getLightType(luz)){
@@ -531,9 +531,6 @@ void keyProc(unsigned char key, int x, int y) {
 
 void init(){
 	glewInit();
-	GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
-	GLfloat white[4] = {1.0, 1.0, 1.0, 1.0};
-	float black[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
@@ -545,15 +542,10 @@ void init(){
 		}
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
-
-			glLightfv(gl_light(i), GL_AMBIENT, dark);
-			glLightfv(gl_light(i), GL_DIFFUSE, white);
-			glLightfv(gl_light(i), GL_SPECULAR, white);
 		}
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
 
-		// float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
-		// glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+		float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
     	
 	}
 	// Fim iluminação

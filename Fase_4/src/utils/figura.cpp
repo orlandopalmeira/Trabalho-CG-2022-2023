@@ -116,10 +116,10 @@ void setDiffuse(Figura f, float r, float g, float b){
 
 vector<float> getDiffuse(Figura f){
     vector<float> result;
-    result.push_back(f->diffuse[0]);
-    result.push_back(f->diffuse[1]);
-    result.push_back(f->diffuse[2]);
-    result.push_back(f->diffuse[3]);
+    result.push_back(f->diffuse[0]/255.0f);
+    result.push_back(f->diffuse[1]/255.0f);
+    result.push_back(f->diffuse[2]/255.0f);
+    result.push_back(f->diffuse[3]/255.0f);
     return result;
 }
 
@@ -131,10 +131,10 @@ void setAmbient(Figura f, float r, float g, float b){
 
 vector<float> getAmbient(Figura f){
     vector<float> result;
-    result.push_back(f->ambient[0]);
-    result.push_back(f->ambient[1]);
-    result.push_back(f->ambient[2]);
-    result.push_back(f->ambient[3]);
+    result.push_back(f->ambient[0]/255.0f);
+    result.push_back(f->ambient[1]/255.0f);
+    result.push_back(f->ambient[2]/255.0f);
+    result.push_back(f->ambient[3]/255.0f);
     return result;
 }
 
@@ -146,10 +146,10 @@ void setSpecular(Figura f, float r, float g, float b){
 
 vector<float> getSpecular(Figura f){
     vector<float> result;
-    result.push_back(f->specular[0]);
-    result.push_back(f->specular[1]);
-    result.push_back(f->specular[2]);
-    result.push_back(f->specular[3]);
+    result.push_back(f->specular[0]/255.0f);
+    result.push_back(f->specular[1]/255.0f);
+    result.push_back(f->specular[2]/255.0f);
+    result.push_back(f->specular[3]/255.0f);
     return result;
 }
 
@@ -161,10 +161,10 @@ void setEmissive(Figura f, float r, float g, float b){
 
 vector<float> getEmissive(Figura f){
     vector<float> result;
-    result.push_back(f->emissive[0]);
-    result.push_back(f->emissive[1]);
-    result.push_back(f->emissive[2]);
-    result.push_back(f->emissive[3]);
+    result.push_back(f->emissive[0]/255.0f);
+    result.push_back(f->emissive[1]/255.0f);
+    result.push_back(f->emissive[2]/255.0f);
+    result.push_back(f->emissive[3]/255.0f);
     return result;
 }
 
