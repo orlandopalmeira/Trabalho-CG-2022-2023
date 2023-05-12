@@ -87,14 +87,19 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 	getCatmullRomPoint(t, controlPoints[indices[0]], controlPoints[indices[1]], controlPoints[indices[2]], controlPoints[indices[3]], pos, deriv);
 }
 
-void surfacePoint(float u, float v, vector<vector<float>> patch, float* res){
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* normal){
 	float M[16] = {-1.0f,  3.0f, -3.0f, 1.0f,
                    3.0f, -6.0f,  3.0f, 0.0f,
                   -3.0f,  3.0f,  0.0f, 0.0f,
                    1.0f,  0.0f,  0.0f, 0.0f}; // 4x4
 	float U[4] = {u*u*u,u*u,u,1.0f}, V[4] = {v*v*v,v*v,v,1.0f}; // U: 1x4; V: 4x1
-	float UM[4]; multiplyMatrices(1,4,U,4,4,M,UM); // UM: 1x4
-	float MV[4]; multiplyMatrices(4,4,M,4,1,V,MV); // MV: 4x1
+	float DER_U[4] = {3*u*u,2*u,1.0f,0.0f}, DER_V[4] = {3*v*v,2*v,1.0f,0.0f}; // DER_U: 1x4; DER_V: 4x1
+
+	float UM[4]; multiplyMatrices(1,4,U,4,4,M,UM); // UM: 1x4, U x M
+	float MV[4]; multiplyMatrices(4,4,M,4,1,V,MV); // MV: 4x1, M x V
+	float DU_M[4]; multiplyMatrices(1,4,DER_U,4,4,M,DU_M); // DU_M: 1x4, U' x M
+	float M_DV[4]; multiplyMatrices(4,4,M,1,4,DER_V,M_DV); // M_DB: 4x1, M x V'
+
 	float P[3][16] = {{patch[0][0],patch[1][0],patch[2][0],patch[3][0],
 					   patch[4][0],patch[5][0],patch[6][0],patch[7][0],
 					   patch[8][0],patch[9][0],patch[10][0],patch[11][0],
@@ -107,10 +112,28 @@ void surfacePoint(float u, float v, vector<vector<float>> patch, float* res){
 					   patch[4][2],patch[5][2],patch[6][2],patch[7][2],
 					   patch[8][2],patch[9][2],patch[10][2],patch[11][2],
 					   patch[12][2],patch[13][2],patch[14][2],patch[15][2]}}; // Três matrizes 4x4, uma para cada componente X, Y e Z
+
+	// Cálculo do ponto
 	for(int i = 0; i < 3; i++){ // Vamos calcular as componentes X, Y e Z do resultado.
-		float UMP[4]; // UMP: 1x4
-		multiplyMatrices(1,4,UM,4,4,P[i],UMP);
-		multiplyMatrices(1,4,UMP,4,1,MV,&res[i]);
+		float UMP[4]; // UMP: 1x4 
+		multiplyMatrices(1,4,UM,4,4,P[i],UMP); // U x M x P
+		multiplyMatrices(1,4,UMP,4,1,MV,&res[i]); // U x M x P x M x V
+	}
+	// Cálculo da normal (opcional)
+	if(normal){
+		float DU[3]; // derivada parcial em u
+		float DV[3]; // derivada parcial em v
+		for(int i = 0; i < 3; i++){
+			// Cálculo da derivada parcial em u
+			float DU_MP[4];
+			multiplyMatrices(1,4,DU_M,4,4,P[i],DU_MP); // DU_MP: 1x4, U' x M x P
+			multiplyMatrices(1,4,DU_MP,4,1,MV,&DU[i]); // U' x M x P x M x V
+			// Cálculo da derivada parcial em v
+			float UMP[4]; // UMP: 1x4, U x M x P 
+			multiplyMatrices(1,4,UM,4,4,P[i],UMP); // U x M x P
+			multiplyMatrices(1,4,UMP,4,1,M_DV,&DV[i]); // U x M x P x M x V'
+		}
+		cross(DV,DU,normal);
 	}
 
 }

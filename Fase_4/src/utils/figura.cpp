@@ -8,10 +8,10 @@ struct figura{
     vector<Ponto>* textCoords;
     const char* textureFile;
     // Color
-    vector<float> diffuse;
-    vector<float> ambient;
-    vector<float> specular;
-    vector<float> emissive;
+    vector<float>* diffuse;
+    vector<float>* ambient;
+    vector<float>* specular;
+    vector<float>* emissive;
     float shininess;
 };
 
@@ -23,10 +23,10 @@ Figura newEmptyFigura(){
         r->textCoords = new vector<Ponto>();
         r->textureFile = NULL;
         // Colocação dos valores de cores padrão impostos pelo enunciado.
-        r->diffuse.push_back(200.0f);r->diffuse.push_back(200.0f);r->diffuse.push_back(200.0f);r->diffuse.push_back(1.0f);
-        r->ambient.push_back(50.0f);r->ambient.push_back(50.0f);r->ambient.push_back(50.0f);r->ambient.push_back(1.0f);
-        r->specular.push_back(0.0f);r->specular.push_back(0.0f);r->specular.push_back(0.0f);r->specular.push_back(1.0f);
-        r->emissive.push_back(0.0f);r->emissive.push_back(0.0f);r->emissive.push_back(0.0f);r->emissive.push_back(1.0f);
+        r->diffuse  = new vector<float>{200.0f,200.0f,200.0f,1.0f};
+        r->ambient  = new vector<float>{50.0f,50.0f,50.0f,1.0f};
+        r->specular = new vector<float>{0.0f,0.0f,0.0f,1.0f};
+        r->emissive = new vector<float>{0.0f,0.0f,0.0f,1.0f};
         r->shininess = 0.0f;
     }
     return r;
@@ -109,62 +109,66 @@ void addPontos(Figura f, Figura toAdd){
 }
 
 void setDiffuse(Figura f, float r, float g, float b){
-    f->diffuse[0] = r;
-    f->diffuse[1] = g;
-    f->diffuse[2] = b;
+    float *aux = f->diffuse->data();
+    aux[0] = r;
+    aux[1] = g;
+    aux[2] = b;
 }
 
 vector<float> getDiffuse(Figura f){
     vector<float> result;
-    result.push_back(f->diffuse[0]/255.0f);
-    result.push_back(f->diffuse[1]/255.0f);
-    result.push_back(f->diffuse[2]/255.0f);
-    result.push_back(f->diffuse[3]/255.0f);
+    result.push_back(f->diffuse->at(0)/255.0f);
+    result.push_back(f->diffuse->at(1)/255.0f);
+    result.push_back(f->diffuse->at(2)/255.0f);
+    result.push_back(f->diffuse->at(3)/255.0f);
     return result;
 }
 
 void setAmbient(Figura f, float r, float g, float b){
-    f->ambient[0] = r;
-    f->ambient[1] = g;
-    f->ambient[2] = b;
+    float *aux = f->ambient->data();
+    aux[0] = r;
+    aux[1] = g;
+    aux[2] = b;
 }
 
 vector<float> getAmbient(Figura f){
     vector<float> result;
-    result.push_back(f->ambient[0]/255.0f);
-    result.push_back(f->ambient[1]/255.0f);
-    result.push_back(f->ambient[2]/255.0f);
-    result.push_back(f->ambient[3]/255.0f);
+    result.push_back(f->ambient->at(0)/255.0f);
+    result.push_back(f->ambient->at(1)/255.0f);
+    result.push_back(f->ambient->at(2)/255.0f);
+    result.push_back(f->ambient->at(3)/255.0f);
     return result;
 }
 
 void setSpecular(Figura f, float r, float g, float b){
-    f->specular[0] = r;
-    f->specular[1] = g;
-    f->specular[2] = b;
+    float* aux = f->specular->data();
+    aux[0] = r;
+    aux[1] = g;
+    aux[2] = b;
 }
 
 vector<float> getSpecular(Figura f){
     vector<float> result;
-    result.push_back(f->specular[0]/255.0f);
-    result.push_back(f->specular[1]/255.0f);
-    result.push_back(f->specular[2]/255.0f);
-    result.push_back(f->specular[3]/255.0f);
+    result.push_back(f->specular->at(0)/255.0f);
+    result.push_back(f->specular->at(1)/255.0f);
+    result.push_back(f->specular->at(2)/255.0f);
+    result.push_back(f->specular->at(3)/255.0f);
     return result;
 }
 
 void setEmissive(Figura f, float r, float g, float b){
-    f->specular[0] = r;
-    f->specular[1] = g;
-    f->specular[2] = b;
+    float* aux = f->emissive->data();
+    aux[0] = r;
+    aux[1] = g;
+    aux[2] = b;
 }
 
 vector<float> getEmissive(Figura f){
     vector<float> result;
-    result.push_back(f->emissive[0]/255.0f);
-    result.push_back(f->emissive[1]/255.0f);
-    result.push_back(f->emissive[2]/255.0f);
-    result.push_back(f->emissive[3]/255.0f);
+    result.push_back(f->emissive->at(0)/255.0f);
+    result.push_back(f->emissive->at(1)/255.0f);
+    result.push_back(f->emissive->at(2)/255.0f);
+    result.push_back(f->emissive->at(3)/255.0f);
     return result;
 }
 
@@ -277,7 +281,19 @@ void deleteFigura(void* figura){
         for(Ponto p: *(fig->pontos)){
             deletePonto(p);
         }
+        for(Ponto n: *(fig->normais)){
+            deletePonto(n);
+        }
+        for(Ponto tc: *(fig->textCoords)){
+            deletePonto(tc);
+        }
         delete fig->pontos;
+        delete fig->normais;
+        delete fig->textCoords;
+        delete fig->diffuse;
+        delete fig->ambient;
+        delete fig->specular;
+        delete fig->emissive;
         free(figura);
     }
 }

@@ -12,18 +12,8 @@ Light newEmptyLight(){
     if(res){
         res->type = 0;
         
-        res->pos = new vector<float>();
-        res->dir = new vector<float>();
-
-        res->pos->push_back(0.0f);
-        res->pos->push_back(0.0f);
-        res->pos->push_back(0.0f);
-        res->pos->push_back(1.0f); // é um ponto
-
-        res->dir->push_back(0.0f);
-        res->dir->push_back(0.0f);
-        res->dir->push_back(0.0f);
-        res->dir->push_back(0.0f);// é um vector
+        res->pos = new vector<float>{0.0f,0.0f,0.0f,1.0f}; // ponto
+        res->dir = new vector<float>{0.0f,0.0f,0.0f,1.0f}; // vector
 
         res->cutoff = 0.0f;
     }
@@ -104,4 +94,13 @@ vector<float> getLightDir(Light l){
 
 float getLightCutoff(Light l){
     return l->cutoff;
+}
+
+void deleteLight(void* l){
+    if(l){
+        Light light = (Light)l;
+        delete light->dir;
+        delete light->pos;
+        free(light);
+    }
 }

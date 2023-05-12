@@ -78,4 +78,4 @@ void getCatmullRomPoint(float t, vector<float> p0, vector<float> p1, vector<floa
 */
 void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, float *pos, float *deriv);
 
-void surfacePoint(float u, float v, vector<vector<float>> patch, float* res);
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* normal = NULL);
