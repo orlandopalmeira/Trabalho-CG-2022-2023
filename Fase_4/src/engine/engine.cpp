@@ -386,7 +386,7 @@ void specKeyProc(int key_code, int x, int y) {
 	switch (key_code){
 		case GLUT_KEY_UP:{
 			if(cameraMode == SPHERICAL){
-				radius -= 5.0f;
+				radius -= 1.0f;
 			}else{
 				beta_ +=  0.1f;
 				moveHead();
@@ -396,7 +396,7 @@ void specKeyProc(int key_code, int x, int y) {
 		
 		case GLUT_KEY_DOWN:{
 			if(cameraMode == SPHERICAL){
-				radius += 5.0f;
+				radius += 1.0f;
 			}else{
 				beta_ -= 0.1f;
 				moveHead();
