@@ -108,7 +108,7 @@ void loadBuffersData(Tree groups, int* index){
 
 // Desenha os eixos, caso a flag esteja ativa.
 void drawEixos(){
-	// glDisable(GL_LIGHTING);
+	if(howManyLights(configuration) > 0) glDisable(GL_LIGHTING);
 	if (show_eixos){
 		glBegin(GL_LINES);
 		// X axis in red
@@ -128,7 +128,7 @@ void drawEixos(){
 		glVertex3f(0.0f, 0.0f, 100.0f);
 		glEnd();
 	}
-	// if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
+	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
 // Desenha a curva de catmull rom
