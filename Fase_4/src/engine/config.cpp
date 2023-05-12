@@ -536,9 +536,9 @@ void deleteGroup(Group group){
 void deleteConfig(Config conf){
     if(conf){
         deepDeleteTree(conf->groups,(void (*)(void *))deleteGroup);
-        for(Light l: *(conf->lights)){
-            deleteLight(l);
-        }
+        // for(Light l: *(conf->lights)){
+        //     deleteLight(l);
+        // }
         delete conf->lights;
         free(conf);
     }

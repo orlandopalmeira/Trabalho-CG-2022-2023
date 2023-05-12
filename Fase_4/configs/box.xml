@@ -13,9 +13,9 @@
   		<models> 
 			<model file="../Fase_4/outputs/box_2_3.3d">
 				<color>
-					<diffuse R="0.8" G="0.2" B="0.2" />
-					<ambient R="0.8" G="0.2" B="0.2" />
-					<specular R="0.8" G="0.8" B="0.8" />
+					<diffuse R="204" G="51" B="51" />
+					<ambient R="204" G="51" B="51" />
+					<specular R="204" G="204" B="204" />
 					<shininess value="128"/>
 				</color>
 			</model>

@@ -33,6 +33,4 @@ vector<float> getLightDir(Light);
 
 float getLightCutoff(Light);
 
-void deleteLight(void*);
-
 #endif // LIGHT

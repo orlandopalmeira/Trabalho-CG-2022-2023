@@ -386,7 +386,7 @@ void specKeyProc(int key_code, int x, int y) {
 	switch (key_code){
 		case GLUT_KEY_UP:{
 			if(cameraMode == SPHERICAL){
-				radius -= 1.0f;
+				radius -= 5.0f;
 			}else{
 				beta_ +=  0.1f;
 				moveHead();
@@ -396,7 +396,7 @@ void specKeyProc(int key_code, int x, int y) {
 		
 		case GLUT_KEY_DOWN:{
 			if(cameraMode == SPHERICAL){
-				radius += 1.0f;
+				radius += 5.0f;
 			}else{
 				beta_ -= 0.1f;
 				moveHead();
@@ -608,9 +608,8 @@ int main(int argc, char *argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
 	glutInitWindowPosition(1200,300);
-	// glutInitWindowPosition(1200,1100);
-	glutInitWindowSize(getWindowWidth(configuration), getWindowHeight(configuration));
 	//glutInitWindowSize(800,800);
+	glutInitWindowSize(getWindowWidth(configuration), getWindowHeight(configuration));
 	glutCreateWindow("Fase 4");
 		
 	// Required callback registry 

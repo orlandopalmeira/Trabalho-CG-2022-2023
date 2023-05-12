@@ -21,12 +21,16 @@ Figura newEmptyFigura(){
         r->pontos     = new vector<Ponto>();
         r->normais    = new vector<Ponto>();
         r->textCoords = new vector<Ponto>();
+        r->diffuse = new vector<float>();
+        r->ambient = new vector<float>();
+        r->specular = new vector<float>();
+        r->emissive = new vector<float>();
         r->textureFile = NULL;
         // Colocação dos valores de cores padrão impostos pelo enunciado.
-        r->diffuse  = new vector<float>{200.0f,200.0f,200.0f,1.0f};
-        r->ambient  = new vector<float>{50.0f,50.0f,50.0f,1.0f};
-        r->specular = new vector<float>{0.0f,0.0f,0.0f,1.0f};
-        r->emissive = new vector<float>{0.0f,0.0f,0.0f,1.0f};
+        r->diffuse->push_back(200.0f);r->diffuse->push_back(200.0f);r->diffuse->push_back(200.0f);r->diffuse->push_back(1.0f);
+        r->ambient->push_back(50.0f);r->ambient->push_back(50.0f);r->ambient->push_back(50.0f);r->ambient->push_back(1.0f);
+        r->specular->push_back(0.0f);r->specular->push_back(0.0f);r->specular->push_back(0.0f);r->specular->push_back(1.0f);
+        r->emissive->push_back(0.0f);r->emissive->push_back(0.0f);r->emissive->push_back(0.0f);r->emissive->push_back(1.0f);
         r->shininess = 0.0f;
     }
     return r;
@@ -109,7 +113,7 @@ void addPontos(Figura f, Figura toAdd){
 }
 
 void setDiffuse(Figura f, float r, float g, float b){
-    float *aux = f->diffuse->data();
+    float* aux = f->diffuse->data();
     aux[0] = r;
     aux[1] = g;
     aux[2] = b;
@@ -125,7 +129,7 @@ vector<float> getDiffuse(Figura f){
 }
 
 void setAmbient(Figura f, float r, float g, float b){
-    float *aux = f->ambient->data();
+    float* aux = f->ambient->data();
     aux[0] = r;
     aux[1] = g;
     aux[2] = b;
@@ -281,19 +285,7 @@ void deleteFigura(void* figura){
         for(Ponto p: *(fig->pontos)){
             deletePonto(p);
         }
-        for(Ponto n: *(fig->normais)){
-            deletePonto(n);
-        }
-        for(Ponto tc: *(fig->textCoords)){
-            deletePonto(tc);
-        }
         delete fig->pontos;
-        delete fig->normais;
-        delete fig->textCoords;
-        delete fig->diffuse;
-        delete fig->ambient;
-        delete fig->specular;
-        delete fig->emissive;
         free(figura);
     }
 }
