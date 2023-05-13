@@ -24,14 +24,20 @@ Ponto newPontoSph(float a, float b, float radius){
     return newPonto(x, y, z);
 }
 
+Ponto newPonto2f(float x, float y){
+    return newPonto(x, y, 0);
+}
+
 // Recebe um array com três elementos.
 Ponto newPontoArr(float* p){
     return newPonto(p[0], p[1], p[2]);
 }
 
-Ponto newPonto2f(float x, float y){
-    return newPonto(x, y, 0);
+// Recebe um array com dois elementos.
+Ponto newPonto2fArr(float* p){
+    return newPonto(p[0], p[1], 0);
 }
+
 
 float getX(Ponto p){
     if(p){

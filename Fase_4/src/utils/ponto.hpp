@@ -11,9 +11,11 @@ Ponto newPonto(float x, float y, float z);
 
 Ponto newPontoSph(float a, float b, float radius);
 
+Ponto newPonto2f(float x, float y);
+
 Ponto newPontoArr(float* p);
 
-Ponto newPonto2f(float x, float y);
+Ponto newPonto2fArr(float* p);
 
 float getX(Ponto p);
 

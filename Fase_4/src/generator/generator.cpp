@@ -363,11 +363,15 @@ Figura generateSphere(int radius, int slices, int stacks){
     
     float alpha_diff = (2.0f * M_PI) / slices;
     float beta_diff = M_PI / stacks;
+
+    // texturas 
+    float s_diff = 1.0f/slices ;
+    float t_diff = 1.0f/stacks ;
     
     // flag que indica se o número de stacks é par ou ímpar.
     int n_stacks_is_even = (stacks % 2) == 0;
 
-    stacks /= 2;
+    int stacks_h = stacks / 2;
 
     // Construção das faces laterais
     for (int i = 0; i < slices; i++){
@@ -378,67 +382,84 @@ Figura generateSphere(int radius, int slices, int stacks){
         float bUp;
         float bDown;
 
+        // texturas
+        float tUp;
+        float tDown;
+        
         if (n_stacks_is_even){ // Se o número de stacks for par, começa-se a construir as faces a partir do plano XZ.
             bUp = 0;
             bDown = 0;
+
+            // Texturas
+            tUp = 0.5f;
+            tDown = 0.5f;
         }
         else{ // Caso contrário, cria-se uma base especial.
             bUp = beta_diff / 2;
             bDown = -(beta_diff / 2);
 
-            // Criação da base
-            addSpherePoint(sphere, newPontoSph(a1, bDown, radius)); 
-            addSpherePoint(sphere, newPontoSph(a2, bDown, radius));
-            addSpherePoint(sphere, newPontoSph(a1, bUp, radius));
+            // Texturas
+            tUp = t_diff * (stacks_h + 1); 
+            tDown = t_diff * (stacks_h); 
 
-            addSpherePoint(sphere, newPontoSph(a1, bUp, radius));
-            addSpherePoint(sphere, newPontoSph(a2, bDown, radius));
-            addSpherePoint(sphere, newPontoSph(a2, bUp, radius));
+            // Criação da base
+            addSpherePoint(sphere, newPontoSph(a1, bDown, radius), newPonto2f(s_diff*i, tDown)); 
+            addSpherePoint(sphere, newPontoSph(a2, bDown, radius), newPonto2f(s_diff*(i+1), tDown));
+            addSpherePoint(sphere, newPontoSph(a1, bUp, radius), newPonto2f(s_diff*i, tUp));
+
+            addSpherePoint(sphere, newPontoSph(a1, bUp, radius), newPonto2f(s_diff*i, tUp));
+            addSpherePoint(sphere, newPontoSph(a2, bDown, radius), newPonto2f(s_diff*(i+1), tDown));
+            addSpherePoint(sphere, newPontoSph(a2, bUp, radius), newPonto2f(s_diff*(i+1), tUp));
         }
 
-        Ponto p1Up = newPontoSph(a1, bUp, radius), p1Up_ = p1Up;
-        Ponto p2Up = newPontoSph(a2, bUp, radius), p2Up_ = p2Up;
-        Ponto p1Down = newPontoSph(a1, bDown, radius), p1Down_ = p1Down;
-        Ponto p2Down = newPontoSph(a2, bDown, radius), p2Down_ = p2Down;
+        
+        Ponto p1Up = newPontoSph(a1, bUp, radius), p1Up_ = p1Up;         float t1Up[2]   = {s_diff*i, tUp};
+        Ponto p2Up = newPontoSph(a2, bUp, radius), p2Up_ = p2Up;         float t2Up[2]   = {s_diff*(i+1), tUp};
+        Ponto p1Down = newPontoSph(a1, bDown, radius), p1Down_ = p1Down; float t1Down[2] = {s_diff*i, tDown};
+        Ponto p2Down = newPontoSph(a2, bDown, radius), p2Down_ = p2Down; float t2Down[2] = {s_diff*(i+1), tDown};
 
-        for (int j = 0; j < stacks - 1; j++){
+        for (int j = 0; j < stacks_h - 1; j++){
             // Construção da stack de cima
             // -- Triângulo da esquerda
-            addSpherePoint(sphere, dupPonto(p1Up));
-            addSpherePoint(sphere, dupPonto(p2Up));
+            addSpherePoint(sphere, dupPonto(p1Up), newPonto2fArr(t1Up));
+            addSpherePoint(sphere, dupPonto(p2Up), newPonto2fArr(t2Up));
             bUp += beta_diff;
             p1Up = newPontoSph(a1, bUp, radius);
-            addSpherePoint(sphere, p1Up);
+            t1Up[1] += t_diff;
+            addSpherePoint(sphere, p1Up, newPonto2fArr(t1Up));
             // -- Triângulo da direita
-            addSpherePoint(sphere, dupPonto(p1Up));
-            addSpherePoint(sphere, dupPonto(p2Up));
+            addSpherePoint(sphere, dupPonto(p1Up), newPonto2fArr(t1Up));
+            addSpherePoint(sphere, dupPonto(p2Up), newPonto2fArr(t2Up));
             p2Up = newPontoSph(a2, bUp, radius);
-            addSpherePoint(sphere, p2Up);
+            t2Up[1] += t_diff;
+            addSpherePoint(sphere, p2Up, newPonto2fArr(t2Up));
 
             // Construção da stack de baixo
             // -- Triângulo da direita
-            addSpherePoint(sphere, dupPonto(p2Down));
-            addSpherePoint(sphere, dupPonto(p1Down));
+            addSpherePoint(sphere, dupPonto(p2Down), newPonto2fArr(t2Down));
+            addSpherePoint(sphere, dupPonto(p1Down), newPonto2fArr(t1Down));
             bDown -= beta_diff;
             p2Down = newPontoSph(a2, bDown, radius);
-            addSpherePoint(sphere, p2Down);
+            t2Down[1] -= t_diff;
+            addSpherePoint(sphere, p2Down, newPonto2fArr(t2Down));
 
             // -- Triângulo da esquerda
-            addSpherePoint(sphere, dupPonto(p2Down));
-            addSpherePoint(sphere, dupPonto(p1Down));
+            addSpherePoint(sphere, dupPonto(p2Down), newPonto2fArr(t2Down));
+            addSpherePoint(sphere, dupPonto(p1Down), newPonto2fArr(t1Down));
             p1Down = newPontoSph(a1, bDown, radius);
-            addSpherePoint(sphere, p1Down);
+            t1Down[1] -= t_diff;
+            addSpherePoint(sphere, p1Down, newPonto2fArr(t2Down));
         }
 
         // Construção do triângulo final de cima
-        addSpherePoint(sphere, dupPonto(p1Up));
-        addSpherePoint(sphere, dupPonto(p2Up));
-        addSpherePoint(sphere, newPonto(0.0f, radius, 0.0f));
+        addSpherePoint(sphere, dupPonto(p1Up), newPonto2fArr(t1Up));
+        addSpherePoint(sphere, dupPonto(p2Up), newPonto2fArr(t2Up));
+        addSpherePoint(sphere, newPonto(0.0f, radius, 0.0f), newPonto2fArr(t1Up)); //! Mapeamento duvidoso
         
         // Construção do triângulo final de baixo
-        addSpherePoint(sphere, dupPonto(p2Down));
-        addSpherePoint(sphere, dupPonto(p1Down));
-        addSpherePoint(sphere, newPonto(0.0f, -radius, 0.0f));
+        addSpherePoint(sphere, dupPonto(p2Down), newPonto2fArr(t2Down));
+        addSpherePoint(sphere, dupPonto(p1Down), newPonto2fArr(t1Down));
+        addSpherePoint(sphere, newPonto(0.0f, -radius, 0.0f), newPonto2fArr(t2Down)); //! Mapeamento duvidoso
         deletePonto(p1Up_); deletePonto(p1Down_); // para efeitos de gestão de memória
         deletePonto(p2Up_); deletePonto(p2Down_); // para efeitos de gestão de memória
     }
