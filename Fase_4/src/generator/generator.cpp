@@ -448,7 +448,7 @@ Figura generateSphere(int radius, int slices, int stacks){
             addSpherePoint(sphere, dupPonto(p1Down), newPonto2fArr(t1Down));
             p1Down = newPontoSph(a1, bDown, radius);
             t1Down[1] -= t_diff;
-            addSpherePoint(sphere, p1Down, newPonto2fArr(t2Down));
+            addSpherePoint(sphere, p1Down, newPonto2fArr(t1Down));
         }
 
         // Construção do triângulo final de cima
