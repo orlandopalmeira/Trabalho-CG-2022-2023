@@ -47,7 +47,7 @@ float upz = 0.0f;
 bool cameraMode;
 
 // Variáveis de visualização
-int mode = GL_LINE;
+int mode = GL_FILL;
 int show_eixos = 0;
 
 // Configuração do engine
@@ -210,14 +210,14 @@ void drawGroups(Tree groups, int* index){
 			glMaterialfv(GL_FRONT, GL_EMISSION, getEmissive(model).data());
 			glMaterialf(GL_FRONT, GL_SHININESS, getShininess(model));
 
+			// Normais
+			glBindBuffer(GL_ARRAY_BUFFER,buffersN[*index]);
+			glNormalPointer(GL_FLOAT,0,0);
+			// glDrawArrays(GL_TRIANGLES, 0, buffersNSizes[*index]);
 			// Vértices/pontos
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			glDrawArrays(GL_TRIANGLES, 0, buffersSizes[*index]);
-			// Normais
-			glBindBuffer(GL_ARRAY_BUFFER,buffersN[*index]);
-			glNormalPointer(GL_FLOAT,0,0);
-			glDrawArrays(GL_TRIANGLES, 0, buffersNSizes[*index]);
 		}
 
 		// Procede para fazer o mesmo nos nodos filhos. 
@@ -386,7 +386,7 @@ void specKeyProc(int key_code, int x, int y) {
 	switch (key_code){
 		case GLUT_KEY_UP:{
 			if(cameraMode == SPHERICAL){
-				radius -= 5.0f;
+				radius -= 1.0f;
 			}else{
 				beta_ +=  0.1f;
 				moveHead();
@@ -396,7 +396,7 @@ void specKeyProc(int key_code, int x, int y) {
 		
 		case GLUT_KEY_DOWN:{
 			if(cameraMode == SPHERICAL){
-				radius += 5.0f;
+				radius += 1.0f;
 			}else{
 				beta_ -= 0.1f;
 				moveHead();
