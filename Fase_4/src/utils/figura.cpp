@@ -88,10 +88,11 @@ void addSpherePoint(Figura f, Ponto ponto, Ponto textCoord){
 void addPNTArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
     if(ponto) addPontoArr(f, ponto);
     if(normal) {
+        normalize(normal);
         f->normais->push_back(newPonto(normal[0],normal[1],normal[2]));
     }
     if(textCoord){
-        f->textCoords->push_back(newPonto(textCoord[0],textCoord[1],textCoord[2]));
+        f->textCoords->push_back(newPonto2f(textCoord[0],textCoord[1]));
     }
 }
 

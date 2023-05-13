@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "ponto.hpp"
 #include "list.hpp"
+#include "matrix.hpp"
 
 using namespace std;
 

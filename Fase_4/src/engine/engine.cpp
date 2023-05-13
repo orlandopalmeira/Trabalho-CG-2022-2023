@@ -133,6 +133,7 @@ void drawEixos(){
 
 // Desenha a curva de catmull rom
 void drawCatmullRomCurve(vector<vector<float>> controlPoints){
+	if(howManyLights(configuration) > 0) glDisable(GL_LIGHTING);
 	float pos[3];
 	glBegin(GL_LINE_LOOP);
 	float t = 0.0f;
@@ -141,6 +142,7 @@ void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 		glVertex3f(pos[0], pos[1], pos[2]);
 	}
 	glEnd();
+	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
 // Executa as trasnformações geométricas de uma certa figura
@@ -362,7 +364,7 @@ void renderScene(void) {
 	drawEixos();
 	// figuras
 	glColor3f(WHITE);
-	executeLights();
+	executeLights(); 
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 	int index = 0; // serve para seleccionar o buffer que vai ser lido
 	drawGroups(getTreeGroups(configuration),&index);

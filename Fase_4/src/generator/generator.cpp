@@ -594,23 +594,34 @@ vector<vector<vector<float>>> readPatchesFile(const char* filePath){
 Figura generateSurface(const char* filePath, int tessellation){
     Figura result = newEmptyFigura();
     float u = 0.0f, v = 0.0f, delta = 1.0f/tessellation;
-    float A[3], B[3], C[3], D[3];
+    float A[3], B[3], C[3], D[3]; // pontos
+    float NA[3], NB[3], NC[3], ND[3]; // normais
+    float TCA[2] = {0.0f,0.0f}, TCB[2] = {0.0f,0.0f}, TCC[2] = {0.0f,0.0f}, TCD[2] = {0.0f,0.0f}; // coordenadas de textura
     vector<vector<vector<float>>> patches = readPatchesFile(filePath);
+
     for(vector<vector<float>> patch : patches){ // um patch tem 16 pontos
         for(int i = 0; i < tessellation; i++, u += delta){
             for(int j = 0; j < tessellation; j++, v += delta){
-                // Cálculo dos pontos
-                surfacePoint(u,v,patch,A);
-                surfacePoint(u,v+delta,patch,B);
-                surfacePoint(u+delta,v,patch,C);
-                surfacePoint(u+delta,v+delta,patch,D);
+                // Cálculo dos pontos e das normais
+                surfacePoint(u,v,patch,A,NA);
+                surfacePoint(u,v+delta,patch,B,NB);
+                surfacePoint(u+delta,v,patch,C,NC);
+                surfacePoint(u+delta,v+delta,patch,D,ND);
                 // Triangulação
-                addPontoArr(result,C);
-                addPontoArr(result,A);
-                addPontoArr(result,B);
-                addPontoArr(result,B);
-                addPontoArr(result,D);
-                addPontoArr(result,C);
+                addPNTArr(result,C,NC,TCC);
+                addPNTArr(result,A,NA,TCA);
+                addPNTArr(result,B,NB,TCB);
+                addPNTArr(result,B,NB,TCB);
+                addPNTArr(result,D,ND,TCD);
+                addPNTArr(result,C,NC,TCC);
+
+                //* Antigo (3.ª Fase)
+                // addPontoArr(result,C);
+                // addPontoArr(result,A);
+                // addPontoArr(result,B);
+                // addPontoArr(result,B);
+                // addPontoArr(result,D);
+                // addPontoArr(result,C);
             }
             v = 0.0f;
         }
