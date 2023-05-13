@@ -62,8 +62,8 @@ void addPontoArr(Figura f, float* p){
 
 // Recebe 3 Pontos para adicionar aos respetivos arrays de valores.
 void addPNT(Figura f, Ponto ponto, Ponto normal, Ponto textCoord){
-    if (ponto) addPonto(f,ponto);
-    if (normal) f->normais->push_back(normal);
+    addPonto(f,ponto);
+    f->normais->push_back(normal);
     if (textCoord) f->textCoords->push_back(textCoord);
     else{
         f->textCoords->push_back(newPonto2f(0,0));
@@ -77,7 +77,6 @@ void addSpherePoint(Figura f, Ponto ponto, Ponto textCoord){
     // Cálculo da normal
     Ponto normal = normalizePonto(ponto);
     f->normais->push_back(normal);
-
     if (textCoord) f->textCoords->push_back(textCoord);
     else{
         f->textCoords->push_back(newPonto2f(0,0));
@@ -86,13 +85,12 @@ void addSpherePoint(Figura f, Ponto ponto, Ponto textCoord){
 
 // Recebe 3 pontos, no formato de array, para adicionar aos respetivos arrays de valores
 void addPNTArr(Figura f, float *ponto = NULL, float* normal = NULL, float* textCoord = NULL){
-    if(ponto) addPontoArr(f, ponto);
-    if(normal) {
-        normalize(normal);
-        f->normais->push_back(newPonto(normal[0],normal[1],normal[2]));
-    }
-    if(textCoord){
-        f->textCoords->push_back(newPonto2f(textCoord[0],textCoord[1]));
+    addPontoArr(f, ponto);
+    normalize(normal);
+    f->normais->push_back(newPonto(normal[0],normal[1],normal[2]));
+    if(textCoord) f->textCoords->push_back(newPonto2f(textCoord[0],textCoord[1]));
+    else{
+        f->textCoords->push_back(newPonto2f(0, 0));
     }
 }
 

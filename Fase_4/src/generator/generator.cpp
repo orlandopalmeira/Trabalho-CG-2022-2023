@@ -503,8 +503,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             // Construir triangulo do topo.
             addPNT(cone, dupPonto(l_p1), normal1);
             addPNT(cone, dupPonto(l_p2), normal2);
-            //! Normal adicionada nao está propriamente correta
-            addPNT(cone, newPonto(0.0f, (float)height, 0.0f), normal1); // vértice topo do triângulo do topo
+            addPNT(cone, newPonto(0.0f, (float)height, 0.0f), newPonto(0.0f, 1.0f, 0.0f)); // vértice topo do triângulo do topo
         }
     }
     return cone;
