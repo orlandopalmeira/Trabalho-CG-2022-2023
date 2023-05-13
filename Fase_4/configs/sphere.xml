@@ -6,13 +6,24 @@
 	    <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="1000" /> 
     </camera>
-	<!-- <lights> 
-		<light type="directional" dirX="5" dirY="5" dirZ="5" />
-	</lights> -->
+	<lights> 
+		<light type="point" posX="5" posY="0" posZ="5" />
+	</lights>
 	<group> 
+		<transform>
+			<!-- <rotate angle="-180" x="1" y="0" z="0"/> -->
+			<rotate time="10" x="0" y="1" z="0"/>
+		</transform>
   		<models> 
 			<model file="../Fase_4/outputs/sphere.3d" >
 				<texture file="../Fase_4/textures/earth.jpg"/>
+				<color>
+					<diffuse R="255" G="255" B="255" />
+					<ambient R="50" G="50" B="50" />
+					<specular R="0" G="0" B="0" />
+					<emissive R="70" G="70" B="70" />
+					<shininess value="256" />
+				</color>
 			</model>
  		</models>
  	</group>

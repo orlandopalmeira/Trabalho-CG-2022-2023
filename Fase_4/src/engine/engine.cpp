@@ -580,6 +580,8 @@ void keyProc(unsigned char key, int x, int y) {
 void init(){
 	glewInit();
 	ilInit();
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
 		glEnable(GL_LIGHTING); 
