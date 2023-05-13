@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "ponto.hpp"
 #include "list.hpp"
 #include "matrix.hpp"

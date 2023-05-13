@@ -6,7 +6,7 @@ struct figura{
     vector<Ponto>* pontos;
     vector<Ponto>* normais;
     vector<Ponto>* textCoords;
-    const char* textureFile;
+    char* textureFile;
     // Color
     vector<float>* diffuse;
     vector<float>* ambient;
@@ -184,13 +184,12 @@ float getShininess(Figura f){
 }
 
 void setTextureFile(Figura f, const char* textFile){
-    f->textureFile = textFile;
+    f->textureFile = strdup(textFile);
 }
 
 const char* getTextureFile(Figura f){
     return f->textureFile;
 }
-
 
 void figuraToFile(Figura f, const char* path){
     if(!f){
@@ -267,7 +266,6 @@ vector<float> figuraToTextCoords(Figura f){
         Ponto p = textCoords[i];
         result.push_back(getX(p));
         result.push_back(getY(p));
-        result.push_back(getZ(p));
     }
     return result;
 }
@@ -284,6 +282,7 @@ void deleteFigura(void* figura){
         for(Ponto p: *(fig->pontos)){
             deletePonto(p);
         }
+        free(fig->textureFile);
         delete fig->pontos;
         free(figura);
     }

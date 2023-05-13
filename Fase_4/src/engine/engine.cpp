@@ -1,3 +1,4 @@
+#include <IL/il.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -62,7 +63,9 @@ unsigned int figCount = 0; // total de figuras existentes no ficheiro de configu
 GLuint *buffersN = NULL; // temos um buffer para cada normal
 vector<unsigned int> buffersNSizes; // aqui guardamos o tamanho de cada buffer de cada normal
 // Texturas
-// TODO
+GLuint *buffersTC = NULL;
+GLuint *textures = NULL;
+
 
 // FIM dos VBO's
 
@@ -77,6 +80,31 @@ char title[128];
 // Visualização das curvas de Catmull-Rom
 bool showCurves = false;
 
+void loadTexture(const char* texturePath, int* index) {
+	unsigned int t, tw, th;
+	unsigned char *texData;
+	ilGenImages(1, &t);
+	ilBindImage(t);
+	ilLoadImage((ILstring)texturePath);
+	tw = ilGetInteger(IL_IMAGE_WIDTH);
+	th = ilGetInteger(IL_IMAGE_HEIGHT);
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+	texData = ilGetData();
+
+	glGenTextures(1, textures + *index);
+	
+	glBindTexture(GL_TEXTURE_2D, *(textures + *index));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR); //! mipmapping
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+	glGenerateMipmap(GL_TEXTURE_2D); //! mipmapping, esta função tem de estar no fim da loadTexture
+}
+
 // Carrega os dados das figuras para os buffers.
 void loadBuffersData(Tree groups, int* index){ 
 	if(groups){
@@ -87,6 +115,8 @@ void loadBuffersData(Tree groups, int* index){
 			Figura fig = (Figura)getListElemAt(models,i);
 			vector<float> toBuffer = figuraToVector(fig);
 			vector<float> toNormals = figuraToNormals(fig);
+			vector<float> toTextCoors = figuraToTextCoords(fig);
+			const char* textFile = getTextureFile(fig);
 			// Vértices/pontos
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toBuffer.size(), toBuffer.data(), GL_STATIC_DRAW);
@@ -95,7 +125,12 @@ void loadBuffersData(Tree groups, int* index){
 			glBindBuffer(GL_ARRAY_BUFFER, buffersN[*index]);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toNormals.size(), toNormals.data(), GL_STATIC_DRAW);
 			buffersNSizes.push_back(toNormals.size()/3); 
-
+			// Texturas
+			if(textFile){//* foi fornecido um ficheiro de textura?
+				glBindBuffer(GL_ARRAY_BUFFER, buffersTC[*index]);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float)*toTextCoors.size(), toTextCoors.data(), GL_STATIC_DRAW);
+				loadTexture(textFile,index);
+			}
 		}
 
 		List filhos = getChildren(groups);
@@ -212,6 +247,12 @@ void drawGroups(Tree groups, int* index){
 			glMaterialfv(GL_FRONT, GL_EMISSION, getEmissive(model).data());
 			glMaterialf(GL_FRONT, GL_SHININESS, getShininess(model));
 
+			// Texturas
+			if(getTextureFile(model)){ //* foi fornecido um ficheiro de textura?
+				glBindTexture(GL_TEXTURE_2D, textures[*index]);
+				glBindBuffer(GL_ARRAY_BUFFER, buffersTC[*index]);
+				glTexCoordPointer(2, GL_FLOAT, 0, 0);
+			}
 			// Normais
 			glBindBuffer(GL_ARRAY_BUFFER,buffersN[*index]);
 			glNormalPointer(GL_FLOAT,0,0);
@@ -220,6 +261,11 @@ void drawGroups(Tree groups, int* index){
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			glDrawArrays(GL_TRIANGLES, 0, buffersSizes[*index]);
+			// Fazer unbind da textura
+			if(getTextureFile(model)){ //* só fazemos unbind se existir uma textura
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+
 		}
 
 		// Procede para fazer o mesmo nos nodos filhos. 
@@ -533,7 +579,7 @@ void keyProc(unsigned char key, int x, int y) {
 
 void init(){
 	glewInit();
-
+	ilInit();
 	// Iluminação
 	if(howManyLights(configuration) > 0){ //* definiu-se luz(es)?
 		glEnable(GL_LIGHTING); 
@@ -553,18 +599,20 @@ void init(){
 	// Fim iluminação
 
 	// OpenGL settings
+	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
 	// glEnable(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPolygonMode(GL_FRONT, GL_LINE);
 	// Cria os buffers
 	glGenBuffers(figCount, buffers); 
 	glGenBuffers(figCount, buffersN);
-	//!glGenBuffers(figCount, buffersTextCoords);
+	glGenBuffers(figCount, buffersTC);
 	// Carrega os dados para os buffers
 	int index = 0; // serve para seleccionar o buffer que vai ser escrito
 	loadBuffersData(getTreeGroups(configuration),&index);
@@ -606,6 +654,8 @@ int main(int argc, char *argv[]) {
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
 	buffers = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada figura
 	buffersN = (GLuint*)calloc(figCount, sizeof(GLuint)); // teremos um buffer para cada normal
+	buffersTC = (GLuint*)calloc(figCount, sizeof(GLuint));
+	textures = (GLuint*)calloc(figCount, sizeof(GLuint));
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
