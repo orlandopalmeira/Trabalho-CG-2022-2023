@@ -535,27 +535,32 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 Figura generateRing(float ri, float re, int slices){
     Figura ring = newEmptyFigura();
     float a = 0, delta = (2*M_PI) / slices;
+    //normals
     float normalup[3]   = {0.0f, 1.0f, 0.0f};
     float normaldown[3] = {0.0f, -1.0f, 0.0f};
-    if(ring){
-        for (int i = 0; i < slices; i++, a += delta){
-            // Desenho da parte de cima do anel
-            addPNT(ring, newPontoSph(a,0.0f,ri), newPontoArr(normalup));
-            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normalup));
-            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normalup));
+    //textures 
+    float texDelta = 1/slices;
+    float s = 0;
 
-            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normalup));
-            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normalup));
-            addPNT(ring, newPontoSph(a+delta,0.0f,re), newPontoArr(normalup));
+    if(ring){
+        for (int i = 0; i < slices; i++, a += delta, s += texDelta){
+            // Desenho da parte de cima do anel
+            addPNT(ring, newPontoSph(a,0.0f,ri), newPontoArr(normalup), newPonto2f(s, 0));
+            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normalup), newPonto2f(s, 1));
+            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normalup), newPonto2f(s + texDelta, 0));
+
+            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normalup), newPonto2f(s + texDelta, 0));
+            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normalup), newPonto2f(s, 1));
+            addPNT(ring, newPontoSph(a+delta,0.0f,re), newPontoArr(normalup), newPonto2f(s + texDelta, 1));
 
             // Desenho da parte de baixo do anel
-            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normaldown));
-            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normaldown));
-            addPNT(ring, newPontoSph(a,0.0f,ri), newPontoArr(normaldown));
+            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normaldown), newPonto2f(s + texDelta, 0));
+            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normaldown), newPonto2f(s, 1));
+            addPNT(ring, newPontoSph(a,0.0f,ri), newPontoArr(normaldown), newPonto2f(s, 0));
 
-            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normaldown));
-            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normaldown));
-            addPNT(ring, newPontoSph(a+delta,0.0f,re), newPontoArr(normaldown));
+            addPNT(ring, newPontoSph(a,0.0f,re), newPontoArr(normaldown), newPonto2f(s, 1));
+            addPNT(ring, newPontoSph(a+delta,0.0f,ri), newPontoArr(normaldown), newPonto2f(s + texDelta, 0));
+            addPNT(ring, newPontoSph(a+delta,0.0f,re), newPontoArr(normaldown), newPonto2f(s + texDelta, 1));
         }
     }
     return ring;
