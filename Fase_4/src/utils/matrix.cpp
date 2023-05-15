@@ -87,7 +87,7 @@ void getGlobalCatmullRomPoint(float gt, vector<vector<float>> controlPoints, flo
 	getCatmullRomPoint(t, controlPoints[indices[0]], controlPoints[indices[1]], controlPoints[indices[2]], controlPoints[indices[3]], pos, deriv);
 }
 
-void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* normal){
+void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, float* normal, float* textCoords){
 	float M[16] = {-1.0f,  3.0f, -3.0f, 1.0f,
                    3.0f, -6.0f,  3.0f, 0.0f,
                   -3.0f,  3.0f,  0.0f, 0.0f,
@@ -133,6 +133,11 @@ void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, flo
 			multiplyMatrices(1,4,UMP,4,1,MDv,Dv+i); // U x M x P x M x V'
 		}
 		cross(Dv,Du,normal); // N = u x v
+	}
+	// Atribuição da coordenada de textura (opcional)
+	if(textCoords){
+		textCoords[0] = u;
+		textCoords[1] = v;
 	}
 
 }

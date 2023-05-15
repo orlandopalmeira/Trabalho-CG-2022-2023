@@ -623,17 +623,17 @@ Figura generateSurface(const char* filePath, int tessellation){
     float u = 0.0f, v = 0.0f, delta = 1.0f/tessellation;
     float A[3], B[3], C[3], D[3]; // pontos
     float NA[3], NB[3], NC[3], ND[3]; // normais
-    float TCA[2] = {0.0f,0.0f}, TCB[2] = {0.0f,0.0f}, TCC[2] = {0.0f,0.0f}, TCD[2] = {0.0f,0.0f}; // coordenadas de textura
+    float TCA[2], TCB[2], TCC[2], TCD[2]; // coordenadas de textura
     vector<vector<vector<float>>> patches = readPatchesFile(filePath);
 
     for(vector<vector<float>> patch : patches){ // um patch tem 16 pontos
         for(int i = 0; i < tessellation; i++, u += delta){
             for(int j = 0; j < tessellation; j++, v += delta){
-                // Cálculo dos pontos e das normais
-                surfacePoint(u,v,patch,A,NA);
-                surfacePoint(u,v+delta,patch,B,NB);
-                surfacePoint(u+delta,v,patch,C,NC);
-                surfacePoint(u+delta,v+delta,patch,D,ND);
+                // Cálculo dos pontos, normais e coordenadas de textura
+                surfacePoint(u,v,patch,A,NA,TCA);
+                surfacePoint(u,v+delta,patch,B,NB,TCB);
+                surfacePoint(u+delta,v,patch,C,NC,TCC);
+                surfacePoint(u+delta,v+delta,patch,D,ND,TCD);
                 // Triangulação
                 addPNTArr(result,C,NC,TCC);
                 addPNTArr(result,A,NA,TCA);

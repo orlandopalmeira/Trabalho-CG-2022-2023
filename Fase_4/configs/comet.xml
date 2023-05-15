@@ -8,22 +8,24 @@
     </camera>
 	
 	<lights> 
-		<light type="point" pozX="0" pozY="2" pozZ="0"/>
+		<light type="point" posX="5" posY="5" posZ="5"/>
 	</lights>
 	<group> 
 		<transform>
-			<translate x="5" y="0" z="0"/>
-			<rotate time="5" x="0" y="1" z="0"/>
+			<rotate angle="-90" x="1" y="0" z="0"/>
+			<!-- <translate x="5" y="0" z="0"/> -->
+			<rotate time="5" x="0" y="0" z="1"/>
 		</transform>
   		<models> 
-			<model file="../Fase_4/outputs/bezier_10.3d" > 
-				<color>
+			<model file="../Fase_4/outputs/teapot.3d" > 
+				<texture file="../Fase_4/textures/teapot.jpg"/>
+				<!-- <color>
                     <diffuse R="200" G="200" B="000" />
                     <ambient R="50" G="50" B="00" />
                     <specular R="0" G="0" B="0" />
                     <emissive R="0" G="0" B="0" />
                     <shininess value="0" />
-                </color>
+                </color> -->
 			</model>
  		</models>
  	</group>
