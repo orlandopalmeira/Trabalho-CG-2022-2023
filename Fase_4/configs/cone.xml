@@ -8,7 +8,9 @@
     </camera>
 	<group> 
   		<models> 
-			<model file="../Fase_4/outputs/cone.3d" />
+			<model file="../Fase_4/outputs/cone.3d" >
+				<texture file="../Fase_4/textures/cone2.png"/>
+			</model>
  		</models>
  	</group>
 </world>
