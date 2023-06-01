@@ -9,7 +9,7 @@
 	<group> 
   		<models> 
 			<model file="../Fase_4/outputs/cone.3d" >
-				<texture file="../Fase_4/textures/cone2.png"/>
+				<texture file="../Fase_4/textures/box.jpg"/>
 			</model>
  		</models>
  	</group>

@@ -17,6 +17,8 @@ Ponto newPontoArr(float* p);
 
 Ponto newPonto2fArr(float* p);
 
+Ponto newPonto2fSph(float* center, float a, float raio);
+
 float getX(Ponto p);
 
 float getY(Ponto p);

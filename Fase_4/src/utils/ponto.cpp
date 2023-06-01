@@ -38,6 +38,13 @@ Ponto newPonto2fArr(float* p){
     return newPonto(p[0], p[1], 0);
 }
 
+// Usada no texture atlas que envolve um circulo.
+Ponto newPonto2fSph(float* center, float a, float raio){
+    float x = raio * cos(a) + center[0];
+    float y = raio * sin(a) + center[1];
+    return newPonto2f(x, y);
+}
+
 
 float getX(Ponto p){
     if(p){
