@@ -540,7 +540,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             }
             // Construir triangulo do topo.
             addPNT(cone, dupPonto(l_p1), normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
-            addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
+            addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
             addPNT(cone, newPonto(0.0f, (float)height, 0.0f), newPonto(0.0f, 1.0f, 0.0f), newPonto2fArr(center_tex)); // vértice topo do triângulo do topo
 
             cur_alpha_tex += alpha;
