@@ -498,7 +498,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 
         // texturas
         float cur_alpha_tex = 0.0f;
-        float raio_tex_delta = 1.0f / stacks;
+        float raio_tex_delta = raio_tex / stacks;
         
         // Para cada face
         for(int j = 0; j < slices; j++){
@@ -538,6 +538,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
 
                 cur_raio_tex -= raio_tex_delta;
             }
+            cur:
             // Construir triangulo do topo.
             addPNT(cone, dupPonto(l_p1), normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
             addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
