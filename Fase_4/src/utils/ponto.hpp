@@ -33,6 +33,14 @@ Ponto normalizePonto(Ponto p);
 
 Ponto coneNormal(float a, float h, float raio);
 
+/**
+ * Calcula o vetor a partir formado por dois pontos.
+ * @param a Ponto A
+ * @param b Ponto B
+ * @param res Vector resultante da diferença entre A-B.
+ */
+void vetorFrom2Pontos(Ponto a, Ponto b, float *res);
+
 Ponto dupPonto(Ponto);
 
 void deletePonto(Ponto p);
