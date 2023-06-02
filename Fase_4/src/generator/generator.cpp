@@ -478,7 +478,6 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         Ponto basePoints[slices] = {};
 
         // normals
-        // Ponto normals[slices] = {};
         float downNormal[3] = {0.0f, -1.0f, 0.0f};
 
         // texturas 
@@ -511,7 +510,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
                 nj = 0;
             }
             Ponto p2 = basePoints[nj]; // Ponto da base 2 -> p2
-            
+
             //* calculo das normais desta face
             float vetorH[3]; // vetor na horizontal da face
             float vetorV[3]; // vetor na vertical da face
