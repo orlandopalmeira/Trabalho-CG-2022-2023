@@ -230,6 +230,7 @@ void executeTransformations(List transforms){
 }
 
 void drawNormals(Figura model){
+	if(howManyLights(configuration) > 0) glDisable(GL_LIGHTING);
 	glColor3f(WHITE);
 	vector<float> normals = figuraToNormals(model);
 	vector<float> vertexs = figuraToVector(model);
@@ -239,6 +240,7 @@ void drawNormals(Figura model){
 		glVertex3f(vertexs[i+0]+normals[i+0],vertexs[i+1]+normals[i+1],vertexs[i+2]+normals[i+2]);
 	}
 	glEnd();
+	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
 // Desenha todos os groups do XML
