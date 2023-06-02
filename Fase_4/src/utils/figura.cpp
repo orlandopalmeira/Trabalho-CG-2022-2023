@@ -63,7 +63,7 @@ void addPontoArr(Figura f, float* p){
 // Recebe 3 Pontos para adicionar aos respetivos arrays de valores.
 void addPNT(Figura f, Ponto ponto, Ponto normal, Ponto textCoord){
     addPonto(f,ponto);
-    f->normais->push_back(normal);
+    f->normais->push_back(normalizePonto(normal));
     if (textCoord) f->textCoords->push_back(textCoord);
     else{
         f->textCoords->push_back(newPonto2f(0,0));

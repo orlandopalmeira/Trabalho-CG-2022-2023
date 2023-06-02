@@ -80,6 +80,9 @@ char title[128];
 // Visualização das curvas de Catmull-Rom
 bool showCurves = false;
 
+// Visualização das normais
+bool showNormais = false;
+
 void loadTexture(const char* texturePath, int* index) {
 	unsigned int t, tw, th;
 	unsigned char *texData;
@@ -226,6 +229,18 @@ void executeTransformations(List transforms){
 	}
 }
 
+void drawNormals(Figura model){
+	glColor3f(WHITE);
+	vector<float> normals = figuraToNormals(model);
+	vector<float> vertexs = figuraToVector(model);
+	glBegin(GL_LINES);
+	for(int i = 0; i < normals.size(); i+=3){
+		glVertex3f(vertexs[i+0],vertexs[i+1],vertexs[i+2]);
+		glVertex3f(vertexs[i+0]+normals[i+0],vertexs[i+1]+normals[i+1],vertexs[i+2]+normals[i+2]);
+	}
+	glEnd();
+}
+
 // Desenha todos os groups do XML
 void drawGroups(Tree groups, int* index){
 	if(groups){
@@ -240,6 +255,7 @@ void drawGroups(Tree groups, int* index){
 		// Desenha o conteúdo dos buffers
 		for(unsigned long i = 0; i < modelsCount; i++, (*index)++){
 			Figura model = (Figura)getListElemAt(models,i);
+			if(showNormais) drawNormals(model);
 			// Definição da cor do modelo/figura
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, getDiffuse(model).data());
 			glMaterialfv(GL_FRONT, GL_AMBIENT, getAmbient(model).data());
@@ -477,8 +493,12 @@ void specKeyProc(int key_code, int x, int y) {
 // Só altera a posição da camera, para debug, e altera os modes para GL_FILL, GL_LINES, GL_POINT
 void keyProc(unsigned char key, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
-	switch (key)
-	{
+	switch (key){
+		case 'n':{
+			showNormais = !showNormais;
+			break;
+		}
+
 		case 'a': { // left
 			if(cameraMode == SPHERICAL){
 				alpha -= 0.1f;
