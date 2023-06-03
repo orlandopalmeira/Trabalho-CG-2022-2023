@@ -136,8 +136,8 @@ void surfacePoint(float u, float v, vector<vector<float>> patch, float* res, flo
 	}
 	// Atribuição da coordenada de textura (opcional)
 	if(textCoords){
-		textCoords[0] = u;
-		textCoords[1] = v;
+		textCoords[0] = 1-v;
+		textCoords[1] = 1-u;
 	}
 
 }

@@ -668,14 +668,6 @@ Figura generateSurface(const char* filePath, int tessellation){
                 addPNTArr(result,B,NB,TCB);
                 addPNTArr(result,D,ND,TCD);
                 addPNTArr(result,C,NC,TCC);
-
-                //* Antigo (3.ª Fase)
-                // addPontoArr(result,C);
-                // addPontoArr(result,A);
-                // addPontoArr(result,B);
-                // addPontoArr(result,B);
-                // addPontoArr(result,D);
-                // addPontoArr(result,C);
             }
             v = 0.0f;
         }
