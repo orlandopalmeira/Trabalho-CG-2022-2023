@@ -66,6 +66,10 @@ vector<unsigned int> buffersNSizes; // aqui guardamos o tamanho de cada buffer d
 GLuint *buffersTC = NULL;
 GLuint *textures = NULL;
 
+// Congelamento da animação
+bool freeze = false;
+int timeOld, timeNew;
+float totalTime = 0.0f;
 
 // FIM dos VBO's
 
@@ -183,6 +187,14 @@ void drawCatmullRomCurve(vector<vector<float>> controlPoints){
 	if(howManyLights(configuration) > 0) glEnable(GL_LIGHTING);
 }
 
+void passTime(){
+	timeOld = timeNew;
+	timeNew = glutGet(GLUT_ELAPSED_TIME);
+	if(!freeze){
+		totalTime += 1.0f*(timeNew - timeOld)/1000.0f;
+	}
+}
+
 // Executa as trasnformações geométricas de uma certa figura
 void executeTransformations(List transforms){
 	if(transforms){
@@ -196,7 +208,7 @@ void executeTransformations(List transforms){
 				float r_angle = transformAngle(t);
 				float r_time  = transformTime(t);
 				if(r_time > 0.0f){ 
-					r_angle = ((NOW-init_time)*360.0f)/r_time; 
+					r_angle = ((totalTime-init_time)*360.0f)/r_time; 
 				}
 				glRotatef(r_angle, x, y, z);
             } else if(tr_type == 't'){ // Translação
@@ -204,7 +216,7 @@ void executeTransformations(List transforms){
 				if(t_time > 0.0f){ // se o tempo for utilizado na translação, sabemos que é uma translação referente a uma curva de Catmull-Rom
 					float pos[3], deriv[3], y[3], z[3], rot[16];
 					vector<vector<float>> points = translatePoints(t);
-					getGlobalCatmullRomPoint(NOW/t_time,points,pos,deriv);
+					getGlobalCatmullRomPoint(totalTime/t_time,points,pos,deriv);
 					if (showCurves) drawCatmullRomCurve(points);
 					glTranslatef(pos[0],pos[1],pos[2]);
 
@@ -416,6 +428,8 @@ void moveHead(){
 // Fim das deslocações da câmara em modo FREE
 
 void renderScene(void) {
+	passTime();
+	printf("%g\n",totalTime);
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -450,6 +464,11 @@ void renderScene(void) {
 void specKeyProc(int key_code, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
 	switch (key_code){
+		case GLUT_KEY_F1:{
+			freeze = !freeze;
+			break;
+		}
+
 		case GLUT_KEY_UP:{
 			if(cameraMode == SPHERICAL){
 				radius -= 1.0f;
@@ -496,6 +515,7 @@ void specKeyProc(int key_code, int x, int y) {
 void keyProc(unsigned char key, int x, int y) {
 	x = y; y=x; // Para não aparecerem os warnings.
 	switch (key){
+
 		case 'n':{
 			showNormais = !showNormais;
 			break;
@@ -646,6 +666,7 @@ void init(){
 	// Cálculo do tempo
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 	init_time = NOW;
+	timeOld = timeNew = 0;
 }
 
 int main(int argc, char *argv[]) {
