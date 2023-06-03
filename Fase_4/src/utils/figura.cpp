@@ -191,6 +191,12 @@ const char* getTextureFile(Figura f){
     return f->textureFile;
 }
 
+float arred(float num){
+    long double places = 4.0;
+    long double pow10 = std::pow(10.0,places);
+    return std::round(num * pow10) / pow10;
+}
+
 void figuraToFile(Figura f, const char* path){
     if(!f){
         printf("A figura está vazia na chamada a FiguraToFile.\n");
@@ -207,8 +213,8 @@ void figuraToFile(Figura f, const char* path){
     size_t len = pontos.size();
     fprintf(file,"%lu\n",len);
     for(unsigned long i = 0; i < len; i++){
-        Ponto p = pontos[i], normal = normais[i], textCoord = textCoords[i];
-        fprintf(file, "%g,%g,%g ; %g,%g,%g ; %g,%g\n", getX(p), getY(p), getZ(p), getX(normal), getY(normal), getZ(normal), getX(textCoord), getY(textCoord));
+        Ponto p = pontos[i], normal = normais[i], textCoord = textCoords[i]; 
+        fprintf(file, "%g,%g,%g ; %g,%g,%g ; %g,%g\n", arred(getX(p)), arred(getY(p)), arred(getZ(p)), arred(getX(normal)), arred(getY(normal)), arred(getZ(normal)), arred(getX(textCoord)), arred(getY(textCoord)));
     }
     fclose(file);
 }
