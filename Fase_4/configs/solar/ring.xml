@@ -8,8 +8,8 @@
     </camera>
     <group> 
           <models> 
-            <model file="../Fase_4/outputs/ring_tex.3d" > 
-                <texture file="../Fase_4/textures/cone.jpg"/>
+            <model file="../Fase_4/outputs/hd/ring.3d" > 
+                <texture file="../Fase_4/textures/solar/saturn_ring.png"/>
             </model>
          </models>
      </group>
