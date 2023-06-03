@@ -9,7 +9,7 @@
     <group> 
           <models> 
             <model file="../Fase_4/outputs/hd/ring.3d" > 
-                <texture file="../Fase_4/textures/solar/saturnring.jpg"/>
+                <texture file="../Fase_4/textures/solar/ring2.jpg"/>
             </model>
          </models>
      </group>
