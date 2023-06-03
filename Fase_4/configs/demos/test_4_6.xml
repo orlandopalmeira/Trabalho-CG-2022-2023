@@ -18,7 +18,7 @@
 			</transform>
 			<models> 
 				<model file="../Fase_4/outputs/demos/plane_2_3.3d" > <!-- generator plane 2 3 plane_2_3.3d -->
-				<texture file = "relva.jpg" />
+				<texture file = "../Fase_4/textures/figs/relva.jpg" />
 				</model>
 			</models>
 		</group>
@@ -28,8 +28,8 @@
 				<scale x="0.2" y="0.2" z="0.2" />
 			</transform>
 			<models> 
-				<model file="../Fase_4/outputs/demos/cone_1_2_4_3.3d" > <!-- generator cone 1 2 4 3 cone_1_2_4_3.3d -->
-					<texture file = "cone.jpg" />
+				<model file="../Fase_4/outputs/demos/cone_1_2_20_20.3d" > <!-- generator cone 1 2 4 3 cone_1_2_4_3.3d -->
+					<texture file = "../Fase_4/textures/figs/cone2.png" />
 				</model>
 			</models>
 		</group>
@@ -41,7 +41,7 @@
 			</transform>
 			<models> 
 				<model file="../Fase_4/outputs/demos/sphere_1_8_8.3d" > <!-- generator sphere 1 8 8 sphere_1_8_8.3d -->
-					<texture file = "earth.jpg" />
+					<texture file = "../Fase_4/textures/figs/earth.jpg" />
 				</model>
 			</models>
 		</group>
@@ -53,7 +53,7 @@
 			</transform>
 			<models> 
 				<model file="../Fase_4/outputs/demos/bezier_10.3d" > <!-- generator patch teapot.patch 10 bezier_10.3d -->
-					<texture file = "teapot.jpg" />
+					<texture file = "../Fase_4/textures/figs/teapot.jpg" />
 				</model>
 			</models>
 		</group>
@@ -64,7 +64,7 @@
 			</transform>
 			<models> 
 				<model file="../Fase_4/outputs/demos/box_2_3.3d" > <!-- generator 2 3 box_2_3.3d -->
-					<texture file = "box.jpg" />
+					<texture file = "../Fase_4/textures/figs/box.jpg" />
 				</model>
 			</models>
 		</group>
