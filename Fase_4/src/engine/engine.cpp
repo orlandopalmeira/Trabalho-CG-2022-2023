@@ -612,10 +612,13 @@ void init(){
 			printf("Número de luzes definidas superior a 8\n");
 			exit(1);
 		}
+        GLfloat white[4] = {1.0,1.0,1.0,1.0};
 		for(int i = 0; i < howManyLights(configuration); i++){
 			glEnable(gl_light(i));
+            glLightfv(gl_light(i), GL_DIFFUSE, white);
+            glLightfv(gl_light(i), GL_SPECULAR, white);
 		}
-
+		
 		float amb[4] = { 1.0f, 1.0f, 1.0f, 0.4f };
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
     	
