@@ -429,7 +429,6 @@ void moveHead(){
 
 void renderScene(void) {
 	passTime();
-	printf("%g\n",totalTime);
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -696,7 +695,7 @@ int main(int argc, char *argv[]) {
 	upx 	= getXUp(configuration);
 	upy 	= getYUp(configuration);
 	upz 	= getZUp(configuration);
-	alpha = acos(camz/sqrt(camx*camx + camz*camz));
+	alpha = (camx < 0 ? -1.0f : 1.0f)*acos(camz/sqrt(camx*camx + camz*camz));
 	beta_ = asin(camy/radius);
 	cameraMode = SPHERICAL;
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
