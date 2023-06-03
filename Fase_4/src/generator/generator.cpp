@@ -711,8 +711,8 @@ int main(int argc, char *argv[]){
             figura = generateRing(ri,re,slices);  
         }
         else if(strcmp(argv[1], "patch") == 0){
-            float tessellation = atoi(argv[2]);
-            const char* patchesFile = argv[3];
+            const char* patchesFile = argv[2];
+            float tessellation = atoi(argv[3]);
             file_path = argv[4];
 
             figura = generateSurface(patchesFile,tessellation);
