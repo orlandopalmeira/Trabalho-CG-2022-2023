@@ -10,28 +10,30 @@
 		<light type="point" posX="3" posY="3" posZ="3" />
 	</lights>
 	<group> 
-		<transform>
-			<scale x="1" y="1.1" z="1" />
-			<rotate angle="180" x="1" y="0" z="0" />
-		</transform>
-		<models> 
-			<model file="../Fase_4/outputs/hd/cone.3d" >
-				<color>
-					<diffuse R="243" G="217" B="179" />
-					<ambient R="100" G="100" B="100" />
-				</color>
-				<texture file="../Fase_4/textures/gelado/waffle.jpg"/>
-			</model>
-		</models>
-	</group>
-	<group> 
-		<transform>
-			<translate x="0" y="0.3" z="0" />
-		</transform>
-		<models>
-			<model file="../Fase_4/outputs/hd/sphere.3d" >
-				<texture file="../Fase_4/textures/gelado/chocolate.jpg"/>
-			</model>
-		</models>
+		<group> 
+			<transform>
+				<scale x="1" y="1.1" z="1" />
+				<rotate angle="180" x="1" y="0" z="0" />
+			</transform>
+			<models> 
+				<model file="../Fase_4/outputs/hd/cone.3d" >
+					<color>
+						<diffuse R="243" G="217" B="179" />
+						<ambient R="100" G="100" B="100" />
+					</color>
+					<texture file="../Fase_4/textures/gelado/waffle.jpg"/>
+				</model>
+			</models>
+		</group>
+		<group> 
+			<transform>
+				<translate x="0" y="0.3" z="0" />
+			</transform>
+			<models>
+				<model file="../Fase_4/outputs/hd/sphere.3d" >
+					<texture file="../Fase_4/textures/gelado/chocolate.jpg"/>
+				</model>
+			</models>
+		</group>
 	</group>
 </world>
