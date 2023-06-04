@@ -698,7 +698,7 @@ int main(int argc, char *argv[]) {
 	upx 	= getXUp(configuration);
 	upy 	= getYUp(configuration);
 	upz 	= getZUp(configuration);
-	alpha = (camx < 0 ? -1.0f : 1.0f)*acos(camz/sqrt(camx*camx + camz*camz));
+	alpha = (camx == 0 && camz == 0) ? 0.0f : (camx < 0 ? -1.0f : 1.0f)*acos(camz/sqrt(camx*camx + camz*camz));
 	beta_ = asin(camy/radius);
 	cameraMode = SPHERICAL;
 	figCount = figureCount(configuration); // número de figuras existentes na configuração
