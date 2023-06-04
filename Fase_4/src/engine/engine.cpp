@@ -92,7 +92,7 @@ void loadTexture(const char* texturePath, int* index) {
 	unsigned char *texData;
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring)texturePath);
+	ilLoadImage((ILstring)texturePath); // talvez aqui se deva meter uma verificação da existência do ficheiro de textura.
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);

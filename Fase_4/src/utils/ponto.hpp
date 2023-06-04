@@ -31,6 +31,8 @@ float distance(Ponto p1, Ponto p2);
 
 Ponto normalizePonto(Ponto p);
 
+Ponto coneNormal(float a, float h, float raio);
+
 /**
  * Calcula o vetor a partir formado por dois pontos.
  * @param a Ponto A

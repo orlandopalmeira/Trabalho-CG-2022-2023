@@ -83,12 +83,24 @@ float distance(Ponto p1, Ponto p2){
 
 Ponto normalizePonto(Ponto p){
     Ponto novo = dupPonto(p);
+    // float distance_unnormalized = distance(newPonto(0,0,0), novo); //DEBUG para verificar correta normalização
     float x = getX(novo), y = getY(novo), z = getZ(novo);
     float l = sqrt(x*x + y*y + z*z);
     novo->x /= l;
     novo->y /= l;
     novo->z /= l;
+    // float distance_normalized = distance(newPonto(0,0,0), novo); //DEBUG
     return novo;
+}
+
+Ponto coneNormal(float a, float h, float raio){
+    float x = sin(a);
+    float y = cos(atan(h/raio));
+    float z = cos(a);
+
+    Ponto result = newPonto(x,y,z);
+    // Ponto result = normalizePonto(vetornormal);
+    return result;
 }
 
 void vetorFrom2Pontos(Ponto a, Ponto b, float *res) {

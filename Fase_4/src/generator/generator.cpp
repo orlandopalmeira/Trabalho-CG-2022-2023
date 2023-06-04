@@ -478,6 +478,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         Ponto basePoints[slices] = {};
 
         // normals
+        Ponto normals[slices] = {};
         float downNormal[3] = {0.0f, -1.0f, 0.0f};
 
         // texturas 
@@ -487,6 +488,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         for (int i = 0; i < slices; i++){
             Ponto np = newPonto(radius * sin(cur_alpha), 0.0f, radius * cos(cur_alpha));
             basePoints[i] = np;
+            normals[i] = coneNormal(cur_alpha, height, radius);
 
             addPNT(cone, np, newPontoArr(downNormal), newPonto2fSph(center_tex, cur_alpha, raio_tex));
             addPNT(cone, newPonto(0.0f, 0.0f, 0.0f), newPontoArr(downNormal), newPonto2fArr(center_tex));
@@ -505,21 +507,23 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         for(int j = 0; j < slices; j++){
             
             Ponto p1 = basePoints[j]; // Ponto da base 1 -> p1
+            Ponto normal1 = normals[j];// Normal da aresta 1
             int nj = j+1;
             if (nj == slices){ // para voltar ao primeiro ponto da base, uma vez que dá uma volta.
                 nj = 0;
             }
             Ponto p2 = basePoints[nj]; // Ponto da base 2 -> p2
+            Ponto normal2 = normals[nj];// Normal da aresta 2
 
-            //* calculo das normais desta face
-            float vetorH[3]; // vetor na horizontal da face
-            float vetorV[3]; // vetor na vertical da face
-            vetorFrom2Pontos(p1, p2, vetorH);
-            vetorFrom2Pontos(p1, newPonto(0.0f, height, 0.0f), vetorV);
-            float face_normal[3];
-            cross(vetorH, vetorV, face_normal);
-            normalize(face_normal);
-            Ponto face_normal_p = newPontoArr(face_normal);
+            //* calculo das normais desta face (através de produtos vetoriais)
+            // float vetorH[3]; // vetor na horizontal da face
+            // float vetorV[3]; // vetor na vertical da face
+            // vetorFrom2Pontos(p1, p2, vetorH);
+            // vetorFrom2Pontos(p1, newPonto(0.0f, height, 0.0f), vetorV);
+            // float face_normal[3];
+            // cross(vetorH, vetorV, face_normal);
+            // normalize(face_normal);
+            // Ponto face_normal_p = newPontoArr(face_normal);
             //* fim do calculo das normais desta face
 
             float cur_raio_tex = 0.5f;
@@ -535,23 +539,23 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             // Para cada stack da face
             for(int i = 0; i < stacks-1; i++){
                 // Triangulo da esquerda
-                addPNT(cone, dupPonto(l_p1), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
-                addPNT(cone, dupPonto(l_p2), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
+                addPNT(cone, dupPonto(l_p1), normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
+                addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
                 l_p1 = newPonto(getX(l_p1) - b1x_diff, getY(l_p1) + h_diff, getZ(l_p1) - b1z_diff);
-                addPNT(cone, l_p1, face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex - raio_tex_delta));
+                addPNT(cone, l_p1, normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex - raio_tex_delta));
 
                 // Triangulo da direita
-                addPNT(cone, dupPonto(l_p2), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
+                addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
                 l_p2 = newPonto(getX(l_p2) - b2x_diff, getY(l_p2) + h_diff , getZ(l_p2) - b2z_diff);
-                addPNT(cone, l_p2, face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex - raio_tex_delta));
-                addPNT(cone, dupPonto(l_p1), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex - raio_tex_delta));
+                addPNT(cone, l_p2, normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex - raio_tex_delta));
+                addPNT(cone, dupPonto(l_p1), normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex - raio_tex_delta));
 
                 cur_raio_tex -= raio_tex_delta;
             }
             // Construir triangulo do topo.
-            addPNT(cone, dupPonto(l_p1), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
-            addPNT(cone, dupPonto(l_p2), face_normal_p, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
-            addPNT(cone, newPonto(0.0f, height, 0.0f), face_normal_p, newPonto2fArr(center_tex)); // vértice topo do triângulo do topo
+            addPNT(cone, dupPonto(l_p1), normal1, newPonto2fSph(center_tex, cur_alpha_tex, cur_raio_tex));
+            addPNT(cone, dupPonto(l_p2), normal2, newPonto2fSph(center_tex, cur_alpha_tex + alpha, cur_raio_tex));
+            addPNT(cone, newPonto(0.0f, height, 0.0f), newPonto(0.0f, 1.0f, 0.0f), newPonto2fArr(center_tex)); // vértice topo do triângulo do topo
 
             cur_alpha_tex += alpha;
         }
