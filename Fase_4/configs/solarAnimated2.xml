@@ -120,7 +120,7 @@
                     <scale x="2" y="2" z="2"/> <!-- Tamanho do Anel -->
                 </transform>
                 <models>
-                    <model file="../Fase_4/outputs/hd/ring_3_5_30.3d"> <!-- Anel de Saturno -->
+                    <model file="../Fase_4/outputs/hd/ring_3_5_200.3d"> <!-- Anel de Saturno -->
                         <texture file="../Fase_4/textures/solar/ring.jpg"/>
                     </model>
                 </models>
@@ -212,7 +212,13 @@
             </transform>
             <models>
                 <model file="../Fase_4/outputs/hd/comet.3d">
-                    <texture file="../Fase_4/textures/figs/teapot.jpg"/>
+                    <color>
+						<diffuse R="128" G="128" B="128" />
+						<ambient R="0" G="8" B="18" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="0" G="0" B="0" />
+						<shininess value="128" />
+					</color>
                 </model>
                 
             </models>

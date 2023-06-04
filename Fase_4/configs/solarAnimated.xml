@@ -122,7 +122,7 @@
                     <scale x="2" y="2" z="2"/> <!-- Tamanho do Anel -->
                 </transform>
                 <models>
-                    <model file="../Fase_4/outputs/hd/ring_3_5_30.3d"> <!-- Anel de Saturno -->
+                    <model file="../Fase_4/outputs/hd/ring_3_5_200.3d"> <!-- Anel de Saturno -->
                         <texture file="../Fase_4/textures/solar/ring.jpg"/>
                     </model>
                 </models>
