@@ -92,14 +92,13 @@ void loadTexture(const char* texturePath, int* index) {
    	if (file_ptr == NULL) {
    	   printf("Não foi possível abrir a textura com a diretoria '%s'!\n", texturePath);
 	   exit(1);
-   	//    return 1;
    	}
    	fclose(file_ptr);
 	unsigned int t, tw, th;
 	unsigned char *texData;
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring)texturePath); // talvez aqui se deva meter uma verificação da existência do ficheiro de textura.
+	ilLoadImage((ILstring)texturePath); 
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -112,11 +111,10 @@ void loadTexture(const char* texturePath, int* index) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR); //! mipmapping
+	glTexParameteri(GL_TEXTURE_2D, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-	glGenerateMipmap(GL_TEXTURE_2D); //! mipmapping, esta função tem de estar no fim da loadTexture
+	glGenerateMipmap(GL_TEXTURE_2D); 
 }
 
 // Carrega os dados das figuras para os buffers.
@@ -293,7 +291,6 @@ void drawGroups(Tree groups, int* index){
 			// Normais
 			glBindBuffer(GL_ARRAY_BUFFER,buffersN[*index]);
 			glNormalPointer(GL_FLOAT,0,0);
-			// glDrawArrays(GL_TRIANGLES, 0, buffersNSizes[*index]);
 			// Vértices/pontos
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[*index]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -690,7 +687,6 @@ int main(int argc, char *argv[]) {
 
 	// Carregamento da configuração
 	configuration = xmlToConfig(argv[1]); 
-	// drawTreeDEBUG(configuration);
 	
 	camx    = getXPosCam(configuration);
 	camy    = getYPosCam(configuration);
