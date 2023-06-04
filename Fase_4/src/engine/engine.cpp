@@ -60,7 +60,7 @@ GLuint *buffers = NULL; // temos um buffer para cada figura
 vector<unsigned int> buffersSizes; // aqui guardamos o tamanho de cada buffer de cada figura
 unsigned int figCount = 0; // total de figuras existentes no ficheiro de configuração.
 // Normais
-GLuint *buffersN = NULL; // temos um buffer para cada normal
+GLuint *buffersN = NULL; // temos um buffer para o conjunto de normais de cada figura
 vector<unsigned int> buffersNSizes; // aqui guardamos o tamanho de cada buffer de cada normal
 // Texturas
 GLuint *buffersTC = NULL;
@@ -88,6 +88,13 @@ bool showCurves = false;
 bool showNormais = false;
 
 void loadTexture(const char* texturePath, int* index) {
+	FILE *file_ptr = fopen(texturePath, "r");
+   	if (file_ptr == NULL) {
+   	   printf("Não foi possível abrir a textura com a diretoria '%s'!\n", texturePath);
+	   exit(1);
+   	//    return 1;
+   	}
+   	fclose(file_ptr);
 	unsigned int t, tw, th;
 	unsigned char *texData;
 	ilGenImages(1, &t);
