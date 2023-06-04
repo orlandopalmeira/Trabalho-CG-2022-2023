@@ -486,9 +486,28 @@ Figura generateCone(int radius, int height, int slices, int stacks){
         float center_tex[2] = {0.5f, 0.5f}; // ponto central da textura
 
         for (int i = 0; i < slices; i++){
-            Ponto np = newPonto(radius * sin(cur_alpha), 0.0f, radius * cos(cur_alpha));
+            Ponto np  = newPonto(radius * sin(cur_alpha), 0.0f, radius * cos(cur_alpha));
             basePoints[i] = np;
-            normals[i] = coneNormal(cur_alpha, height, radius);
+
+            //* normals
+            Ponto origem = newPonto(0,0,0);
+            Ponto apex = newPonto(0.0f, height, 0.0f);
+            float vetorA[3]; // cateto horizontal
+            float vetorB[3]; // cateto vertical
+            float vetorC[3]; // hipotenusa (de baixo para cima)
+            float vetorR[3]; // vetor right
+            vetorFrom2Pontos(origem, np, vetorA);
+            vetorFrom2Pontos(origem, apex, vetorB);
+            vetorFrom2Pontos(np, apex, vetorC);
+
+            cross(vetorA, vetorB, vetorR); // A x B = R
+            float normalDaAresta[3];
+            cross(vetorC, vetorR, normalDaAresta); // C x R = N
+            normalize(normalDaAresta); // tecnicamente n é preciso pq o addPTN ja normaliza, mas...
+
+            // vetor normal da aresta
+            normals[i] = newPontoArr(normalDaAresta);
+            //* end-normals
 
             addPNT(cone, np, newPontoArr(downNormal), newPonto2fSph(center_tex, cur_alpha, raio_tex));
             addPNT(cone, newPonto(0.0f, 0.0f, 0.0f), newPontoArr(downNormal), newPonto2fArr(center_tex));

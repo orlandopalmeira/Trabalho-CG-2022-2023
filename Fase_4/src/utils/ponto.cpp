@@ -93,16 +93,6 @@ Ponto normalizePonto(Ponto p){
     return novo;
 }
 
-Ponto coneNormal(float a, float h, float raio){
-    float x = sin(a);
-    float y = cos(atan(h/raio));
-    float z = cos(a);
-
-    Ponto result = newPonto(x,y,z);
-    // Ponto result = normalizePonto(vetornormal);
-    return result;
-}
-
 void vetorFrom2Pontos(Ponto a, Ponto b, float *res) {
 	res[0] = getX(b) - getX(a);
     res[1] = getY(b) - getY(a);
