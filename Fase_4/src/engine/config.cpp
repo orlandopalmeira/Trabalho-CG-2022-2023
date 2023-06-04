@@ -477,14 +477,14 @@ unsigned long figureCount(Config config){
     return figureCountAux(config->groups);
 }
 
-/** WARNING: TEMPORARIA*/
+/** Função de DEBUG*/
 void printSpaces(unsigned int how_many){
 	for(unsigned int i = 0; i < how_many; i++){
 		putchar(' ');
 	}
 }
 
-/** WARNING: TEMPORARIA*/
+/** Função de DEBUG*/
 void drawGroupsDEBUG(Tree groups, unsigned int indent = 0){
 	if(groups){
 		Group group = (Group)getRootValue(groups);
@@ -511,7 +511,7 @@ void drawGroupsDEBUG(Tree groups, unsigned int indent = 0){
 	}
 }
 
-/** WARNING: TEMPORARIA*/
+/** Função de DEBUG*/
 void drawTreeDEBUG(Config c){
     if(c){
         drawGroupsDEBUG(c->groups);

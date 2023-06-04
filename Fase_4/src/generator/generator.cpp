@@ -9,7 +9,6 @@
 
 using namespace std;
 
-//! nao implementei as duas funcoes (queria ver se era mesmo necessário)
 // Direção padrão é o eixo positivo dos Y (para cima).
 Figura generatePlaneXZ(int length, int divisions, float h = 0.0f, int baixo = 0){
     Figura plano = newEmptyFigura();
@@ -455,15 +454,15 @@ Figura generateSphere(int radius, int slices, int stacks){
         addSpherePoint(sphere, dupPonto(p1Up), newPonto2fArr(t1Up));
         addSpherePoint(sphere, dupPonto(p2Up), newPonto2fArr(t2Up));
         t1Up[1] += t_diff;
-        addSpherePoint(sphere, newPonto(0.0f, radius, 0.0f), newPonto2fArr(t1Up)); //! Mapeamento duvidoso
+        addSpherePoint(sphere, newPonto(0.0f, radius, 0.0f), newPonto2fArr(t1Up)); 
         
         // Construção do triângulo final de baixo
         addSpherePoint(sphere, dupPonto(p2Down), newPonto2fArr(t2Down));
         addSpherePoint(sphere, dupPonto(p1Down), newPonto2fArr(t1Down));
         t2Down[1] -= t_diff;
-        addSpherePoint(sphere, newPonto(0.0f, -radius, 0.0f), newPonto2fArr(t2Down)); //! Mapeamento duvidoso
-        deletePonto(p1Up_); deletePonto(p1Down_); // para efeitos de gestão de memória
-        deletePonto(p2Up_); deletePonto(p2Down_); // para efeitos de gestão de memória
+        addSpherePoint(sphere, newPonto(0.0f, -radius, 0.0f), newPonto2fArr(t2Down)); 
+        deletePonto(p1Up_); deletePonto(p1Down_);
+        deletePonto(p2Up_); deletePonto(p2Down_);
     }
     return sphere;
 }
@@ -503,7 +502,7 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             cross(vetorA, vetorB, vetorR); // A x B = R
             float normalDaAresta[3];
             cross(vetorC, vetorR, normalDaAresta); // C x R = N
-            normalize(normalDaAresta); // tecnicamente n é preciso pq o addPTN ja normaliza, mas...
+            normalize(normalDaAresta);
 
             // vetor normal da aresta
             normals[i] = newPontoArr(normalDaAresta);

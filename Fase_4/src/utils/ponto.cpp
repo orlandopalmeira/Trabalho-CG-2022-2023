@@ -83,13 +83,11 @@ float distance(Ponto p1, Ponto p2){
 
 Ponto normalizePonto(Ponto p){
     Ponto novo = dupPonto(p);
-    // float distance_unnormalized = distance(newPonto(0,0,0), novo); //DEBUG para verificar correta normalização
     float x = getX(novo), y = getY(novo), z = getZ(novo);
     float l = sqrt(x*x + y*y + z*z);
     novo->x /= l;
     novo->y /= l;
     novo->z /= l;
-    // float distance_normalized = distance(newPonto(0,0,0), novo); //DEBUG
     return novo;
 }
 

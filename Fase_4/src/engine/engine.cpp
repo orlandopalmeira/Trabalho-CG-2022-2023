@@ -350,7 +350,7 @@ void executeLights(){
 				glLightfv(gl_light(i), GL_POSITION, lPos.data());
 				glLightfv(gl_light(i), GL_SPOT_DIRECTION, lDir.data());
 				glLightf(gl_light(i), GL_SPOT_CUTOFF, cutoff);
-				glLightf(gl_light(i), GL_SPOT_EXPONENT, 0.0); //! Não sei se pode ser assim!!!
+				glLightf(gl_light(i), GL_SPOT_EXPONENT, 0.0); 
 				break;
 			}
 		}
@@ -454,7 +454,7 @@ void renderScene(void) {
 	int time = glutGet(GLUT_ELAPSED_TIME);
 	if (time - timebase > 1000) {
 		float fps = frame*1000.0f/(time-timebase);
-		snprintf(title,127,"FPS: %.2f, PCAM: (%.2f,%.2f,%.2f), LA: (%.2f,%.2f,%.2f), alpha = %.2f, beta = %.2f, CamMode: %s",fps,camx,camy,camz,lookAtx,lookAty,lookAtz,alpha,beta_, cameraMode ? "SPH" : "FREE");
+		snprintf(title,127,"FPS: %.2f, PCAM: (%.2f,%.2f,%.2f), CamMode: %s",fps,camx,camy,camz,cameraMode ? "SPH" : "FREE");
 		glutSetWindowTitle(title);
 		timebase = time;
 		frame = 0;
