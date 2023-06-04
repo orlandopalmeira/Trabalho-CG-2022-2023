@@ -534,17 +534,6 @@ Figura generateCone(int radius, int height, int slices, int stacks){
             Ponto p2 = basePoints[nj]; // Ponto da base 2 -> p2
             Ponto normal2 = normals[nj];// Normal da aresta 2
 
-            //* calculo das normais desta face (através de produtos vetoriais)
-            // float vetorH[3]; // vetor na horizontal da face
-            // float vetorV[3]; // vetor na vertical da face
-            // vetorFrom2Pontos(p1, p2, vetorH);
-            // vetorFrom2Pontos(p1, newPonto(0.0f, height, 0.0f), vetorV);
-            // float face_normal[3];
-            // cross(vetorH, vetorV, face_normal);
-            // normalize(face_normal);
-            // Ponto face_normal_p = newPontoArr(face_normal);
-            //* fim do calculo das normais desta face
-
             float cur_raio_tex = 0.5f;
 
             //float b1_diff = distanceToOrigin(p1) / stacks;
