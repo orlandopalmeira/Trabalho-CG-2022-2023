@@ -29,6 +29,7 @@
             <transform>
                 <rotate time="1" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Mercúrio-->
                 <translate x="24" y="0" z="0"/>
+                <rotate time="2" x="0" y="1" z="0"/>
             </transform>
             <models>
                 <model file="../Fase_4/outputs/hd/sphere.3d"> <!-- Mercúrio -->
@@ -40,6 +41,7 @@
             <transform>
                 <rotate time="2.57" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Vénus-->
                 <translate x="29" y="0" z="0"/>
+                <rotate time="2" x="0" y="1" z="0"/>
                 <scale x="1.2" y="1.2" z="1.2"/> <!-- Tamanho de Vénus -->
             </transform>
             <models>
@@ -52,6 +54,7 @@
             <transform>
                 <rotate time="4.2" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol da Terra-->
                 <translate x="34" y="0" z="0"/>
+                <rotate time="3" x="0" y="1" z="0"/>
             </transform>
             <group>
                 <transform>
@@ -67,6 +70,7 @@
                 <transform>
                     <rotate time="0.5" x="0" y="1" z="0"/>
                     <translate x="0" y="0" z="2"/> <!-- Distância da Lua à Terra -->
+                    <rotate time="2" x="0" y="1" z="0"/>
                     <scale x="0.3" y="0.3" z="0.3"/> <!-- Tamanho da Lua -->
                 </transform>
                 <models>
@@ -80,6 +84,7 @@
             <transform>
                 <rotate time="7.88" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Marte-->
                 <translate x="39" y="0" z="0"/>
+                <rotate time="3" x="0" y="1" z="0"/>
             </transform>
             <models>
                 <model file="../Fase_4/outputs/hd/sphere.3d"> <!-- Marte -->
@@ -91,6 +96,7 @@
             <transform>
                 <rotate time ="20" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Júpiter-->
                 <translate x="49" y="0" z="0"/>
+                <rotate time="5" x="0" y="1" z="0"/>
                 <scale x="6" y="6" z="6"/> <!-- Tamanho de Júpiter -->
             </transform>
             <models>
@@ -106,6 +112,7 @@
             </transform>
             <group>
                 <transform>
+                    <rotate time="5" x="0" y="1" z="0"/>
                     <scale x="5" y="5" z="5"/> <!-- Tamanho de Saturno -->
                 </transform>
                 <models>
@@ -130,6 +137,7 @@
             <transform>
                 <rotate time ="40" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Urano-->
                 <translate x="80" y="0" z="0"/>
+                <rotate time="6" x="0" y="1" z="0"/>
                 <scale x="3" y="3" z="3"/> <!-- Tamanho de Úrano -->
             </transform>
             <models>
@@ -142,6 +150,7 @@
             <transform>
                 <rotate time ="55" x="0" y="1" z="0"/> <!-- Rotação relativa ao Sol de Neptuno-->
                 <translate x="90" y="0" z="0"/>
+                <rotate time="6" x="0" y="1" z="0"/>
                 <scale x="3" y="3" z="3"/> <!-- Tamanho de Neptuno -->
             </transform>
             <models>
