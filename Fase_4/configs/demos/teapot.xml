@@ -1,5 +1,5 @@
 <world> 
-    <window width="1000" height="850" />
+    <window width="950" height="650" />
     <camera> 
 	    <position x="6" y="3" z="5" />
 	    <lookAt x="0" y="0" z="0" />
@@ -15,7 +15,7 @@
 		</transform>
 		<models> 
 			<model file="../Fase_4/outputs/demos/bezier_10.3d" >
-				<texture file="../Fase_4/textures/figs/teapot.jpg"/>
+				<texture file="../Fase_4/textures/figs/teapot2.jpg"/>
 			</model>
 		</models>
 	</group>
