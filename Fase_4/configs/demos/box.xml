@@ -12,7 +12,7 @@
 	<group> 
 		<models> 
 			<model file="../Fase_4/outputs/demos/box_2_3.3d" >
-				<texture file="../Fase_4/textures/figs/box3.jpeg"/>
+				<texture file="../Fase_4/textures/figs/box2.jpeg"/>
 			</model>
 		</models>
 	</group>
