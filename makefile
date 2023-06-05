@@ -123,6 +123,7 @@ fase4:
 	./build/generator.exe ring 3 5 200 ./Fase_4/outputs/hd/ring_3_5_200.3d
 	./build/generator.exe patch ./Fase_4/patches/teapot.patch 20 ./Fase_4/outputs/hd/teapot.3d
 	./build/generator.exe patch ./Fase_4/patches/comet.patch 10 ./Fase_4/outputs/hd/comet.3d
+	./build/generator.exe box 2 100 ./Fase_4/outputs/demos/box_2_100.3d
 
 box:
 	cd build/ && ./engine.exe ../Fase_4/configs/demos/box.xml

@@ -11,7 +11,7 @@
 	</lights>
 	<group> 
 		<models> 
-            <model file="../Fase_4/outputs/demos/box_2_3.3d" >
+            <model file="../Fase_4/outputs/demos/box_2_100.3d" >
                 <color>
                     <diffuse R="243" G="217" B="179" />
                     <ambient R="100" G="100" B="100" />
