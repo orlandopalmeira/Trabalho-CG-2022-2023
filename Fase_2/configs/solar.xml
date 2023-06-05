@@ -93,7 +93,7 @@
         <group>
             <transform>
                 <rotate angle ="20" x="1" y="0" z="1"/> <!-- Ângulo de rotação do anel de Saturno -->
-                <scale x="1" y="1" z="1"/> <!-- Tamanho do Anel -->
+                <scale x="2" y="2" z="2"/> <!-- Tamanho do Anel -->
             </transform>
             <models>
                 <model file="../Fase_2/outputs/ring.3d" /> <!-- Anel de Saturno -->

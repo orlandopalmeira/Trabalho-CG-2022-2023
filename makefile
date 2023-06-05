@@ -74,7 +74,7 @@ solarAligned2:
 	cd build/ && ./engine.exe ../Fase_2/configs/solarAligned.xml
 
 solarRotatedInLine2:
-	cd build/ && ./engine.exe ../Fase_2/configs/solarRotatedInLine.xml
+	cd build/ && ./engine.exe ../Fase_2/configs/solarRotatedinLine.xml
 
 fase3:
 	rm -r build || echo "build removido"
