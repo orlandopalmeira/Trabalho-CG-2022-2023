@@ -84,7 +84,7 @@ fase3:
 	./build/generator.exe sphere 1 10 10 ./Fase_3/outputs/sphere_1_10_10.3d 
 	./build/generator.exe box 2 3 ./Fase_3/outputs/box_2_3.3d
 	./build/generator.exe plane 2 3 ./Fase_3/outputs/plane_2_3.3d
-	./build/generator.exe patch ./Fase_3/patches/teapot.patch 10 ./Fase_3/outputs/bezier_10.3d
+	./build/generator.exe patch 10 ./Fase_3/patches/teapot.patch ./Fase_3/outputs/bezier_10.3d
 	./build/generator.exe ring 3 5 20 ./Fase_3/outputs/ring.3d
 
 3DFase3: fase4
