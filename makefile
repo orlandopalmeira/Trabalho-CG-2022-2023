@@ -43,7 +43,7 @@ fase2:
 	./build/generator.exe box 2 3 ./Fase_2/outputs/box_2_3.3d
 	./build/generator.exe plane 2 3 ./Fase_2/outputs/plane_2_3.3d
 	./build/generator.exe sphere 1 40 40 ./Fase_2/outputs/sphere.3d
-	./build/generator.exe ring 3 5 20 ./Fase_2/outputs/ring.3d
+	./build/generator.exe ring 7 9 30 ./Fase_2/outputs/ring.3d
 	./build/generator.exe sphere 1 8 8 ./Fase_2/outputs/sphere_1_8_8.3d
 
 3DFase2: fase4
@@ -52,7 +52,7 @@ fase2:
 	./build/generator.exe box 2 3 ./Fase_2/outputs/box_2_3.3d
 	./build/generator.exe plane 2 3 ./Fase_2/outputs/plane_2_3.3d
 	./build/generator.exe sphere 1 40 40 ./Fase_2/outputs/sphere.3d
-	./build/generator.exe ring 3 5 20 ./Fase_2/outputs/ring.3d
+	./build/generator.exe ring 7 9 30 ./Fase_2/outputs/ring.3d
 	./build/generator.exe sphere 1 8 8 ./Fase_2/outputs/sphere_1_8_8.3d
 
 test_2_1:
@@ -87,7 +87,7 @@ fase3:
 	./build/generator.exe box 2 3 ./Fase_3/outputs/box_2_3.3d
 	./build/generator.exe plane 2 3 ./Fase_3/outputs/plane_2_3.3d
 	./build/generator.exe patch 10 ./Fase_3/patches/teapot.patch ./Fase_3/outputs/bezier_10.3d
-	./build/generator.exe ring 3 5 20 ./Fase_3/outputs/ring.3d
+	./build/generator.exe ring 7 9 30 ./Fase_3/outputs/ring.3d
 
 3DFase3: fase4
 	./build/generator.exe cone 1 2 4 3 ./Fase_3/outputs/cone_1_2_4_3.3d
@@ -95,7 +95,7 @@ fase3:
 	./build/generator.exe box 2 3 ./Fase_3/outputs/box_2_3.3d
 	./build/generator.exe plane 2 3 ./Fase_3/outputs/plane_2_3.3d
 	./build/generator.exe patch ./Fase_3/patches/teapot.patch 10 ./Fase_3/outputs/bezier_10.3d
-	./build/generator.exe ring 3 5 20 ./Fase_3/outputs/ring.3d
+	./build/generator.exe ring 7 9 30 ./Fase_3/outputs/ring.3d
 
 test_3_1:
 	cd build/ && ./engine.exe ../Fase_3/configs/demos/test_3_1.xml
