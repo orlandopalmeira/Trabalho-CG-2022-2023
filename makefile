@@ -1,3 +1,5 @@
+all: 3DFase1 3DFase2 3DFase3 3DFase4
+
 fase1:
 	rm -r build || echo "build removido"
 	cmake -S ./Fase_1/src -B build
