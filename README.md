@@ -16,7 +16,57 @@
 
 </div>
 
-### Nota: X / 20
+### Como executar os testes do programa:
+**Atenção:** Tem de se executar os comandos abaixo a partir da raíz do repositório (`.../Trabalho-CG-2022-2023`)
+#### 1.º) Compilar o código
+```
+make
+```
+#### 2.º) Executar os testes
+- Testes da primeira fase:
+```
+make test_1_1
+make test_1_2
+make test_1_3
+make test_1_4
+make test_1_5
+```
+- Testes da segunda fase:
+```
+make test_2_1
+make test_2_2
+make test_2_3
+make test_2_4
+make solar2
+make solarAligned2
+make solarRotatedInLine2
+```
+- Testes da terceira fase:
+```
+make test_3_1
+make test_3_2
+make solarAnimated3
+```
+- Testes da quarta fase:
+```
+make box
+make cone
+make gelado
+make holofote
+make plano
+make ring
+make teapot
+make test_4_1
+make test_4_2
+make test_4_3
+make test_4_4
+make test_4_5
+make test_4_6
+make solarAnimated4
+make solarStatic4
+```
+
+### Nota: 18.6 / 20
 
 <h3><i>Keywords</i></h3>
 CG, Computação Gráfica , computacao grafica, uminho, miei, lei, engenharia informatica
