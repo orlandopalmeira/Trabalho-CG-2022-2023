@@ -17,7 +17,13 @@
 </div>
 
 ### Como executar os testes do programa:
-**Atenção:** Tem de se executar os comandos abaixo a partir da raíz do repositório (`.../Trabalho-CG-2022-2023`)
+**Atenção:**
+- Pré-requisitos
+  - Compilador g++
+  - Programa makefile
+  - Cmake  
+- Tem de se executar os comandos abaixo a partir da raíz do repositório (`.../Trabalho-CG-2022-2023`)
+
 #### 1.º) Compilar o código
 ```
 make
